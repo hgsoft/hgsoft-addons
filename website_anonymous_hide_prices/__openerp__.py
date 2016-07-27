@@ -9,8 +9,8 @@
         Adds some Qweb views to replace sections on page which will be hidden if user ist not authenticated
     """,
 
-    'author': "Michael Hucke",
-    'website': "http://www.hucke-media.com",
+    'author': "Michael Hucke, extended by HGSOFT",
+    'website': "http://www.hgsoft.com.br",
 
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/master/openerp/addons/base/module/module_data.xml
@@ -26,4 +26,6 @@
         # 'security/ir.model.access.csv',
         'templates.xml',
     ],
+    'installable': True,
+    'auto_install': False,
 }

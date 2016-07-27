@@ -80,10 +80,5 @@
                 </form>
             </xpath>
         </template>
-        <template id="display_anoymous" inherit_id="website_sale.products">
-            <xpath expr="//div[@id='wrap']" position="before">
-                <div t-if="user_id.partner_id.name == 'Public user'" class="jumbotron mt16 mb16" data-oe-model="ir.ui.view" data-oe-field="arch" data-oe-xpath="/t[1]/t[1]/div[1]/div[1]"><section class="jumbotron mb0 mt4"><div class="container"><h1>Gewerbliche Kunden</h1><p>Auf dieser Website verkaufen wir ausschliesslich an gewerbliche, akkreditierte Kunden.</p><p>Sie können unsere Produkte sehen, die Preise und Kauffunktionen sind abgeschaltet.</p><p>Für ein Händlerkonto oder Fragen zu unserem Sortiment und Händlern nutzen Sie gerne unser Kontaktformular.</p><p><a class="btn btn-primary btn-lg" data-cke-saved-href="/page/website.contactus" href="/page/website.contactus">Kontaktformular</a></p></div></section></div>
-            </xpath>
-        </template>
     </data>
 </openerp>
