@@ -1,0 +1,174 @@
+<openerp>
+    <data>
+        <!--  -->
+
+        <record model="ir.actions.act_window" id="consignee_open_quants">
+            <field name="context">{'search_default_productgroup': 1}</field>
+            <field name="name">Consignment Stock</field>
+            <field name="res_model">stock.quant</field>
+        </record>
+<!-- 
+        <record model="ir.actions.act_window" id="location_open_quants">
+            <field name="context">{'search_default_productgroup': 1}</field>
+            <field name="domain">[('location_id', 'child_of', active_ids)]</field>
+            <field name="name">Current Stock</field>
+            <field name="res_model">stock.quant</field>
+        </record> -->
+
+        <record id="view_partner_form_inherit" model="ir.ui.view">
+            <field name="name">res.partner.inherit.consignment</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//div[@name='buttons']" position="inside">
+                   
+                    <button class="oe_stat_button"
+                           name="action_view_consignment_products"
+                           icon="fa-building-o"
+                           type="object"  attrs="{'invisible':[('type', '=', 'service')]}" groups="stock.group_locations">
+                    <div>Consignment Stock</div>
+                   </button>
+                   <br/>
+                  <!--  <button name="create_xls_consignment_report" type="object" string="Report Test"/> -->
+                </xpath>
+
+                <field name="company_id" position="after">
+                    <field name="allow_consignment"/>
+                    <field name="send_auto_email"/>
+                    <field name="is_author"/>
+                    <field name="consignee_location_id" readonly="1"/>
+                </field>
+
+                <page name="accounting" position="after">
+                    <page string="Report History" name="consignment_reports">
+                        <group>
+                            <field name="report_attachment_ids" readonly="1" nolabel="1">
+                                <tree string="Consignment Reports">
+                                    <field name="create_date"/>
+                                    <field name="consignment_mode"/>
+                                    <field name="datas"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </page>
+                </page>
+
+            </field>
+        </record>
+
+        <record id="view_product_inherit_form" model="ir.ui.view">
+            <field name="name">res.partner.inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+            <field name="arch" type="xml">
+                <field name="ean13" position="replace">
+                    <field name="ean13" attrs="{'invisible': [('product_variant_count', '&gt;', 1)]}"/>
+                </field>
+                <field name="list_price" position="after">
+                    <field name="author_id"/>
+                    <field name="pages"/>
+                </field>
+            </field>
+        </record>
+
+        <!-- Consignment Report Email Template -->
+        <record id="email_template_partner_consignment_report" model="email.template">
+            <field name="name">Consignment Quantity Report</field>
+            <field name="model_id" ref="base.model_res_partner"/>
+            <field name="auto_delete" eval="False"/>
+            <field name="partner_to">${object.id}</field>
+            <field name="Subject">Consignment Quantity Report</field>
+            <field name="body_html"><![CDATA[
+<div style="font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
+
+    <p>Hello ${object.name},</p>
+
+    <p>Please Find the Consignment Quantity Report attached with this email. </p>
+    
+    <br/>
+    <p>If you have any question, do not hesitate to contact us.</p>
+    <p>Thank you for choosing ${object.company_id.name or 'us'}!</p>
+    
+    <br/>
+    <br/>
+    <div style="width: 375px; margin: 0px; padding: 0px; background-color: #8E0000; border-top-left-radius: 5px 5px; border-top-right-radius: 5px 5px; background-repeat: repeat no-repeat;">
+        <h3 style="margin: 0px; padding: 2px 14px; font-size: 12px; color: #DDD;">
+            <strong style="text-transform:uppercase;">${object.company_id.name}</strong></h3>
+    </div>
+    <div style="width: 347px; margin: 0px; padding: 5px 14px; line-height: 16px; background-color: #F2F2F2;">
+        <span style="color: #222; margin-bottom: 5px; display: block; ">
+        % if object.company_id.street:
+            ${object.company_id.street}<br/>
+        % endif
+        % if object.company_id.street2:
+            ${object.company_id.street2}<br/>
+        % endif
+        % if object.company_id.city or object.company_id.zip:
+            ${object.company_id.zip} ${object.company_id.city}<br/>
+        % endif
+        % if object.company_id.country_id:
+            ${object.company_id.state_id and ('%s, ' % object.company_id.state_id.name) or ''} ${object.company_id.country_id.name or ''}<br/>
+        % endif
+        </span>
+        % if object.company_id.phone:
+            <div style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; ">
+                Phone:&nbsp; ${object.company_id.phone}
+            </div>
+        % endif
+        % if object.company_id.website:
+            <div>
+                Web :&nbsp;<a href="${object.company_id.website}">${object.company_id.website}</a>
+            </div>
+        %endif
+        <p></p>
+    </div>
+</div>
+            ]]></field>
+        </record>
+
+        <!-- "Email Consignment Report" button in Customer -> More -->
+        <act_window id="partner_consignment_action"
+            name="Email Consignment Report"
+            src_model="res.partner"
+            res_model="mail.compose.message"
+            view_type="form" view_mode="form"
+            key2="client_action_multi" target="new"
+            context="{
+                            'default_composition_mode': 'comment',
+                            'default_use_template': True,
+                            'default_template_id': ref('consignment_sales.email_template_partner_consignment_report'),
+                    }"
+        />
+
+        
+
+        <!-- ATTACHMENT FOR CONSIGNMENT REPROT -->
+        <record id="view_attachment_form_inherit" model="ir.ui.view">
+            <field name="name">attachment.inherit</field>
+            <field name="model">ir.attachment</field>
+            <!-- <field name="context">{'mode':'manual'}</field> -->
+            <field name="inherit_id" ref="base.view_attachment_form"/>
+            <field name="arch" type="xml">
+                <field name="partner_id" position="after">
+                    <field name="consignment_partner_id"/>
+                    <field name="consignment_mode"/><field name="consignment_mode"/>
+                </field>
+            </field>
+        </record>
+
+
+        <!-- CRON JOB FOR SENDING MAIL OF REPORT AUTOMATICALLY -->
+        <record id="ir_cron_consignment_report_action" model="ir.cron">
+            <field name="name">Consignment Report</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">months</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="model">res.partner</field>
+            <field name="function">consignment_report_cron</field>
+            <field name="args">()</field>
+            <field name="user_id" ref="base.user_root" />
+        </record>
+    </data>
+</openerp>

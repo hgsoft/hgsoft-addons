@@ -1,0 +1,45 @@
+<openerp>
+	<data>
+
+		<record id="view_stock_location_form" model="ir.ui.view">
+		    <field name="name">stock.location.inherit</field>
+		    <field name="model">stock.location</field>
+		    <field name="inherit_id" ref="stock.view_location_form"/>
+		    <field name="arch" type="xml">
+		        <field name="active" position="after">
+		            <field name="consignee_id"/>
+		            <field name="is_consignment" invisible="1"/>
+		        </field>
+		    </field>
+		</record>
+
+		<!-- Quant Filter by Consignnee -->
+
+		<record id="quant_search_view_inherited" model="ir.ui.view">
+            <field name="name">quant.search.view.inherited</field>
+            <field name="model">stock.quant</field>
+            <field name="inherit_id" ref="stock.quant_search_view"/>
+            <field name="arch" type="xml">
+            	<filter name="internal_loc" position="after">
+            		<filter name="consignmentgroup" string="Consignments"  domain="[('location_id.is_consignment','=', True)]" 
+            			context="{'group_by' : 'location_id'}"
+            			/>
+            	</filter>
+            </field>
+        </record>
+
+
+        <!-- Location Filter by Consignment -->
+        <record id="view_location_search_inherited" model="ir.ui.view">
+            <field name="name">stock.location.search.inherited</field>
+            <field name="model">stock.location</field>
+            <field name="inherit_id" ref="stock.view_location_search"/>
+            <field name="arch" type="xml">
+            	<filter name="supplier" position="after">
+            		<filter icon="terp-personal" name="consignee_location" string="Consignment" domain="[('consignee_id', '!=', False)]" help="	Consignment Locations"/>
+            	</filter>
+            </field>
+        </record>
+
+	</data>
+</openerp>

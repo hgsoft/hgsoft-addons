@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hedra_consignment_order,consignment_sales.consignment_order,model_consignment_order,base.group_sale_salesman,1,1,1,1
+access_hedra_consignment_order_line,consignment_sales.consignment_order_line,model_consignment_order_line,base.group_sale_salesman,1,1,1,1
+access_hedra_consignment_sale,consignment_sales.consignment_sale,model_consignment_sale,base.group_sale_salesman,1,1,1,1
+access_hedra_consignment_sale_line,consignment_sales.consignment_sale_line,model_consignment_sale_line,base.group_sale_salesman,1,1,1,1
