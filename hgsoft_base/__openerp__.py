@@ -25,8 +25,7 @@
     'author': 'HGSOFT',
     'license': 'AGPL-3',
     'website': 'http://www.hgsoft.com.br',
-    'contributors': ['Alexsandro Haag <alex@hgsoft.com.br>'
-                     ],
+    'contributors': ['Alexsandro Haag <alex@hgsoft.com.br>'],
     'depends': [
         'base', 'web'
     ],
@@ -38,3 +37,4 @@
     ],
     'application': True,
     'auto_install': True
+}
