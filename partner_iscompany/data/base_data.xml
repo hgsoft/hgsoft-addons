@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="default_is_company" model="ir.values">
+                <field name="name">is_company</field>
+                <field name="model">res.partner</field>
+                <field name="key">default</field>
+                <field name="key2"></field>
+                <field name="value" eval="str('I01\n.')" />		
+        </record>
+                
+	</data>
+</openerp>
