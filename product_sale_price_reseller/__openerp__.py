@@ -9,5 +9,8 @@
     'author': 'HGSOFT - Alexsandro Haag',
     'website': 'http://www.hgsoft.com.br',
     'depends': ['base','sale'],
+    'data': [
+        'views/product.xml',
+    ],
     'installable': True,
 }
