@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<openerp>
+	<data>
+
+		<record id="view_hgsoft_product_sale_price_reseller" model="ir.ui.view">
+			<field name="name">view.hgsoft.product.sale.price.reseller</field>
+			<field name="model">product.template.product.form</field>
+			<field name="inherit_id" ref="product.template.product.form" />
+			<field name="arch" type="xml">
+			    <field name="arch" type="xml">
+				    <field name="list_price" position="after">
+					<field name="sale_price_reseller" />
+				    </field>
+			    </field>
+			</field>
+		</record>
+
+	</data>
+</openerp>
