@@ -6,7 +6,7 @@
                 <link rel="stylesheet" href="/hgsoft_base/static/src/css/hgsoft_base.css"/>
             </xpath>
         </template>
-        <template id="trust_login_layout" name="Login Layout" inherit_id="web.login_layout">
+        <template id="hgsoft_login_layout" name="Login Layout" inherit_id="web.login_layout">
             <t t-set="head">
                 <link href="/hgsoft_base/static/src/css/hgsoft_base.css" rel="stylesheet"/>
             </t>
