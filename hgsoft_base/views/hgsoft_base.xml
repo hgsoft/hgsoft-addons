@@ -12,9 +12,9 @@
             </t>
         </template>
         <template id="hgsoft_menu_secondary" name="" inherit_id="web.menu_secondary">
-            <xpath expr="div[@class='oe_footer']" position="inside">
+            <xpath expr="div[@class='oe_footer']" position="replace">
                 <div class="oe_footer" style="float:left;width:100%;height:100%;">
-                    Suporte via <a href="http://www.hgsoft.com.br" target="_blank"><span style="color:#dc1906">HGSOFT</span></a>
+                    Apoio <a href="http://www.hgsoft.com.br" target="_blank"><span style="color:#dc1906">HGSOFT</span></a>
                 </div>
             </xpath>
         </template>
