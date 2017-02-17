@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template>
+    <!--
+        mail.compose_message.button_top_bar
+        render of the button on the user bar for open wizard compose message
+        -->
+    <t t-name="revert_compose_message.ComposeMessageTopButton">
+        <li title='Compose new Message'>
+            <a href="#">
+                <i id="oe_topbar_compose_full_email_icon" class="fa fa-envelope-o"/>
+            </a>
+        </li>
+    </t>
+
+</template>
