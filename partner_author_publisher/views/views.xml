@@ -1,0 +1,60 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+    <!--
+    <record model="ir.ui.view" id="partner_author_publisher.list">
+      <field name="name">partner_author_publisher list</field>
+      <field name="model">partner_author_publisher.partner_author_publisher</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+    -->
+
+    <!-- actions opening views on models -->
+    <!--
+    <record model="ir.actions.act_window" id="partner_author_publisher.action_window">
+      <field name="name">partner_author_publisher window</field>
+      <field name="res_model">partner_author_publisher.partner_author_publisher</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+    -->
+
+    <!-- server action to the one above -->
+    <!--
+    <record model="ir.actions.server" id="partner_author_publisher.action_server">
+      <field name="name">partner_author_publisher server</field>
+      <field name="model_id" ref="model_partner_author_publisher_partner_author_publisher"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": self._name,
+        }
+      </field>
+    </record>
+    -->
+
+    <!-- Top menu item -->
+    <!--
+    <menuitem name="partner_author_publisher" id="partner_author_publisher.menu_root"/>
+    -->
+    <!-- menu categories -->
+    <!--
+    <menuitem name="Menu 1" id="partner_author_publisher.menu_1" parent="partner_author_publisher.menu_root"/>
+    <menuitem name="Menu 2" id="partner_author_publisher.menu_2" parent="partner_author_publisher.menu_root"/>
+    -->
+    <!-- actions -->
+    <!--
+    <menuitem name="List" id="partner_author_publisher.menu_1_list" parent="partner_author_publisher.menu_1"
+              action="partner_author_publisher.action_window"/>
+    <menuitem name="Server to list" id="partner_author_publisher" parent="partner_author_publisher.menu_2"
+              action="partner_author_publisher.action_server"/>
+    -->
+  </data>
+</odoo>
