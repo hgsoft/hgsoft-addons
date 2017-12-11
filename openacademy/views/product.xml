@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <odoo>      
+    <record id="products_products_fields" model="ir.ui.view">
+        <field name="name">Products Products fields</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+            <!--
+            <field name='lst_price' position="before">
+                <field name='state_type_product' invisible="1"/>
+            	<field name='date' attrs="{'invisible': [('state_type_product', '!=', True)]}"/>              
+            </field>
+            -->
+            <!--
+            <field name='lst_price' position="before">
+                <field name="author_id" string="Autor"/>
+                <field name="publisher_id" string="Editora"/>
+            </field>
+            -->
+            <xpath expr="//page[@name='general_information']/group[@name='group_general']" position="after">
+                <field name="author" string="É um Autor?"/>
+                <field name="publisher" string="É uma Editora?"/>
+            </xpath>  
+                    
+        </field>
+    </record>        
+</odoo>
