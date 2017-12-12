@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Documentation
+    This 'view' shows new fields from 'partner.py'.
+    'partner.py' inherited from 'res.partner'.
+    -->   
+    <record id="publishing_company_partner_form_view" model="ir.ui.view">
+        <field name="name">partner.publishing.company.partner</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">        
+            <!--
+            New fields 'inside' the inherited form.
+            -->         
+            <xpath expr="//page[@name='sales_purchases']/group[@name='container_row_2']/group[@name='purchase']/field[@name='supplier']" position="after">
+                <field name="is_author" string="É um Autor?"/>
+                <field name="is_publisher" string="É uma Editora?"/>
+            </xpath>                              
+        </field>
+    </record>
+</odoo>
