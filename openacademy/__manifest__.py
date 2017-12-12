@@ -18,9 +18,9 @@
     # for the full list
     'category': 'Uncategorized',
     'version': '0.1',
-
+    'images': ['static/description/icon.png'],
     # any module necessary for this one to work correctly
-    'depends': ['base'],
+    'depends': ['base', 'product'],
 
     # always loaded
     'data': [
