@@ -31,7 +31,7 @@
 
     'category': 'Site',
     
-    'version': '0.5',
+    'version': '1.0',
 
     'depends': ['base', 'product'],
 
