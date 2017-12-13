@@ -19,7 +19,7 @@
         </field>
     </record>
      <!--
-     New search fields the inherited form.
+     New search fields from the inherited form.
      -->    
     <record id="publishing_company_product_search_view" model="ir.ui.view">
         <field name="name">product.template.publishing.company.product.search</field>
@@ -29,6 +29,40 @@
             <xpath expr="//search" position="inside">
                 <field name="author" string="Author" filter_domain="[('author.name','ilike',self)]"/>
                 <field name="publisher" string="Publisher" filter_domain="[('publisher.name','ilike',self)]"/>
+            </xpath>
+        </field>
+    </record>
+    <!--
+     New search fields from the inherited kanban.
+     -->
+    <record id="publishing_company_product_kanban_view" model="ir.ui.view">
+        <field name="name">product.template.publishing.company.kanban.product</field>        
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_kanban_view"/>
+        <field name="arch" type="xml">         
+            <!--
+            New fields 'before' the inherited Kanban.
+            -->
+            <xpath expr="//kanban/templates/t/div/div[2]/ul/li" position="before">
+                <li>Author:
+                    <field name="author"/>                
+                </li>
+            </xpath>
+        </field>
+    </record>
+    <!--
+     New search fields from the inherited list.
+     -->
+    <record id="publishing_company_product_list_view" model="ir.ui.view">
+        <field name="name">product.template.publishing.company.list.product</field>        
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_tree_view"/>
+        <field name="arch" type="xml">         
+            <!--
+            New fields 'before' the inherited List.
+            -->
+            <xpath expr="//tree/field[3]" position="after">
+                <field name="author"/>
             </xpath>
         </field>
     </record>    
