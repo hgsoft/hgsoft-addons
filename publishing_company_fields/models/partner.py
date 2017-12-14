@@ -14,6 +14,6 @@ class PartnerFields(models.Model):
 
     #New fields
     
-    is_author = fields.Boolean("Is an Author?", default=False)
+    is_author = fields.Boolean("Is an Author", default=False)
     
-    is_publisher = fields.Boolean("Is a Publisher?", default=False)
+    is_publisher = fields.Boolean("Is a Publisher", default=False)

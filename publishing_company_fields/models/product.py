@@ -15,8 +15,8 @@ class ProductFields(models.Model):
     #New fields with 'True' filter.
     #These fields come from the 'res.partner' model.
     
-    author = fields.Many2one('res.partner', string="author",
+    author = fields.Many2one('res.partner', string="Author",
         domain=[('is_author', '=', True)])
     
-    publisher = fields.Many2one('res.partner', string="publisher",
+    publisher = fields.Many2one('res.partner', string="Publisher",
         domain=[('is_publisher', '=', True)])

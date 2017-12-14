@@ -25,7 +25,7 @@
 
     'description': """Adds new control fields for 'author' and 'publisher' in 'Partner' and 'Product' base modules.""",
 
-    'author': "HGSoft - Soluções Criativas e Inteligentes | Ewerton L. Rover",
+    'author': "HGSoft - Soluções Criativas e Inteligentes",
     
     'website': "http://www.hgsoft.com.br/",
 

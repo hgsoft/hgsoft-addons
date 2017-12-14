@@ -4,45 +4,39 @@
     This 'view' shows new fields from 'product.py'.
     'product.py' inherited from 'product.template'.
     -->
+    <!--  Form  -->
     <record id="publishing_company_product_form_view" model="ir.ui.view">
         <field name="name">product.template.publishing.company.product</field>        
         <field name="model">product.template</field>
         <field name="inherit_id" ref="product.product_template_form_view"/>
         <field name="arch" type="xml">         
-            <!--
-            New fields 'inside' the inherited form.
-            -->
+            <!--  Fields  -->
             <xpath expr="//notebook/page[1]/group/group[2]/div[1]" position="after">
-                <field name="author" string="Autor"/>
-                <field name="publisher" string="Editora"/>
+                <field name="author" string="Author"/>
+                <field name="publisher" string="Publisher"/>
             </xpath>
         </field>
     </record>
-     <!--
-     New search fields from the inherited form.
-     -->    
+    <!--  Search view  -->
     <record id="publishing_company_product_search_view" model="ir.ui.view">
         <field name="name">product.template.publishing.company.product.search</field>
         <field name="model">product.template</field>
         <field name="inherit_id" ref="product.product_template_search_view"/>
         <field name="arch" type="xml">
+            <!--  Fields  -->
             <xpath expr="//search" position="inside">
                 <field name="author" string="Author" filter_domain="[('author.name','ilike',self)]"/>
                 <field name="publisher" string="Publisher" filter_domain="[('publisher.name','ilike',self)]"/>
             </xpath>
         </field>
     </record>
-    <!--
-     New search fields from the inherited kanban.
-     -->
+    <!--  Kanban  -->
     <record id="publishing_company_product_kanban_view" model="ir.ui.view">
         <field name="name">product.template.publishing.company.kanban.product</field>        
         <field name="model">product.template</field>
         <field name="inherit_id" ref="product.product_template_kanban_view"/>
         <field name="arch" type="xml">         
-            <!--
-            New fields 'before' the inherited Kanban.
-            -->
+            <!--  Fields  -->
             <xpath expr="//kanban/templates/t/div/div[2]/ul/li" position="before">
                 <li>Author:
                     <field name="author"/>                
@@ -50,17 +44,13 @@
             </xpath>
         </field>
     </record>
-    <!--
-     New search fields from the inherited list.
-     -->
+    <!--  List  -->
     <record id="publishing_company_product_list_view" model="ir.ui.view">
         <field name="name">product.template.publishing.company.list.product</field>        
         <field name="model">product.template</field>
         <field name="inherit_id" ref="product.product_template_tree_view"/>
         <field name="arch" type="xml">         
-            <!--
-            New fields 'before' the inherited List.
-            -->
+            <!--  Fields  -->
             <xpath expr="//tree/field[3]" position="after">
                 <field name="author"/>
             </xpath>

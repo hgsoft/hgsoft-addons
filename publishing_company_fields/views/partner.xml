@@ -10,16 +10,16 @@
         <field name="inherit_id" ref="base.view_partner_form"/>
         <field name="arch" type="xml">        
             <!--
-            New fields 'inside' the inherited form.
+            New fields to the inherited form.
             -->         
             <xpath expr="//page[@name='sales_purchases']/group[@name='container_row_2']/group[@name='purchase']/field[@name='supplier']" position="after">
-                <field name="is_author" string="É um Autor?"/>
-                <field name="is_publisher" string="É uma Editora?"/>
+                <field name="is_author" string="Is an Author"/>
+                <field name="is_publisher" string="Is a Publisher"/>
             </xpath>                              
         </field>
     </record>
      <!--
-     New search fields the inherited form.
+     New search fields to the inherited form.
      -->    
     <record id="publishing_company_partner_search_view" model="ir.ui.view">
         <field name="name">partner.publishing.company.partner.search</field>
