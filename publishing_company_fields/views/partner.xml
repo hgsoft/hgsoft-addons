@@ -11,11 +11,25 @@
         <field name="arch" type="xml">        
             <!--
             New fields to the inherited form.
-            -->         
+            --> 
+            
+            <xpath expr="//page[3]" position="after">
+                <page name="book_store" string="Book Store">
+                    <group name="partner_type" string="Partner Type">
+                        <field name="is_author" string="Is an Author"/>
+                        <field name="is_publisher" string="Is a Publisher"/>
+                        <field name="royalties_percentage" string="% of Royalties" attrs="{'invisible':[('is_author','=',False)]}"/>
+                    </group>
+                </page>
+            </xpath>
+            
+            <!--
             <xpath expr="//page[@name='sales_purchases']/group[@name='container_row_2']/group[@name='purchase']/field[@name='supplier']" position="after">
                 <field name="is_author" string="Is an Author"/>
                 <field name="is_publisher" string="Is a Publisher"/>
-            </xpath>                              
+            </xpath>
+            -->
+            
         </field>
     </record>
      <!--

@@ -17,3 +17,5 @@ class PartnerFields(models.Model):
     is_author = fields.Boolean("Is an Author", default=False)
     
     is_publisher = fields.Boolean("Is a Publisher", default=False)
+    
+    royalties_percentage = fields.Float(digits=(6,2))

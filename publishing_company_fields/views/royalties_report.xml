@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <odoo>
+    <!-- Documentation
+    -->
+    
+     <!--  Report  -->
+    <!--
+     <record id="publishing_company_royalties_report_view" model="ir.ui.view">
+        <field name="name">sale.report.publishing.company.report</field>        
+        <field name="model">sale.report</field>
+        <field name="inherit_id" ref="sales_team.group_sale_manager"/>
+        <field name="arch" type="xml">         
+            Fields
+            <xpath expr="//menuitem/menuitem[1]" position="after">
+                <menuitem id="sale_order_menu_2"
+                name="Royalties"
+                sequence="1"/>
+            </xpath>
+        </field>
+    </record>
+    -->
+    <!--
+    <menuitem id="royalties_menu"
+    name="Royalties"
+    parent="sales_team.group_sale_manager.menu_sale_report"
+    action="action_order_report_all"
+    sequence="4"/>
+    -->
+    <!--
+    <record id="action_royalties_report_all" model="ir.actions.act_window">
+        <field name="name">Royalties Analysis</field>
+        <field name="res_model">sale.report.search</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">graph,pivot</field>
+        <field name="view_id"></field>
+        <field name="search_view_id" ref="sale.view_order_product_search"/>
+        <field name="context">{'search_default_Sales':1, 'group_by_no_leaf':1,'group_by':[]}</field>
+    </record>
+    -->
+    <menuitem id="royalties_report"
+        name="Royalties"
+        action="sale.action_order_report_all"
+        parent="sale.menu_sale_report"
+        sequence="4"/>
+    
+</odoo>

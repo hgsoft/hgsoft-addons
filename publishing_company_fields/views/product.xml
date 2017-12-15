@@ -39,7 +39,7 @@
             <!--  Fields  -->
             <xpath expr="//kanban/templates/t/div/div[2]/ul/li" position="before">
                 <li>Author:
-                    <field name="author"/>                
+                    <field string="Author" name="author"/>                
                 </li>
             </xpath>
         </field>
