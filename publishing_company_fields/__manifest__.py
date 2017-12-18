@@ -33,10 +33,11 @@
     
     'version': '1.0',
 
-    'depends': ['base', 'product', 'sale'],
+    'depends': ['base', 'product', 'sale', 'sale_management'],
 
     'data': [
-        # 'security/ir.model.access.csv',
+        'security/ir.model.access.csv',
+        #'security/security.xml',
         'views/partner.xml',
         'views/product.xml',
         'views/royalties_report.xml',
