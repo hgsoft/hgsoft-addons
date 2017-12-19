@@ -40,7 +40,7 @@
         #'security/security.xml',
         'views/partner.xml',
         'views/product.xml',
-        'views/royalties_report.xml',
+        'report/royalties_report.xml',
     ],
     # only loaded in demonstration mode
     #'demo': [

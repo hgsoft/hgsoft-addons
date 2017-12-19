@@ -18,4 +18,6 @@ class PartnerFields(models.Model):
     
     is_publisher = fields.Boolean("Is a Publisher", default=False)
     
-    royalties_percentage = fields.Float(digits=(6,2))
+    royalties_to_pay = fields.Float(digits=(6,2), default=0.0)
+    
+    royalties_percentage = fields.Float(digits=(6,2), default=0.0)
