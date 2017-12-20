@@ -14,6 +14,7 @@
             <xpath expr="//notebook/page[1]/group/group[2]/div[1]" position="after">
                 <field name="author" string="Author"/>
                 <field name="publisher" string="Publisher"/>
+                <field name="royalties_percentage" string="% of Royalties"/>
             </xpath>
         </field>
     </record>
