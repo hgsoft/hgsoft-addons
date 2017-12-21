@@ -1,0 +1,38 @@
+ SELECT min(l.id) AS id,
+    l.product_id,
+    t.uom_id AS product_uom,
+    sum(l.product_uom_qty / u.factor * u2.factor) AS product_uom_qty,
+    sum(l.qty_delivered / u.factor * u2.factor) AS qty_delivered,
+    sum(l.qty_invoiced / u.factor * u2.factor) AS qty_invoiced,
+    sum(l.qty_to_invoice / u.factor * u2.factor) AS qty_to_invoice,
+   count(*) AS nbr,
+    s.name,
+    s.date_order AS date,
+    s.confirmation_date,
+    s.state,
+    s.partner_id,
+    s.user_id,
+    s.company_id,
+    date_part('epoch'::text, avg(date_trunc('day'::text, s.date_order) - date_trunc('day'::text, s.create_date))) / (24 * 60 * 60)::numeric(16,2)::double precision AS delay,
+    t.categ_id,
+    s.pricelist_id,
+    s.analytic_account_id,
+    s.team_id,
+    p.product_tmpl_id,
+    partner.country_id,
+    partner.commercial_partner_id,
+    sum(p.weight * l.product_uom_qty / u.factor * u2.factor) AS weight,
+    sum(p.volume * l.product_uom_qty::double precision / u.factor::double precision * u2.factor::double precision) AS volume,
+    sum(l.price_total * (partner.royalties_percentage / 100.0)) AS royalties_to_pay,
+    t.author as author,
+    partner.name
+    FROM sale_order_line l
+     JOIN sale_order s ON l.order_id = s.id
+     JOIN res_partner partner ON s.partner_id = partner.id
+     LEFT JOIN product_product p ON l.product_id = p.id
+     LEFT JOIN product_template t ON p.product_tmpl_id = t.id
+     LEFT JOIN product_uom u ON u.id = l.product_uom
+     LEFT JOIN product_uom u2 ON u2.id = t.uom_id
+     LEFT JOIN product_pricelist pp ON s.pricelist_id = pp.id
+    WHERE t.author IS NOT NULL
+  GROUP BY l.product_id, l.order_id, t.uom_id, t.categ_id, s.name, s.date_order, s.confirmation_date, s.partner_id, s.user_id, s.state, s.company_id, s.pricelist_id, s.analytic_account_id, s.team_id, p.product_tmpl_id, partner.country_id, partner.commercial_partner_id, author, partner.name; 

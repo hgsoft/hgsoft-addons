@@ -26,7 +26,9 @@ class RoyaltiesReport(models.Model):
     
     #_inherit = ['sale.report', 'sale.order']
     
-    author = fields.Many2one('res.partner', readonly=True)
+    #author = fields.Many2one('res.partner', readonly=True)
+    
+    author = fields.Char('Author', store=True, readonly=True)
     
     #royalties_to_pay = fields.Many2one('res.partner', string="Royalties to Pay", readonly=True)
 
@@ -43,8 +45,35 @@ class RoyaltiesReport(models.Model):
     #        %s
     #        )""" % (self._table, self._select(), self._from(), self._group_by()))
 
+    #def _group_by(self):
+    #    return super(RoyaltiesReport,self)._group_by() + ', royalties_to_pay, t.author'
+    
+    #WHERE t.author = partner_id
+    #WHERE t.author IS NOT NULL
+    
     def _group_by(self):
-        return super(RoyaltiesReport,self)._group_by() + ', royalties_to_pay'
+        group_by_str = """
+           WHERE t.author IS NOT NULL
+            GROUP BY l.product_id,
+                    l.order_id,
+                    t.uom_id,
+                    t.categ_id,
+                    s.name,
+                    s.date_order,
+                    s.confirmation_date,
+                    s.partner_id,
+                    s.user_id,
+                    s.state,
+                    s.company_id,
+                    s.pricelist_id,
+                    s.analytic_account_id,
+                    s.team_id,
+                    p.product_tmpl_id,
+                    partner.country_id,
+                    partner.commercial_partner_id,
+                    author
+        """
+        return group_by_str
     
  #   def _select(self):
  #       return super(RoyaltiesReport,self)._select() + ', partner.royalties_to_pay as royalties_to_pay'
@@ -81,7 +110,8 @@ class RoyaltiesReport(models.Model):
                     partner.commercial_partner_id as commercial_partner_id,
                     sum(p.weight * l.product_uom_qty / u.factor * u2.factor) as weight,
                     sum(p.volume * l.product_uom_qty / u.factor * u2.factor) as volume,
-                    sum(price_total * (partner.royalties_percentage / 100.0)) as royalties_to_pay
+                    sum(price_total * (partner.royalties_percentage / 100.0)) as royalties_to_pay,
+                    t.author AS author
         """ % self.env['res.currency']._select_companies_rates()
         return select_str
     
@@ -98,9 +128,10 @@ class RoyaltiesReport(models.Model):
                     left join currency_rate cr on (cr.currency_id = pp.currency_id and
                         cr.company_id = s.company_id and
                         cr.date_start <= coalesce(s.date_order, now()) and
-                        (cr.date_end is null or cr.date_end > coalesce(s.date_order, now())))
+                        (cr.date_end is null or cr.date_end > coalesce(s.date_order, now())))                  
         """
         return from_str
+   #WHERE p.author = partner.id
    
     @api.model_cr
     def init(self):

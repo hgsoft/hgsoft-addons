@@ -34,3 +34,5 @@ class PartnerFields(models.Model):
         print('---------------------------------')
         print(self.royalties_report.price_total)
         print('---------------------------------')
+        print(self.royalties_report.partner_id)
+        print('---------------------------------')
