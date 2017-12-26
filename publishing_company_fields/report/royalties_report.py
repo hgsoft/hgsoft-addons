@@ -71,9 +71,12 @@ class RoyaltiesReport(models.Model):
                     p.product_tmpl_id,
                     partner.country_id,
                     partner.commercial_partner_id,
-                    author
+                    author,
+                    author_name
         """
         return group_by_str
+    
+    #,partner_author.name
     
  #   def _select(self):
  #       return super(RoyaltiesReport,self)._select() + ', partner.royalties_to_pay as royalties_to_pay'
@@ -110,10 +113,11 @@ class RoyaltiesReport(models.Model):
                     partner.commercial_partner_id as commercial_partner_id,
                     sum(p.weight * l.product_uom_qty / u.factor * u2.factor) as weight,
                     sum(p.volume * l.product_uom_qty / u.factor * u2.factor) as volume,
-                    sum(price_total * (partner.royalties_percentage / 100.0)) as royalties_to_pay,
-                    t.author AS author
+                    sum(price_total * (partner_author.royalties_percentage / 100.0)) as royalties_to_pay,
+                    partner_author.name as author_name
         """ % self.env['res.currency']._select_companies_rates()
         return select_str
+    #,partner_author.name
     
     def _from(self):
         from_str = """
@@ -122,6 +126,7 @@ class RoyaltiesReport(models.Model):
                       join res_partner partner on s.partner_id = partner.id
                         left join product_product p on (l.product_id=p.id)
                             left join product_template t on (p.product_tmpl_id=t.id)
+                            join res_partner partner_author on (t.author=partner_author.id)
                     left join product_uom u on (u.id=l.product_uom)
                     left join product_uom u2 on (u2.id=t.uom_id)
                     left join product_pricelist pp on (s.pricelist_id = pp.id)
