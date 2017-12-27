@@ -17,40 +17,16 @@ class RoyaltiesReport(models.Model):
     #class SaleReport(osv.osv):
     #_inherit = 'sale.report'
 
-    #_columns = {
-    #    'royalties_to_pay': fields.Float('Royalties to Pay', readonly=True),
-    #    'royalties_percentage': fields.Many2one('res.partner', "Percentage of Royalties", readonly=True)
-    #}
-    
     #Class inheritance
     
     #_inherit = ['sale.report', 'sale.order']
     
-    #author = fields.Many2one('res.partner', readonly=True)
-    
     author = fields.Char('Author', store=True, readonly=True)
     
-    #royalties_to_pay = fields.Many2one('res.partner', string="Royalties to Pay", readonly=True)
-
     royalties_to_pay = fields.Float('Royalties to Pay', store=True, readonly=True)
     
-    #@api.model_cr
-    #def init(self):
-    # super(RoyaltiesReport,self).init()
-    #    #self._table = royalties_report
-    #    tools.drop_view_if_exists(self.env.cr, self._table)
-    #    self.env.cr.execute("""CREATE or REPLACE VIEW %s as (
-    #        %s
-    #        FROM ( %s )
-    #        %s
-    #        )""" % (self._table, self._select(), self._from(), self._group_by()))
-
-    #def _group_by(self):
-    #    return super(RoyaltiesReport,self)._group_by() + ', royalties_to_pay, t.author'
-    
-    #WHERE t.author = partner_id
-    #WHERE t.author IS NOT NULL
-    
+    royalties_percentage = fields.Float('% of Royalties', store=True, readonly=True)
+        
     def _group_by(self):
         group_by_str = """
            WHERE t.author IS NOT NULL
@@ -71,15 +47,10 @@ class RoyaltiesReport(models.Model):
                     p.product_tmpl_id,
                     partner.country_id,
                     partner.commercial_partner_id,
-                    author,
-                    author_name
-        """
+                    partner_author.name,
+                    t.royalties_percentage
+    """
         return group_by_str
-    
-    #,partner_author.name
-    
- #   def _select(self):
- #       return super(RoyaltiesReport,self)._select() + ', partner.royalties_to_pay as royalties_to_pay'
 
     def _select(self):
         select_str = """
@@ -113,8 +84,9 @@ class RoyaltiesReport(models.Model):
                     partner.commercial_partner_id as commercial_partner_id,
                     sum(p.weight * l.product_uom_qty / u.factor * u2.factor) as weight,
                     sum(p.volume * l.product_uom_qty / u.factor * u2.factor) as volume,
-                    sum(price_total * (partner_author.royalties_percentage / 100.0)) as royalties_to_pay,
-                    partner_author.name as author_name
+                    sum(price_total * (t.royalties_percentage / 100.0)) as royalties_to_pay,
+                    partner_author.name as author,
+                    t.royalties_percentage as royalties_percentage
         """ % self.env['res.currency']._select_companies_rates()
         return select_str
     #,partner_author.name
@@ -136,7 +108,6 @@ class RoyaltiesReport(models.Model):
                         (cr.date_end is null or cr.date_end > coalesce(s.date_order, now())))                  
         """
         return from_str
-   #WHERE p.author = partner.id
    
     @api.model_cr
     def init(self):
@@ -147,34 +118,3 @@ class RoyaltiesReport(models.Model):
             FROM ( %s )
             %s
             )""" % (self._table, self._select(), self._from(), self._group_by()))
-   
-
-    #@api.onchange('amount', 'unit_price')
-    
-
-#    @api.depends('price_total', 'royalties_percentage')
-#    def _compute_royalties(self):
-#        self.royalties_to_pay = self.price_total * (self.royalties_percentage / #100.0)
-#        for r in self:
-#            if not r.royalties_percentage:
-#                r.royalties_to_pay = 0.1
-#            else:
-#                r.royalties_to_pay = price_total * (royalties_percentage / 100.0)
-                
-#####
-
-    #@api.depends('price_total', 'author')
-    #@api.constrains('royalties_to_pay')
-    #@api.multi 
-    #@api.one
-    #def _compute_royalties(self):
-        #print ('COMPUTED')
-        #self.price_total = self.sale.report.price_total
-        #for r in self:
-        #    r.author.royalties_to_pay = 15.0 * 2
-        #    if not r.royalties_percentage:
-        #        r.royalties_to_pay = 0.05
-        #    else:
-        #        r.royalties_to_pay = price_total * (r.royalties_percentage / 100.0)
-        #self.royalties_to_pay = self.price_total * (self.author.royalties_percentage / 100.0)
-         #   r.royalties_to_pay = 50.0

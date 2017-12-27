@@ -33,7 +33,7 @@
     
     'version': '1.0',
 
-    'depends': ['base', 'product', 'sale', 'sale_management'],
+    'depends': ['base', 'product', 'sale', 'sale_management', 'account_invoicing'],
 
     'data': [
         'security/ir.model.access.csv',
@@ -41,6 +41,7 @@
         'views/partner.xml',
         'views/product.xml',
         'report/royalties_report.xml',
+        'report/royalties_invoice_report.xml',
     ],
     # only loaded in demonstration mode
     #'demo': [
