@@ -120,7 +120,7 @@
         <field name="view_mode">pivot</field>
         <field name="view_id"></field>
         <field name="search_view_id" ref="view_royalties_invoice_search"/>
-        <field name="context">{'search_default_Author':1, 'search_default_customer':1, 'group_by':[], 'group_by_no_leaf':1, 'search_default_year': 1}</field>
+        <field name="context">{'search_default_Author':1, 'group_by':[], 'group_by_no_leaf':1, 'search_default_year': 1}</field>
     </record>
      
     <menuitem id="royalties_invoice_report"

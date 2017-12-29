@@ -30,7 +30,10 @@ class RoyaltiesReport(models.Model):
     def _select(self):
         select_str = """
             SELECT sub.id,
-            sub.son, sub.soi, sub.soln, sub.solps,sub.author,
+            sub.son, sub.soi,
+            --sub.soln, sub.solps,
+            sub.ailn, sub.ailps,
+            sub.author,
             sub.royalties_to_pay,
             sub.date, sub.product_id, sub.partner_id, sub.country_id, sub.account_analytic_id,
                 sub.payment_term_id, sub.uom_name, sub.currency_id, sub.journal_id,
@@ -47,18 +50,19 @@ class RoyaltiesReport(models.Model):
         select_str = """
                 SELECT min(ail.id) as id,
                     ai.date_invoice AS date,
-                    sol.product_id, ai.partner_id, ai.payment_term_id, ail.account_analytic_id,
+                    --sol.product_id,
+                    ail.product_id,
+                    ai.partner_id, ai.payment_term_id, ail.account_analytic_id,
                     u2.name AS uom_name,
                     ai.currency_id, ai.journal_id, ai.fiscal_position_id, ai.user_id, ai.company_id,
                     1 AS nbr,
                     ai.type, ai.state, pt.categ_id, ai.date_due, ai.account_id, ail.account_id AS account_line_id,
                     ai.partner_bank_id,
                     SUM ((invoice_type.sign * ail.quantity) / u.factor * u2.factor) AS product_qty,
-                    --SUM(ail.price_subtotal_signed * invoice_type.sign) AS price_total,
-                    --SUM(ABS(ail.price_subtotal_signed)) / CASE
-                    --SUM(sol.price_subtotal * invoice_type.sign) AS price_total,
-                    sol.product_uom_qty * sol.price_unit AS price_total,
-                    SUM(ABS(sol.price_subtotal)) / CASE
+                    --sol.product_uom_qty * sol.price_unit AS price_total,
+                    ail.quantity * ail.price_unit AS price_total,
+                    --SUM(ABS(sol.price_subtotal)) / CASE
+                    SUM(ABS(ail.price_subtotal)) / CASE
                             WHEN SUM(ail.quantity / u.factor * u2.factor) <> 0::numeric
                                THEN SUM(ail.quantity / u.factor * u2.factor)
                                ELSE 1::numeric
@@ -67,9 +71,13 @@ class RoyaltiesReport(models.Model):
                     count(*) * invoice_type.sign AS residual,
                     ai.commercial_partner_id as commercial_partner_id,
                     partner.country_id,
-                    so."name" as son, so.id as soi, sol."name" as soln, 
-                    sol.price_subtotal solps, partner_author.name AS author,
-                    sol.price_total * (pt.royalties_percentage / 100.0) as royalties_to_pay
+                    so."name" as son, so.id as soi,
+                    --sol."name" as soln, sol.price_subtotal solps,
+                    ail."name" as ailn, ail.price_subtotal ailps,
+                    partner_author.name AS author,
+                    --sol.price_total * (pt.royalties_percentage / 100.0) as royalties_to_pay
+                    --ail.price_total * (pt.royalties_percentage / 100.0) as royalties_to_pay
+                    ((ai.amount_total - ai.residual) * (pt.royalties_percentage * (ail.price_total / ai.amount_total))/100) as royalties_to_pay
         """
         return select_str
     #
@@ -81,7 +89,8 @@ class RoyaltiesReport(models.Model):
                 JOIN res_partner partner ON ai.commercial_partner_id = partner.id
                 JOIN sale_order so ON ai.origin = so."name"
                 JOIN sale_order_line sol ON so.id = sol.order_id
-                LEFT JOIN product_product pr ON pr.id = sol.product_id
+                --LEFT JOIN product_product pr ON pr.id = sol.product_id
+                LEFT JOIN product_product pr ON pr.id = ail.product_id
                 LEFT JOIN product_template pt ON pt.id = pr.product_tmpl_id
                 JOIN res_partner partner_author ON pt.author = partner_author.id
                 LEFT JOIN product_uom u ON u.id = ail.uom_id
@@ -102,15 +111,18 @@ class RoyaltiesReport(models.Model):
     def _group_by(self):
         group_by_str = """
         WHERE sol.is_downpayment = false
-        and ai.state = 'paid'
+        --and ai.state = 'paid'
         --and pt.author = ai.partner_id
         and pt.author IS NOT NULL
-                GROUP BY sol.product_id, ail.account_analytic_id, ai.date_invoice, ai.id,
+                --GROUP BY sol.product_id, ail.account_analytic_id, ai.date_invoice, ai.id,
+                GROUP BY ail.product_id, ail.account_analytic_id, ai.date_invoice, ai.id,
                     ai.partner_id, ai.payment_term_id, u2.name, u2.id, ai.currency_id, ai.journal_id,
                     ai.fiscal_position_id, ai.user_id, ai.company_id, ai.type, invoice_type.sign, ai.state, pt.categ_id,
                     ai.date_due, ai.account_id, ail.account_id, ai.partner_bank_id, ai.residual_company_signed,
                     ai.amount_total_company_signed, ai.commercial_partner_id, partner.country_id,
-                    so.name, so.id, sol."name", sol.price_unit, sol.product_uom_qty, sol.price_subtotal, partner_author.name, sol.price_total, pt.royalties_percentage
+                    --so.name, so.id, sol."name", sol.price_unit, sol.product_uom_qty, sol.price_subtotal, partner_author.name, sol.price_total,
+                    so.name, so.id, ail."name", ail.price_unit, ail.quantity, ail.price_subtotal, partner_author.name, ail.price_total,
+                    pt.royalties_percentage
         """
         return group_by_str
     #

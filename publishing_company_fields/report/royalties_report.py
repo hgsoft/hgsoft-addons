@@ -25,7 +25,7 @@ class RoyaltiesReport(models.Model):
     
     royalties_to_pay = fields.Float('Royalties to Pay', store=True, readonly=True)
     
-    royalties_percentage = fields.Float('% of Royalties', store=True, readonly=True, group_operator="avg")
+    #royalties_percentage = fields.Float('% of Royalties', store=True, readonly=True, group_operator="avg")
         
     def _group_by(self):
         group_by_str = """
