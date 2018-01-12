@@ -1,6 +1,6 @@
 
-from openerp import models, fields, api
-import openerp.addons.decimal_precision as dp
+from odoo import models, fields, api
+import odoo.addons.decimal_precision as dp
 
 
 class consignment_order(models.Model):
@@ -40,9 +40,9 @@ class consignment_order(models.Model):
         try:
             invoice = self.create_invoice()
             self.invoice_id = invoice.id
-            print "invoice-------",invoice
-        except Exception, e:
-            print "ERROR CREATING INVOICE-----e",e
+            print ("invoice-------",invoice)
+        except Exception as e:
+            print ("ERROR CREATING INVOICE-----e",e)
         
 
     @api.multi
@@ -67,7 +67,7 @@ class consignment_order(models.Model):
         move_obj = self.env['stock.move']
         pick_type = self.env['stock.picking.type'].search([('code','=','internal'),
                                                             ('warehouse_id','=',self.warehouse_id.id)], limit=1)
-        print "pcik_type-------",pick_type
+        print ("pcik_type-------",pick_type)
         source_loc_id = pick_type.default_location_src_id and pick_type.default_location_src_id.id or \
                             self.env['ir.model.data'].get_object_reference('stock', 'stock_location_stock')[1]
         dest_loc_id = self.partner_id.consignee_location_id.id
@@ -79,12 +79,12 @@ class consignment_order(models.Model):
                                                                'partner_id', 'procure_method', 'picking_type_id',
                                                                'company_id', 'reserved_quant_ids', 'product_uom'])
             move_val.update(move_default)
-            print "\n\nmove_val----after-------default----",move_val,product
+            print ("\n\nmove_val----after-------default----",move_val,product)
             # prd_onchange_vals = move_obj.onchange_product_id(product)['value']
             prd_onchange_vals = {'product_uos': False, 'product_uos_qty': 1.0, 'product_uom_qty': 1.0, 'name': line.product_id.name, 'product_uom': line.product_id.uom_id.id}
-            print "prd_onchange_vals-----------",prd_onchange_vals
+            print ("prd_onchange_vals-----------",prd_onchange_vals)
             move_val.update(prd_onchange_vals)
-            print "\n\nmove_val----after-------onchange----",move_val
+            print ("\n\nmove_val----after-------onchange----",move_val)
             # source_loc_id = self.env['ir.model.data'].get_object_reference('stock', 'stock_location_customers')[1]
             # dest_loc_id = self.source_loc_id.id
             # lot_id = self.env['stock.production.lot'].create({'name':self.name,'product_id':product})
@@ -99,10 +99,10 @@ class consignment_order(models.Model):
                             'picking_type_id': pick_type.id,
                             # 'restrict_lot_id': lot_id.id or False,
                         })
-            print "move_val-----after manually update-------",move_val
+            print ("move_val-----after manually update-------",move_val)
             
             move = move_obj.create(move_val)
-            print "move-------",move
+            print ("move-------",move)
             if not picking:
                 values = {
                             'origin': move.origin,
@@ -111,7 +111,7 @@ class consignment_order(models.Model):
                             'partner_id': move.partner_id.id or False,
                             'picking_type_id': move.picking_type_id and move.picking_type_id.id or False,
                         }
-                print "values------",values
+                print ("values------",values)
                 picking = pick_obj.create(values)
             move.write({'picking_id': picking.id})
 
@@ -203,10 +203,10 @@ class consignment_order_line(models.Model):
     name = fields.Text('Description', required=True,)
     quantity = fields.Integer("Quantity")
     product_uom = fields.Many2one('product.uom', string='Unit of Measure', required=True, invisible=True)
-    price_unit = fields.Float('Unit Price', store=True, digits_compute= dp.get_precision('Product Price'), 
+    price_unit = fields.Float('Unit Price', store=True, digits= dp.get_precision('Product Price'), 
                                 compute='_compute_subtotal', readonly=True)
     price_subtotal = fields.Float(string='Subtotal', store=True, readonly=True, compute='_compute_subtotal',
-                                    digits_compute= dp.get_precision('Account'),)
+                                    digits= dp.get_precision('Account'),)
     consignment_stock = fields.Float(string='Consignment Stock',
                                         compute='_compute_consignment_stock')
 
@@ -271,7 +271,7 @@ class consignment_order_line(models.Model):
         vals['name'] = name
         vals['quantity'] = 1
         vals['price_unit'] = self.order_id.pricelist_id.price_get(self.product_id.id, vals['quantity'], self.order_id.partner_id.id)[self.order_id.pricelist_id.id]
-        print "vals---------",vals
+        print ("vals---------",vals)
         self.update(vals)
 
         return {'domain': domain}

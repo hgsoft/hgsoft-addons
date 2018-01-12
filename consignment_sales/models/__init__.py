@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-import res
-import product
-import stock
-import sale
-import import_products
-import consignment
+from . import res
+from . import product
+from . import stock
+from . import sale
+from . import import_products
+from . import consignment

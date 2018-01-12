@@ -1,16 +1,17 @@
-from openerp import models, fields, api
-try:
-    import cStringIO as StringIO
-except ImportError:
-    import StringIO
-import csv
-import base64
+from odoo import models, fields, api
+#try:
+#    import cStringIO as StringIO
+#except ImportError:
+#    import StringIO
+#import csv
+#import base64
 
 
 class import_wizard_product_adj(models.Model):
     _name = 'import.wizard.product.adj'
 
     csv_file = fields.Binary("CSV File", required=True)
+    log = fields.Char()
 
     @api.multi
     def process_csv_file(self):
@@ -22,7 +23,7 @@ class import_wizard_product_adj(models.Model):
         stock_inv = self.env['stock.inventory'].browse(self._context.get('active_id'))
         line_vals = []
         log = ''
-
+        
         if stock_inv.state not in  ['draft','confirm']:
             raise except_orm(_('Please Try in Draft State'),
                  _('Please try in draft state only'))

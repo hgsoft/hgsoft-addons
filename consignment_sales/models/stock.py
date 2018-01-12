@@ -20,15 +20,15 @@ class stock_location(models.Model):
 class procurement_order(models.Model):
     _inherit = 'procurement.order'
 
-    def _run_move_create(self, cr, uid, procurement, context=None):
-    	print "OVERRIDDEN METHOD------------------------------"
+    def _run_move_create(self):
+        print ("OVERRIDDEN METHOD------------------------------")
         ''' Returns a dictionary of values that will be used to create a stock move from a procurement.
         This function assumes that the given procurement has a rule (action == 'move') set on it.
 
         :param procurement: browse record
         :rtype: dictionary
         '''
-        print "_run_move_create-----------procurement-----",procurement
+        print ("_run_move_create-----------procurement-----",procurement)
         newdate = (datetime.strptime(procurement.date_planned, '%Y-%m-%d %H:%M:%S') - relativedelta(days=procurement.rule_id.delay or 0)).strftime('%Y-%m-%d %H:%M:%S')
         group_id = False
         if procurement.rule_id.group_propagation_option == 'propagate':
@@ -48,11 +48,11 @@ class procurement_order(models.Model):
         src_loc_id = procurement.rule_id.location_src_id.id
         dest_loc_id = procurement.location_id.id
         if procurement.sale_line_id.order_id.order_type == 'con_order':
-        	# change the dest loc to consignee loc, as we are moving stock to consignee loc
-        	dest_loc_id = procurement.sale_line_id.order_id.partner_id.consignee_location_id.id
+                # change the dest loc to consignee loc, as we are moving stock to consignee loc
+                dest_loc_id = procurement.sale_line_id.order_id.partner_id.consignee_location_id.id
         elif procurement.sale_line_id.order_id.order_type == 'con_sale':
-    		# change the source loc to consignee loc, as this is the stock to be moved to customer from consignment loc
-    		src_loc_id = procurement.sale_line_id.order_id.partner_id.consignee_location_id.id
+                # change the source loc to consignee loc, as this is the stock to be moved to customer from consignment loc
+                src_loc_id = procurement.sale_line_id.order_id.partner_id.consignee_location_id.id
         # INHERITED PART END
         vals = {
             'name': procurement.name,

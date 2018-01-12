@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<openerp>
+<odoo>
     <data>
-
+        <!--
         <record model="ir.sequence.type" id="seq_type_con_order">
             <field name="name">Consignment Order</field>
             <field name="code">con.order</field>
         </record>
+        -->
         <record model="ir.sequence" id="seq_con_order">
             <field name="name">Consignment Order</field>
             <field name="code">con.order</field>
             <field name="prefix">CO/</field>
             <field name="padding">5</field>
         </record>
-
+        <!--
         <record model="ir.sequence.type" id="seq_type_con_sale">
             <field name="name">Consignment Sale</field>
             <field name="code">con.sale</field>
         </record>
+        -->
         <record model="ir.sequence" id="seq_con_sale">
             <field name="name">Consignment Sale</field>
             <field name="code">con.sale</field>
@@ -189,4 +191,4 @@
         <menuitem action="action_consignment_sales" id="menu_consignment_sale" parent="menu_consignment_side_main" sequence="1" /> -->
 
     </data>
-</openerp>
+</odoo>

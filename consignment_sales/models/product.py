@@ -8,7 +8,7 @@ class product_template(models.Model):
     @api.one
     @api.constrains('ean13')
     def _check_seats_limit(self):
-    	all_eans = self.search_read([('id','!=', self.id)],['ean13'])
+        all_eans = self.search_read([('id','!=', self.id)],['ean13'])
         if self.ean13 and self.ean13 in [each['ean13'] for each in all_eans]:
             raise Warning(_('You have already used this EAN before.'))
 

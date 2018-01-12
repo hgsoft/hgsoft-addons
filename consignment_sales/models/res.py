@@ -1,17 +1,17 @@
 # -*- coding: utf-8 -*-
 
-import StringIO
-import xlsxwriter
-from openerp import models, fields, api
-import shutil
-import base64
+#from StringIO import StringIO
+#import xlsxwriter
+from odoo import models, fields, api
+#import shutil
+#import base64
 from datetime import datetime
 
 class res_partner(models.Model):
     _inherit = 'res.partner'
 
     allow_consignment = fields.Boolean("Allow Consignments")
-    is_author = fields.Boolean("Author")
+    is_author = fields.Boolean("Author", default=False)
     consignee_location_id = fields.Many2one('stock.location','Consignment Location')
     report_attachment_ids = fields.One2many('ir.attachment','consignment_partner_id',string='Consignment Reports')
     send_auto_email = fields.Boolean("Send Auto Report")
@@ -33,7 +33,7 @@ class res_partner(models.Model):
     def create(self, vals):
         partner = super(res_partner, self).create(vals)
         if vals.get('allow_consignment'):
-            print partner.create_consignee_location()
+            print (partner.create_consignee_location())
         return partner
 
     @api.multi
@@ -73,11 +73,11 @@ class res_partner(models.Model):
 
     @api.multi
     def create_xls_consignment_report(self):
-        print "create_xls_consignment_report -------",self
+        print ("create_xls_consignment_report -------",self)
         #This method will Generate the XLS file with the specified columns, 
         # and save it in a new attachment 
         consignent_location = self.consignee_location_id
-        print "consignent_location-------",consignent_location
+        print ("consignent_location-------",consignent_location)
         if not consignent_location:
             return False
         # Fetch the stock at this customer's consignee location
@@ -152,23 +152,24 @@ class res_partner(models.Model):
                            'type': 'binary', 'datas': file_data, 'consignment_partner_id': self.id,
                            'consignment_mode': mode}
         attachment_id = self.env['ir.attachment'].create(attachment_vals)
-        print "attachment_id-----------",attachment_id
+        print ("attachment_id-----------",attachment_id)
         return attachment_id.id
 
     @api.model
     def consignment_report_cron(self):
-        print "consignment_report_cron---------------CALLED-------",self
+        print ("consignment_report_cron---------------CALLED-------",self)
         customers = self.search([('send_auto_email','=',True)])
         template_id = self.env['ir.model.data'].get_object_reference('consignment_sales',
                                                                      'email_template_partner_consignment_report')[1]
-        print "template----------",template_id, customers
+        print ("template----------",template_id, customers)
         email_tmpl_obj = self.env['email.template']
         for each_cst in customers:
             attachment_id = each_cst.with_context({'mode':'auto'}).create_xls_consignment_report()
             email_tmpl_obj.send_mail(template_id, each_cst.id, force_send=True)
 
 
-class mail_compose_message(models.Model):
+#class mail_compose_message(models.Model):
+class mail_compose_message(models.TransientModel):
     _inherit = 'mail.compose.message'
 
     @api.model
