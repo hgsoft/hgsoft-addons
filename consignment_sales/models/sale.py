@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from openerp import models, fields, api
+from odoo import models, fields, api
 
 
 class sale_order(models.Model):
@@ -76,6 +76,6 @@ class sale_order_line(models.Model):
             product_qty += each_quant.qty
 
         self.consignment_stock = product_qty
-
+        
     consignment_stock = fields.Float(string='Consignment Stock',
-        compute='_compute_consignment_stock')
+        compute='_compute_consignment_stock', store=True)

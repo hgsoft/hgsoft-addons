@@ -162,7 +162,7 @@ class res_partner(models.Model):
         template_id = self.env['ir.model.data'].get_object_reference('consignment_sales',
                                                                      'email_template_partner_consignment_report')[1]
         print ("template----------",template_id, customers)
-        email_tmpl_obj = self.env['email.template']
+        email_tmpl_obj = self.env['mail.template']
         for each_cst in customers:
             attachment_id = each_cst.with_context({'mode':'auto'}).create_xls_consignment_report()
             email_tmpl_obj.send_mail(template_id, each_cst.id, force_send=True)

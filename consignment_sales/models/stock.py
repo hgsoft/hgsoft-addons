@@ -18,8 +18,89 @@ class stock_location(models.Model):
 
 
 class procurement_order(models.Model):
-    _inherit = 'procurement.order'
+    _inherit = 'stock.move.line'
+    
+#---
+    @api.model    
+    def create(self):
+        #
+        vals['ordered_qty'] = vals.get('product_uom_qty')
 
+        # If the move line is directly create on the picking view.
+        # If this picking is already done we should generate an
+        # associated done move.
+        if 'picking_id' in vals and 'move_id' not in vals:
+            picking = self.env['stock.picking'].browse(vals['picking_id'])
+            #
+            src_loc_id = ''
+            dest_loc_id = ''
+            #
+        if self.move_id.sale_line_id.order_id.order_type == 'con_order':
+            src_loc_id = self.move_id.sale_line_id.order_id.partner_id.consignee_location_id.id
+        elif self.move_id.sale_line_id.order_id.order_type == 'con_sale':
+            dest_loc_id = self.move_id.sale_line_id.order_id.partner_id.consignee_location_id.id,
+            #
+        if picking.state == 'done':
+            product = self.env['product.product'].browse(vals['product_id'])
+            new_move = self.env['stock.move'].create({
+                'name': _('New Move:') + product.display_name,
+                'product_id': product.id,
+                'product_uom_qty': 'qty_done' in vals and vals['qty_done'] or 0,
+                'product_uom': vals['product_uom_id'],
+                #'location_id': 'location_id' in vals and vals['location_id'] or picking.location_id.id,
+                #'location_dest_id': 'location_dest_id' in vals and vals['location_dest_id'] or picking.location_dest_id.id,
+                'location_id': src_loc_id,
+                'location_dest_id': dest_loc_id,
+                'state': 'done',
+                'additional': True,
+                'picking_id': picking.id,
+            })
+            vals['move_id'] = new_move.id
+
+        ml = super(StockMoveLine, self).create(vals)
+        if ml.state == 'done':
+            if ml.product_id.type == 'product':
+                Quant = self.env['stock.quant']
+                quantity = ml.product_uom_id._compute_quantity(ml.qty_done, ml.move_id.product_id.uom_id,rounding_method='HALF-UP')
+                in_date = None
+                available_qty, in_date = Quant._update_available_quantity(ml.product_id, ml.location_id, -quantity, lot_id=ml.lot_id, package_id=ml.package_id, owner_id=ml.owner_id)
+                if available_qty < 0 and ml.lot_id:
+                    # see if we can compensate the negative quants with some untracked quants
+                    untracked_qty = Quant._get_available_quantity(ml.product_id, ml.location_id, lot_id=False, package_id=ml.package_id, owner_id=ml.owner_id, strict=True)
+                    if untracked_qty:
+                        taken_from_untracked_qty = min(untracked_qty, abs(quantity))
+                        Quant._update_available_quantity(ml.product_id, ml.location_id, -taken_from_untracked_qty, lot_id=False, package_id=ml.package_id, owner_id=ml.owner_id)
+                        Quant._update_available_quantity(ml.product_id, ml.location_id, taken_from_untracked_qty, lot_id=ml.lot_id, package_id=ml.package_id, owner_id=ml.owner_id)
+                Quant._update_available_quantity(ml.product_id, ml.location_dest_id, quantity, lot_id=ml.lot_id, package_id=ml.result_package_id, owner_id=ml.owner_id, in_date=in_date)
+            next_moves = ml.move_id.move_dest_ids.filtered(lambda move: move.state not in ('done', 'cancel'))
+            next_moves._do_unreserve()
+            next_moves._action_assign()
+        return ml
+        #
+        # If the move line is directly create on the picking view.
+        # If this picking is already done we should generate an
+        # associated done move.
+        if 'picking_id' in vals and 'move_id' not in vals:
+            picking = self.env['stock.picking'].browse(vals['picking_id'])
+            if picking.state == 'done':
+                product = self.env['product.product'].browse(vals['product_id'])
+                new_move = self.env['stock.move'].create({
+                    'name': _('New Move:') + product.display_name,
+                    'product_id': product.id,
+                    'product_uom_qty': 'qty_done' in vals and vals['qty_done'] or 0,
+                    'product_uom': vals['product_uom_id'],
+                    'location_id': 'location_id' in vals and vals['location_id'] or picking.location_id.id,
+                    'location_dest_id': 'location_dest_id' in vals and vals['location_dest_id'] or picking.location_dest_id.id,
+                    'state': 'done',
+                    'additional': True,
+                    'picking_id': picking.id,
+                })
+                vals['move_id'] = new_move.id
+        
+        return super(StockMoveLine, self).create(vals)
+    
+#---
+"""
     def _run_move_create(self):
         print ("OVERRIDDEN METHOD------------------------------")
         ''' Returns a dictionary of values that will be used to create a stock move from a procurement.
@@ -80,3 +161,4 @@ class procurement_order(models.Model):
             'priority': procurement.priority,
         }
         return vals
+    """

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <data>
+    <data noupdate="1">
         <!--  -->
 
         <record model="ir.actions.act_window" id="consignee_open_quants">
@@ -81,13 +81,13 @@
         </record>
 
         <!-- Consignment Report Email Template -->
-<!--
-        <record id="email_template_partner_consignment_report" model="email.template">
+
+        <record id="email_template_partner_consignment_report" model="mail.template">
             <field name="name">Consignment Quantity Report</field>
             <field name="model_id" ref="base.model_res_partner"/>
             <field name="auto_delete" eval="False"/>
             <field name="partner_to">${object.id}</field>
-            <field name="Subject">Consignment Quantity Report</field>
+            <field name="subject">Consignment Quantity Report</field>
             <field name="body_html"><![CDATA[           
 <div style="font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
 
@@ -135,7 +135,7 @@
 </div>
             ]]></field>
         </record>
-        -->
+        
         <!-- "Email Consignment Report" button in Customer -> More -->
         <act_window id="partner_consignment_action"
             name="Email Consignment Report"
