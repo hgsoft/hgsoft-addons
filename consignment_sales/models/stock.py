@@ -2,6 +2,22 @@ from openerp import models, fields, api
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
+class StockQuantity(models.Model):
+    _inherit = 'stock.quant'
+    
+    flag = fields.Boolean(default=True)
+
+    @api.constrains('quantity')
+    #@api.depends('quantity')
+    def _onchange_quantity(self):
+        if self.flag:
+            self.flag = False
+            print ("########## QTY A ##########")
+            self.quantity = self.env['sale.order.line']._update_stock_quantity(self)
+            print ("########## QTY B ##########")
+            print ("########## ", self.quantity," ##########")
+            
+        self.flag = True
 
 class stock_location(models.Model):
     _inherit = 'stock.location'
@@ -17,47 +33,114 @@ class stock_location(models.Model):
             raise Warning(_('A consignee Location must be always internal'))
 
 
-class procurement_order(models.Model):
-    _inherit = 'stock.move.line'
+class StockMoves(models.Model):
+    _inherit = 'stock.move'
+    #_inherit = 'stock.move.line'
     
 #---
-    @api.model    
-    def create(self):
+    
+    #############
+    def _prepare_move_line_vals(self, quantity=None, reserved_quant=None):
+        rec = super(StockMoves, self)._prepare_move_line_vals(quantity=None, reserved_quant=None)
+            
+        print ("########## OVERRIDDEN METHOD START ##########")
         #
+        print ("########## - A - ##########")
+        #
+        src_loc_id = ''
+        dest_loc_id = ''
+        #
+        print ("########## - B - ##########")
+        #
+        if self.sale_line_id.order_id.order_type == 'con_order':
+            dest_loc_id = self.sale_line_id.order_id.partner_id.consignee_location_id.id
+            #
+            print ("########## - C - ##########")
+            #
+        elif self.sale_line_id.order_id.order_type == 'con_sale':
+            src_loc_id = self.sale_line_id.order_id.partner_id.consignee_location_id.id,
+            #
+            print ("########## - D - ##########")
+            #
+        self.ensure_one()
+        # apply putaway
+        location_dest_id = self.location_dest_id.get_putaway_strategy(self.product_id).id or self.location_dest_id.id
+        vals = {
+            'move_id': self.id,
+            'product_id': self.product_id.id,
+            'product_uom_id': self.product_uom.id,
+            'location_id': src_loc_id or self.location_id.id,
+            #'location_dest_id': dest_loc_id or location_dest_id,
+            'location_dest_id': dest_loc_id,
+            'picking_id': self.picking_id.id,
+        }
+        if quantity:
+            uom_quantity = self.product_id.uom_id._compute_quantity(quantity, self.product_uom, rounding_method='HALF-UP')
+            vals = dict(vals, product_uom_qty=uom_quantity)
+        if reserved_quant:
+            vals = dict(
+                vals,
+                location_id=reserved_quant.location_id.id,
+                lot_id=reserved_quant.lot_id.id or False,
+                package_id=reserved_quant.package_id.id or False,
+                owner_id =reserved_quant.owner_id.id or False,
+            )
+        print ("########## ", location_dest_id, " ##########")
+        print ("########## ", src_loc_id, " ##########")
+        print ("########## ", dest_loc_id, " ##########")
+        print ("########## OVERRIDDEN METHOD ENDS ##########")
+        return vals
+        return rec
+    #############
+    
+    
+"""
+    @api.model
+    def create(self, vals):
+        rec = super(StockMoves, self).create(vals)
         vals['ordered_qty'] = vals.get('product_uom_qty')
-
-        # If the move line is directly create on the picking view.
-        # If this picking is already done we should generate an
-        # associated done move.
         if 'picking_id' in vals and 'move_id' not in vals:
-            picking = self.env['stock.picking'].browse(vals['picking_id'])
+            picking2 = self.env['stock.picking'].browse(vals['picking_id'])
+            #
+            print ("########## - A - ##########")
             #
             src_loc_id = ''
             dest_loc_id = ''
             #
-        if self.move_id.sale_line_id.order_id.order_type == 'con_order':
-            src_loc_id = self.move_id.sale_line_id.order_id.partner_id.consignee_location_id.id
-        elif self.move_id.sale_line_id.order_id.order_type == 'con_sale':
-            dest_loc_id = self.move_id.sale_line_id.order_id.partner_id.consignee_location_id.id,
+            print ("########## - B - ##########")
             #
-        if picking.state == 'done':
-            product = self.env['product.product'].browse(vals['product_id'])
-            new_move = self.env['stock.move'].create({
-                'name': _('New Move:') + product.display_name,
-                'product_id': product.id,
-                'product_uom_qty': 'qty_done' in vals and vals['qty_done'] or 0,
-                'product_uom': vals['product_uom_id'],
-                #'location_id': 'location_id' in vals and vals['location_id'] or picking.location_id.id,
-                #'location_dest_id': 'location_dest_id' in vals and vals['location_dest_id'] or picking.location_dest_id.id,
-                'location_id': src_loc_id,
-                'location_dest_id': dest_loc_id,
-                'state': 'done',
-                'additional': True,
-                'picking_id': picking.id,
-            })
-            vals['move_id'] = new_move.id
-
-        ml = super(StockMoveLine, self).create(vals)
+            if self.move_id.sale_line_id.order_id.order_type == 'con_order':
+                src_loc_id = self.move_id.sale_line_id.order_id.partner_id.consignee_location_id.id
+                #
+                print ("########## - C - ##########")
+                #
+            elif self.move_id.sale_line_id.order_id.order_type == 'con_sale':
+                dest_loc_id = self.move_id.sale_line_id.order_id.partner_id.consignee_location_id.id,
+                #
+                print ("########## - D - ##########")
+                #
+            if picking2.state == 'done':
+                product = self.env['product.product'].browse(vals['product_id'])
+                new_move = self.env['stock.move'].create({
+                    'name': _('New Move:') + product.display_name,
+                    'product_id': product.id,
+                    'product_uom_qty': 'qty_done' in vals and vals['qty_done'] or 0,
+                    'product_uom': vals['product_uom_id'],
+                    #'location_id': 'location_id' in vals and vals['location_id'] or picking.location_id.id,
+                    #'location_dest_id': 'location_dest_id' in vals and vals['location_dest_id'] or picking.location_dest_id.id,
+                    'location_id': src_loc_id,
+                    'location_dest_id': dest_loc_id,
+                    'state': 'done',
+                    'additional': True,
+                    'picking_id': picking2.id,
+                })
+                vals['move_id'] = new_move.id
+                #
+                print ("########## - E - ##########")
+                #
+"""
+"""
+        ml = super(StockMoves, self).create(vals)
         if ml.state == 'done':
             if ml.product_id.type == 'product':
                 Quant = self.env['stock.quant']
@@ -76,29 +159,20 @@ class procurement_order(models.Model):
             next_moves._do_unreserve()
             next_moves._action_assign()
         return ml
-        #
-        # If the move line is directly create on the picking view.
-        # If this picking is already done we should generate an
-        # associated done move.
-        if 'picking_id' in vals and 'move_id' not in vals:
-            picking = self.env['stock.picking'].browse(vals['picking_id'])
-            if picking.state == 'done':
-                product = self.env['product.product'].browse(vals['product_id'])
-                new_move = self.env['stock.move'].create({
-                    'name': _('New Move:') + product.display_name,
-                    'product_id': product.id,
-                    'product_uom_qty': 'qty_done' in vals and vals['qty_done'] or 0,
-                    'product_uom': vals['product_uom_id'],
-                    'location_id': 'location_id' in vals and vals['location_id'] or picking.location_id.id,
-                    'location_dest_id': 'location_dest_id' in vals and vals['location_dest_id'] or picking.location_dest_id.id,
-                    'state': 'done',
-                    'additional': True,
-                    'picking_id': picking.id,
-                })
-                vals['move_id'] = new_move.id
         
-        return super(StockMoveLine, self).create(vals)
-    
+        return rec
+        #
+"""
+"""
+        class AccountJournal(models.Model):
+        _inherit = "account.journal"
+
+        @api.model
+        def create(self, vals):
+        rec = super(AccountJournal, self).create(vals)
+        # ...        
+        return rec
+"""
 #---
 """
     def _run_move_create(self):

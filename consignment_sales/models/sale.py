@@ -56,26 +56,58 @@ class sale_order(models.Model):
 class sale_order_line(models.Model):
     _inherit = 'sale.order.line'
 
+    consignment_stock = fields.Float(string='Consignment Stock', compute='_compute_consignment_stock', store=True)
+    
+    @api.model
+    def _update_stock_quantity(sale_order_line, self):
+        consignment_quants = self.env['stock.quant'].search([('location_id','=', sale_order_line.order_id.partner_id.consignee_location_id.id),
+                                                              ('product_id','=', sale_order_line.product_id.id)
+                                                            ])
+        print ("########## C ##########")
+        
+        line_data = []
+        product_qty = 0
+        for each_quant in consignment_quants:
+            print ("########## D ##########")
+            product_qty += each_quant.quantity
+
+        #self.consignment_stock = product_qty
+        return product_qty
+        print ("########## PROD QTY", product_qty, "##########")
+        print ("########## SELF CONSIG", self.consignment_stock, "##########")
+    
     @api.one
     @api.depends('product_id')
     def _compute_consignment_stock(self):
+        print ("########## CONSINGMENT STARTS ##########")
         if not self.product_id:
+            print ("########## A ##########")
             return
         consignent_location = self.order_id.partner_id.consignee_location_id
+        print ("########## ", consignent_location, " ##########")
         if not consignent_location:
+            print ("########## B ##########")
             return False
-        # Fetch the stock at this customer's consignee location
+        
+        ################
+        """
         consignment_quants = self.env['stock.quant'].search([('location_id','=',consignent_location.id),
                                                               ('product_id','=', self.product_id.id)
                                                             ])
+        print ("########## C ##########")
         # order_type = self.Char(related='order_id.order_type', store=True, readonly=True, copy=False)
 
         line_data = []
         product_qty = 0
         for each_quant in consignment_quants:
-            product_qty += each_quant.qty
+            print ("########## D ##########")
+            product_qty += each_quant.quantity
 
         self.consignment_stock = product_qty
+        print ("########## PROD QTY", product_qty, "##########")
+        print ("########## SELF CONSIG", self.consignment_stock, "##########")
+        """
+        ###############
         
-    consignment_stock = fields.Float(string='Consignment Stock',
-        compute='_compute_consignment_stock', store=True)
+    #print ("########## ", consignment_quants, " ##########")
+    print ("########## CONSINGMENT ENDS ##########")
