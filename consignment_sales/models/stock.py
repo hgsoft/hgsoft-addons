@@ -1,7 +1,7 @@
 from openerp import models, fields, api
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-
+"""
 class StockQuantity(models.Model):
     _inherit = 'stock.quant'
     
@@ -18,7 +18,7 @@ class StockQuantity(models.Model):
             print ("########## ", self.quantity," ##########")
             
         self.flag = True
-
+"""
 class stock_location(models.Model):
     _inherit = 'stock.location'
 

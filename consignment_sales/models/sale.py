@@ -58,6 +58,9 @@ class sale_order_line(models.Model):
 
     consignment_stock = fields.Float(string='Consignment Stock', compute='_compute_consignment_stock', store=True)
     
+    stock_qty = fields.Many2one('stock.quant', 'Stock Quantity')
+        
+    """
     @api.model
     def _update_stock_quantity(sale_order_line, self):
         consignment_quants = self.env['stock.quant'].search([('location_id','=', sale_order_line.order_id.partner_id.consignee_location_id.id),
@@ -75,6 +78,7 @@ class sale_order_line(models.Model):
         return product_qty
         print ("########## PROD QTY", product_qty, "##########")
         print ("########## SELF CONSIG", self.consignment_stock, "##########")
+    """
     
     @api.one
     @api.depends('product_id')
@@ -90,10 +94,26 @@ class sale_order_line(models.Model):
             return False
         
         ################
-        """
+        
         consignment_quants = self.env['stock.quant'].search([('location_id','=',consignent_location.id),
                                                               ('product_id','=', self.product_id.id)
                                                             ])
+        
+        ####
+        consignment_x = self.env.cr.execute("""select distinct pp.id id, sol.consignment_stock consig, sq.quantity qty, sq.location_id loc
+        FROM sale_order_line sol
+        join product_product pp on pp.id = sol.product_id
+        join public.sale_order so on so.order_type = 'con_order' and so.id = sol.order_id 
+        join public.stock_quant sq on sq.quantity != sol.consignment_stock and sq.product_id = sol.product_id
+        where sq.location_id = 43;;
+            """)
+        for x in self._cr.dictfetchall():
+            print ("########## VARRENDO CONSIGNMENT_X ##########")
+            print ("########## ", x," ##########")
+            print ("########## ", x["qty"] ," ##########")
+            print ("########## FINALIZANDO VARREDURA ##########")
+        
+        ####
         print ("########## C ##########")
         # order_type = self.Char(related='order_id.order_type', store=True, readonly=True, copy=False)
 
@@ -103,11 +123,22 @@ class sale_order_line(models.Model):
             print ("########## D ##########")
             product_qty += each_quant.quantity
 
-        self.consignment_stock = product_qty
+        consignment_stock = product_qty
         print ("########## PROD QTY", product_qty, "##########")
-        print ("########## SELF CONSIG", self.consignment_stock, "##########")
-        """
+        print ("########## SELF CONSIG", consignment_stock, "##########")
+        #print ("########## ", stock_qty.id, " ##########")
+        
         ###############
         
-    #print ("########## ", consignment_quants, " ##########")
     print ("########## CONSINGMENT ENDS ##########")
+    
+    """
+    select distinct pp.id, sol.consignment_stock, sq.quantity, sq.location_id
+        FROM sale_order_line sol
+        join product_product pp on pp.id = sol.product_id
+        join public.sale_order so on so.order_type = 'con_order' and so.id = sol.order_id 
+        join public.stock_quant sq on sq.quantity != 
+        sol.consignment_stock	
+        and sq.product_id = sol.product_id
+        where sq.location_id = 43;
+    """
