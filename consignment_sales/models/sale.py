@@ -57,8 +57,6 @@ class sale_order_line(models.Model):
     _inherit = 'sale.order.line'
 
     consignment_stock = fields.Float(string='Consignment Stock', compute='_compute_consignment_stock', store=True)
-    
-    stock_qty = fields.Many2one('stock.quant', 'Stock Quantity')
         
     """
     @api.model
@@ -100,18 +98,19 @@ class sale_order_line(models.Model):
                                                             ])
         
         ####
-        consignment_x = self.env.cr.execute("""select distinct pp.id id, sol.consignment_stock consig, sq.quantity qty, sq.location_id loc
-        FROM sale_order_line sol
-        join product_product pp on pp.id = sol.product_id
-        join public.sale_order so on so.order_type = 'con_order' and so.id = sol.order_id 
-        join public.stock_quant sq on sq.quantity != sol.consignment_stock and sq.product_id = sol.product_id
-        where sq.location_id = 43;;
-            """)
-        for x in self._cr.dictfetchall():
-            print ("########## VARRENDO CONSIGNMENT_X ##########")
-            print ("########## ", x," ##########")
-            print ("########## ", x["qty"] ," ##########")
-            print ("########## FINALIZANDO VARREDURA ##########")
+        
+        #consignment_x = self.env.cr.execute("""select distinct pp.id id, #sol.consignment_stock consig, sq.quantity qty, sq.location_id loc
+        #FROM sale_order_line sol
+        #join product_product pp on pp.id = sol.product_id
+        #join public.sale_order so on so.order_type = 'con_order' and so.id = sol.order_id 
+        #join public.stock_quant sq on sq.quantity != sol.consignment_stock and sq.product_id = sol.product_id
+        #where sq.location_id = %s;
+        #    """ % (43))
+        #for x in self._cr.dictfetchall():
+        #    print ("########## VARRENDO CONSIGNMENT_X ##########")
+        #    print ("########## ", x," ##########")
+        #    print ("########## ", x["qty"] ," ##########")
+        #    print ("########## FINALIZANDO VARREDURA ##########")
         
         ####
         print ("########## C ##########")
@@ -126,7 +125,6 @@ class sale_order_line(models.Model):
         consignment_stock = product_qty
         print ("########## PROD QTY", product_qty, "##########")
         print ("########## SELF CONSIG", consignment_stock, "##########")
-        #print ("########## ", stock_qty.id, " ##########")
         
         ###############
         

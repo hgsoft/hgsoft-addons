@@ -19,6 +19,60 @@ class StockQuantity(models.Model):
             
         self.flag = True
 """
+
+class StockQuantity(models.Model):
+    _inherit = 'stock.quant'
+    
+    flag = fields.Boolean(default=True)
+
+    @api.constrains('quantity')
+    #@api.depends('quantity')
+    def _onchange_quantity(self):
+        if self.flag:
+            self.flag = False
+            print ("########## STOCK_QUANT STARTS ##########")
+            
+            ###
+            ###
+            
+            stock_quant_consignment = self.env.cr.execute("""select sol.id sol_id, pp.id p_id, sol.consignment_stock consig, sq.quantity qty, sq.location_id loc
+        FROM sale_order_line sol
+        join product_product pp on pp.id = sol.product_id
+        join public.sale_order so on so.order_type = 'con_order' and so.id = sol.order_id 
+        join public.stock_quant sq on sq.quantity != sol.consignment_stock and sq.product_id = sol.product_id
+        join public.res_partner rp on rp.allow_consignment = true and sq.location_id = rp.consignee_location_id;
+            """)
+            
+        for x in self._cr.dictfetchall():
+            
+            sol_for_update = ''
+            
+            print ("########## VARRENDO RESULT QUERY ##########")
+            
+            print ("########## ", x," ##########")
+            
+            print ("########## ", x["qty"] ," ##########")
+            
+            print ("########## ", x["loc"] ," ##########")
+            
+            print ("########## ", x["consig"] ," ##########")
+            
+            print ("########## FINALIZANDO VARREDURA ##########")
+        
+            print ("########## ", self.quantity," ##########")
+            
+            print ("########## STOCK_QUANT ENDS ##########")
+            
+            print ("########## INICIANDO ATUALIZAÇÃO ##########")
+            
+            sol_for_update = self.env['sale.order.line'].search([('id','=', x["sol_id"])])
+            
+            sol_for_update["consignment_stock"] = x["qty"]
+            
+            print ("########## FINALIZANDO ATUALIZAÇÃO ##########")
+        
+        self.flag = True
+
 class stock_location(models.Model):
     _inherit = 'stock.location'
 
