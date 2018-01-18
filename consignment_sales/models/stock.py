@@ -1,6 +1,7 @@
 from openerp import models, fields, api
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+from odoo.exceptions import UserError
 """
 class StockQuantity(models.Model):
     _inherit = 'stock.quant'
@@ -73,6 +74,34 @@ class StockQuantity(models.Model):
         
         self.flag = True
 
+    
+    
+    ##########
+    #class AccountJournal(models.Model):
+    #_inherit = "account.journal"
+    
+    """
+    @api.model
+    def create(self, vals):
+        rec = super(StockQuantity, self).create(vals)
+        ###
+        print("########## TESTE CREATE STOCK QUANT ##########")
+        
+        vals = {
+                'product_id': product_id.id,
+                #'location_id': location_id.id,
+                'location_id': 43,
+                'quantity': quantity,
+                'lot_id': lot_id and lot_id.id,
+                'package_id': package_id and package_id.id,
+                'owner_id': owner_id and owner_id.id,
+                'in_date': in_date,
+            }
+        ###
+        return rec
+    ##########
+    """
+
 class stock_location(models.Model):
     _inherit = 'stock.location'
 
@@ -94,6 +123,57 @@ class StockMoves(models.Model):
 #---
     
     #############
+    def _update_reserved_quantity(self, need, available_quantity, location_id, lot_id=None, package_id=None, owner_id=None, strict=True):
+        """ Create or update move lines.
+        """
+        print("########## OVERRIDDEN UPDATE RESERVED QUANTITY ##########")
+        self.ensure_one()
+        
+        if self.sale_line_id.order_id.order_type == 'con_sale':
+            location_id = self.sale_line_id.order_id.partner_id.consignee_location_id
+            #
+            print ("########## - LOCATION - ##########")
+            print ("########## ", location_id," ##########")
+            #
+
+        if not lot_id:
+            lot_id = self.env['stock.production.lot']
+        if not package_id:
+            package_id = self.env['stock.quant.package']
+        if not owner_id:
+            owner_id = self.env['res.partner']
+
+        taken_quantity = min(available_quantity, need)
+
+        quants = []
+        try:
+            quants = self.env['stock.quant']._update_reserved_quantity(
+                self.product_id, location_id, taken_quantity, lot_id=lot_id,
+                package_id=package_id, owner_id=owner_id, strict=strict
+            )
+        except UserError:
+            # If it raises here, it means that the `available_quantity` brought by a done move line
+            # is not available on the quants itself. This could be the result of an inventory
+            # adjustment that removed totally of partially `available_quantity`. When this happens, we
+            # chose to do nothing. This situation could not happen on MTS move, because in this case
+            # `available_quantity` is directly the quantity on the quants themselves.
+            taken_quantity = 0
+
+        # Find a candidate move line to update or create a new one.
+        for reserved_quant, quantity in quants:
+            to_update = self.move_line_ids.filtered(lambda m: m.location_id.id == reserved_quant.location_id.id and m.lot_id.id == reserved_quant.lot_id.id and m.package_id.id == reserved_quant.package_id.id and m.owner_id.id == reserved_quant.owner_id.id)
+            if to_update:
+                to_update[0].with_context(bypass_reservation_update=True).product_uom_qty += self.product_id.uom_id._compute_quantity(quantity, self.product_uom, rounding_method='HALF-UP')
+            else:
+                if self.product_id.tracking == 'serial':
+                    for i in range(0, int(quantity)):
+                        self.env['stock.move.line'].create(self._prepare_move_line_vals(quantity=1, reserved_quant=reserved_quant))
+                else:
+                    self.env['stock.move.line'].create(self._prepare_move_line_vals(quantity=quantity, reserved_quant=reserved_quant))
+        
+        return taken_quantity
+    #############
+    
     def _prepare_move_line_vals(self, quantity=None, reserved_quant=None):
         rec = super(StockMoves, self)._prepare_move_line_vals(quantity=None, reserved_quant=None)
             
@@ -124,8 +204,9 @@ class StockMoves(models.Model):
             'product_id': self.product_id.id,
             'product_uom_id': self.product_uom.id,
             'location_id': src_loc_id or self.location_id.id,
-            #'location_dest_id': dest_loc_id or location_dest_id,
-            'location_dest_id': dest_loc_id,
+            #'location_id': src_loc_id,
+            'location_dest_id': dest_loc_id or location_dest_id,
+            #'location_dest_id': dest_loc_id,
             'picking_id': self.picking_id.id,
         }
         if quantity:
@@ -134,24 +215,29 @@ class StockMoves(models.Model):
         if reserved_quant:
             vals = dict(
                 vals,
-                location_id=reserved_quant.location_id.id,
+                #location_id=reserved_quant.location_id.id,
+                location_id=src_loc_id or self.location_id.id,
                 lot_id=reserved_quant.lot_id.id or False,
                 package_id=reserved_quant.package_id.id or False,
                 owner_id =reserved_quant.owner_id.id or False,
             )
-        print ("########## ", location_dest_id, " ##########")
-        print ("########## ", src_loc_id, " ##########")
-        print ("########## ", dest_loc_id, " ##########")
+        
+        print ("########## |VALS|", vals, " ##########")
+        print ("########## |SRC CUSTOM|", src_loc_id, " ##########")
+        print ("########## |SRC DEFAULT|", self.location_id.id, " ##########")
+        print ("########## |DEST CUSTOM|", dest_loc_id, " ##########")
+        print ("########## |DEST DEFAULT|", location_dest_id, " ##########")
         print ("########## OVERRIDDEN METHOD ENDS ##########")
         return vals
         return rec
     #############
     
-    
-"""
+########################    
+    """
     @api.model
     def create(self, vals):
         rec = super(StockMoves, self).create(vals)
+        
         vals['ordered_qty'] = vals.get('product_uom_qty')
         if 'picking_id' in vals and 'move_id' not in vals:
             picking2 = self.env['stock.picking'].browse(vals['picking_id'])
@@ -164,7 +250,8 @@ class StockMoves(models.Model):
             print ("########## - B - ##########")
             #
             if self.move_id.sale_line_id.order_id.order_type == 'con_order':
-                src_loc_id = self.move_id.sale_line_id.order_id.partner_id.consignee_location_id.id
+                src_loc_id =
+                self.move_id.sale_line_id.order_id.partner_id.consignee_location_id.id
                 #
                 print ("########## - C - ##########")
                 #
@@ -192,8 +279,8 @@ class StockMoves(models.Model):
                 #
                 print ("########## - E - ##########")
                 #
-"""
-"""
+
+        #####
         ml = super(StockMoves, self).create(vals)
         if ml.state == 'done':
             if ml.product_id.type == 'product':
@@ -215,20 +302,10 @@ class StockMoves(models.Model):
         return ml
         
         return rec
-        #
-"""
-"""
-        class AccountJournal(models.Model):
-        _inherit = "account.journal"
-
-        @api.model
-        def create(self, vals):
-        rec = super(AccountJournal, self).create(vals)
-        # ...        
-        return rec
-"""
+        #####
+    """
 #---
-"""
+    """
     def _run_move_create(self):
         print ("OVERRIDDEN METHOD------------------------------")
         ''' Returns a dictionary of values that will be used to create a stock move from a procurement.
