@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
 #from StringIO import StringIO
-#import xlsxwriter
+import io
+import xlsxwriter
 from odoo import models, fields, api
 #import shutil
-#import base64
+import base64
 from datetime import datetime
 
 class res_partner(models.Model):
@@ -48,10 +49,13 @@ class res_partner(models.Model):
 
     @api.multi
     def action_view_consignment_products(self):
+        print("{:=^20}".format("A"))
+        
         # invoice_ids = self.mapped('invoice_ids')
         imd = self.env['ir.model.data']
         act_obj = self.env['ir.actions.act_window']
-
+        print("{:=^20}".format("B"))
+    
         action_id = imd.xmlid_to_res_id('consignment_sales.consignee_open_quants')
         action = act_obj.browse(action_id)
         list_view_id = imd.xmlid_to_res_id('stock.view_stock_quant_tree')
@@ -68,6 +72,7 @@ class res_partner(models.Model):
             'res_model': action.res_model,
             'domain': "[('location_id','=',%s)]" % self.consignee_location_id.id
         }
+        print("{:=^20}".format("C"))
 
         return result
 
@@ -87,37 +92,44 @@ class res_partner(models.Model):
             if each_quant.product_id in [x['product_id'] for x in line_data]:
                 for each_data in line_data:
                     if each_data['product_id'] == each_quant.product_id:
-                        each_data['qty'] += each_quant.qty
+                        each_data['quantity'] += each_quant.quantity
             else:
-                line_data.append({'product_id': each_quant.product_id, 'qty': each_quant.qty})
+                line_data.append({'product_id': each_quant.product_id, 'quantity': each_quant.quantity})
 
         # Now we have product and its qty, so we now fetch sale price and discounted price by help of pricelists
         pricelist = self.property_product_pricelist
         for each_prd in line_data:
-            pricelist_price = pricelist.price_get(each_prd['product_id'].id, each_prd['qty'], partner=self.id)
+            pricelist_price = pricelist.price_get(each_prd['product_id'].id, each_prd['quantity'], partner=self.id)
             if pricelist_price and pricelist_price.get(pricelist.id):
                 each_prd['cost_price'] = pricelist_price[pricelist.id]
                 each_prd['sale_price'] = each_prd['product_id'].list_price
                 # discount will be incorrect if, sale_price is 0
                 each_prd['discount'] = (1 - (each_prd['cost_price']/(each_prd['sale_price'] or 1)))*100.00
-                each_prd['total'] = each_prd['cost_price'] * each_prd['qty']
+                each_prd['total'] = each_prd['cost_price'] * each_prd['quantity']
 
-        output = StringIO.StringIO()
-
+        #output = StringIO.StringIO()
+        print("{:=^20}".format("A"))
+        #output = io.StringIO()
+        output = io.BytesIO()
+    
+        print("{:=^20}".format("B"))
         workbook = xlsxwriter.Workbook(output, {'in_memory':True})
         worksheet = workbook.add_worksheet()
+        
+        print("{:=^20}".format("C"))
         # Customer Details at top rows
         worksheet.write(0,0,u"Mapa de consignação da Editora Hedra")
         worksheet.write(1,0,u"comercial@hedra.com.br")
         worksheet.write(1,2,u"11-3097-8304")
         
+        print("{:=^20}".format("D"))
         worksheet.write(3,0,self.name)
         #TODO: 
         worksheet.write(5,0,datetime.now().strftime('%Y-%m-%d'))
         worksheet.write(7,7,'* Preencher e devolver')
 
 
-
+        print("{:=^20}".format("E"))
         worksheet.write(8,0,"ISBN")
         worksheet.write(8,1,"Titulo")
         worksheet.write(8,2,"Qde")
@@ -127,11 +139,12 @@ class res_partner(models.Model):
         worksheet.write(8,6,"Total")
         worksheet.write(8,7,"Acerto")
         worksheet.write(8,8,u"Reposição*")
-
+    
+        print("{:=^20}".format("F"))
         for each_row in range(9,len(line_data)+9):
             worksheet.write(each_row,0,line_data[each_row-9]['product_id'].ean13)
             worksheet.write(each_row,1,line_data[each_row-9]['product_id'].name)
-            worksheet.write(each_row,2,line_data[each_row-9]['qty'])
+            worksheet.write(each_row,2,line_data[each_row-9]['quantity'])
             worksheet.write(each_row,3,line_data[each_row-9]['discount'])
             worksheet.write(each_row,4,line_data[each_row-9]['cost_price'])
             worksheet.write(each_row,5,line_data[each_row-9]['sale_price'])
@@ -141,14 +154,15 @@ class res_partner(models.Model):
         # with open ('file.xlsx', 'w') as fd:
         #     output.seek(0)
         #     shutil.copyfileobj(output, fd)
-
+        
+        print("{:=^20}".format("G"))
         file_data = base64.b64encode(output.getvalue())
 
         mode = 'manual'
         if self._context.get('mode') and self._context.get('mode') == 'auto':
             mode = 'auto'
-        attachment_vals = {'name': u'Consignment Report.xlsx', 'res_model': 'mail.compose.message', 
-                           'parent_id': False, 'res_id': 0, 'datas_fname': u'Consignment Report', 
+        attachment_vals = {'name': u'Consignment Report.xlsx', 'res_model': 'mail.compose.message',
+                           'res_id': 0, 'datas_fname': u'Consignment Report', 
                            'type': 'binary', 'datas': file_data, 'consignment_partner_id': self.id,
                            'consignment_mode': mode}
         attachment_id = self.env['ir.attachment'].create(attachment_vals)
