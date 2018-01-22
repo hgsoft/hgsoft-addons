@@ -107,13 +107,15 @@ class res_partner(models.Model):
                 each_prd['discount'] = (1 - (each_prd['cost_price']/(each_prd['sale_price'] or 1)))*100.00
                 each_prd['total'] = each_prd['cost_price'] * each_prd['quantity']
 
-        #output = StringIO.StringIO()
+        #output = StringIO.StringIO
         print("{:=^20}".format("A"))
         #output = io.StringIO()
         output = io.BytesIO()
     
         print("{:=^20}".format("B"))
         workbook = xlsxwriter.Workbook(output, {'in_memory':True})
+        #filename = "Download.xlsx"
+        #workbook = xlsxwriter.Workbook(filename, {'in_memory':True})
         worksheet = workbook.add_worksheet()
         
         print("{:=^20}".format("C"))
@@ -156,8 +158,26 @@ class res_partner(models.Model):
         #     shutil.copyfileobj(output, fd)
         
         print("{:=^20}".format("G"))
+        #
         file_data = base64.b64encode(output.getvalue())
+        #file_data = output.getvalue()
+        
+        print("{:=^20}".format("H"))
+        print("file_data", file_data)
+        
+        print("{:=^20}".format("I"))
+        print("output getvalue()", output.getvalue())
+        
+        """
+        print("{:=^20}".format("I"))
+        file_data_decodeA = base64.b64decode(file_data)
+        print("file_data decodeA", file_data_decodeA)
 
+        print("{:=^20}".format("J"))
+        file_data_decodeB = base64.b64decode(output.getvalue())
+        print("file_data decodeB", file_data_decodeB)
+        """
+        
         mode = 'manual'
         if self._context.get('mode') and self._context.get('mode') == 'auto':
             mode = 'auto'

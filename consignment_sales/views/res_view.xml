@@ -48,7 +48,7 @@
                                 <tree string="Consignment Reports">
                                     <field name="create_date"/>
                                     <field name="consignment_mode"/>
-                                    <field name="datas"/>
+                                    <field name="datas_fname"/>
                                 </tree>
                             </field>
                         </group>
