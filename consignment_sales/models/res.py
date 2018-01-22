@@ -47,6 +47,7 @@ class res_partner(models.Model):
         partner = super(res_partner, self).write(vals)
         return partner
 
+    """
     @api.multi
     def action_view_consignment_products(self):
         print("{:=^20}".format("A"))
@@ -75,6 +76,31 @@ class res_partner(models.Model):
         print("{:=^20}".format("C"))
 
         return result
+    """
+    
+    @api.multi
+    def action_view_consignment_products(self):
+        self.ensure_one()
+        
+        imd = self.env['ir.model.data']
+        list_view_id = imd.xmlid_to_res_id('stock.view_stock_quant_tree')
+        form_view_id = imd.xmlid_to_res_id('stock.view_stock_quant_form')
+        
+        action = self.env.ref('consignment_sales.consignee_open_quants').read()[0]
+        #action['domain'] = literal_eval(action['domain'])
+        action['domain'] = "[('location_id','=',%s)]" % self.consignee_location_id.id
+        #action['context'] = {'search_default_locationgroup': 1, 'search_default_internal_loc': 1, 'search_default_productgroup': 1}
+        action['views'] = [[list_view_id, 'tree'], [form_view_id, 'form'], [False, 'graph'], [False, 'kanban'], [False, 'calendar'], [False, 'pivot']]
+        
+        #'name': action.name,
+        #    'help': action.help,
+        #    'type': action.type,
+        #    'views': [[list_view_id, 'tree'], [form_view_id, 'form'], [False, 'graph'], [False, 'kanban'], [False, 'calendar'], [False, 'pivot']],
+        #    'target': action.target,
+        #    'context': {'search_default_locationgroup': 1, 'search_default_internal_loc': 1, 'search_default_productgroup': 1},
+            
+        print(action)
+        return action
 
     @api.multi
     def create_xls_consignment_report(self):
