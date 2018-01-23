@@ -25,7 +25,7 @@ class sale_order(models.Model):
                                    ('con_sale','Consignment Sales')], string = "Sale Order Type",
                                    default='sale', required=True)
 
-
+    """
     @api.multi
     def action_view_sale_consignment_products(self):
         # invoice_ids = self.mapped('invoice_ids')
@@ -52,7 +52,30 @@ class sale_order(models.Model):
         }
 
         return result
+    """
+    
+    @api.multi
+    def action_view_sale_consignment_products(self):
+        
+        imd = self.env['ir.model.data']
+        list_view_id = imd.xmlid_to_res_id('stock.view_stock_quant_tree')
+        form_view_id = imd.xmlid_to_res_id('stock.view_stock_quant_form')
+        
+        action = self.env.ref('consignment_sales.consignee_open_quants').read()[0]
+        action['views'] = [[list_view_id, 'tree'], [form_view_id, 'form']]
+        action['context'] = {'search_default_internal_loc': 1, 'search_default_productgroup': 1}
+        action['domain'] = "[('location_id','=',%s)]" % self.partner_id.consignee_location_id.id
+        
+        #action['res_model'] = action.res_model
+        action['target'] = "new"
+        
+        # 'res_model': action.res_model,
+        # 'target':'new'
 
+        #return result
+        return action
+    
+    
 class sale_order_line(models.Model):
     _inherit = 'sale.order.line'
 
@@ -129,14 +152,32 @@ class sale_order_line(models.Model):
         ###############
         
     print ("########## CONSINGMENT ENDS ##########")
-    
-    """
-    select distinct pp.id, sol.consignment_stock, sq.quantity, sq.location_id
-        FROM sale_order_line sol
-        join product_product pp on pp.id = sol.product_id
-        join public.sale_order so on so.order_type = 'con_order' and so.id = sol.order_id 
-        join public.stock_quant sq on sq.quantity != 
-        sol.consignment_stock	
-        and sq.product_id = sol.product_id
-        where sq.location_id = 43;
-    """
+
+        
+    @api.onchange('price_unit')
+    def _compute_consignment_stock(self):
+        if self.product_id and self.order_id.order_type == 'con_sale':
+            print("CON_SALE - Negativa")
+
+            consignment_quants = self.env['sale.order.line'].search([('product_id','=', self.product_id.id), ('consignment_stock', '>', 0)])
+            print("A")
+            
+            #consignment_stock = 0
+            print("B")
+            
+            print(consignment_quants.consignment_stock)
+            print("C")
+            
+            #print("PROD_ID", self.product_id.id, "PRICE_UNIT", self.price_unit, "QTY", self.product_uom_qty, "CONSIG_STOCK", self.consignment_stock)
+            return {
+                'warning': {
+                    'title': "Negativação - Consignment Sale",
+                    'message': "Esta Consignment Sale irá negativar o estoque atual de consignação para este produto.",
+                },
+            }
+        #if self.product_id: 
+        #consignent_location = self.order_id.partner_id.consignee_location_id
+        #consignment_stock = self.env['stock.quant'].search([('location_id','=',consignent_location.id),
+        #('product_id','=', self.product_id.id)])
+        #print(self.product_id.product_tmpl_id.consignment_stock)
+        #and self.product_id.product_tmpl_id.consignment_stock and < self.product_uom_qty

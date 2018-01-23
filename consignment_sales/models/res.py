@@ -90,7 +90,10 @@ class res_partner(models.Model):
         #action['domain'] = literal_eval(action['domain'])
         action['domain'] = "[('location_id','=',%s)]" % self.consignee_location_id.id
         #action['context'] = {'search_default_locationgroup': 1, 'search_default_internal_loc': 1, 'search_default_productgroup': 1}
-        action['views'] = [[list_view_id, 'tree'], [form_view_id, 'form'], [False, 'graph'], [False, 'kanban'], [False, 'calendar'], [False, 'pivot']]
+        action['context'] = {'search_default_internal_loc': 1, 'search_default_productgroup': 1}
+        #action['views'] = [[list_view_id, 'tree'], [form_view_id, 'form'], [False, 'graph'], [False, 'kanban'], [False, 'calendar'], [False, 'pivot']]
+        action['views'] = [[list_view_id, 'tree'], [form_view_id, 'form']]
+        #view_mode
         
         #'name': action.name,
         #    'help': action.help,

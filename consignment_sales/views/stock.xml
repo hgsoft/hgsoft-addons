@@ -12,7 +12,20 @@
 		        </field>
 		    </field>
 		</record>
-
+                
+                <!---->
+            <!--                
+            <record id="view_stock_quant_tree" model="ir.ui.view">
+                <field name="name">stock.quant.inherit</field>
+                <field name="model">stock.quant</field>
+                <field name="inherit_id" ref="stock.view_stock_quant_tree"/>
+                <field name="arch" type="xml">
+                    <xpath expr="//tree/field[@name='quantity']" position="after">
+                        <field name='quantity' string="Teste"/>
+                    </xpath>
+                </field>
+            </record>
+            -->
 		<!-- Quant Filter by Consignnee -->
 
 		<record id="quant_search_view_inherited" model="ir.ui.view">

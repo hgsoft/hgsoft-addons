@@ -15,5 +15,5 @@ class product_template(models.Model):
     ean13 = fields.Char('EAN13 Barcode', type='char')
     author_id = fields.Many2one('res.partner', 'Author', domain=[('is_author','=',True)])
     pages = fields.Integer('Pages')
-
+    #consignment_stock = fields.Many2one('sale.order.line', 'Consignment Stock')
     

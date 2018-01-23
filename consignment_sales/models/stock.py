@@ -2,24 +2,6 @@ from openerp import models, fields, api
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from odoo.exceptions import UserError
-"""
-class StockQuantity(models.Model):
-    _inherit = 'stock.quant'
-    
-    flag = fields.Boolean(default=True)
-
-    @api.constrains('quantity')
-    #@api.depends('quantity')
-    def _onchange_quantity(self):
-        if self.flag:
-            self.flag = False
-            print ("########## QTY A ##########")
-            self.quantity = self.env['sale.order.line']._update_stock_quantity(self)
-            print ("########## QTY B ##########")
-            print ("########## ", self.quantity," ##########")
-            
-        self.flag = True
-"""
 
 class StockQuantity(models.Model):
     _inherit = 'stock.quant'
@@ -123,19 +105,27 @@ class StockMoves(models.Model):
 #---
     
     #############
+    
     def _update_reserved_quantity(self, need, available_quantity, location_id, lot_id=None, package_id=None, owner_id=None, strict=True):
-        """ Create or update move lines.
-        """
-        print("########## OVERRIDDEN UPDATE RESERVED QUANTITY ##########")
+        
+        #####
+        
+        print("########## UPDATE RESERVED QUANTITY - STARTS ##########")
         self.ensure_one()
         
         if self.sale_line_id.order_id.order_type == 'con_sale':
             location_id = self.sale_line_id.order_id.partner_id.consignee_location_id
             #
             print ("########## - LOCATION - ##########")
-            print ("########## ", location_id," ##########")
-            #
-
+            
+        print ("########## ", location_id," ##########")
+        
+        print("########## UPDATE RESERVED QUANTITY - ENDS ##########")
+        
+        #####
+    
+        #self.ensure_one()
+        
         if not lot_id:
             lot_id = self.env['stock.production.lot']
         if not package_id:
@@ -172,6 +162,7 @@ class StockMoves(models.Model):
                     self.env['stock.move.line'].create(self._prepare_move_line_vals(quantity=quantity, reserved_quant=reserved_quant))
         
         return taken_quantity
+    
     #############
     
     def _prepare_move_line_vals(self, quantity=None, reserved_quant=None):
@@ -210,17 +201,25 @@ class StockMoves(models.Model):
             'picking_id': self.picking_id.id,
         }
         if quantity:
+            print ("########## - QUANTITY - ##########")
+            
             uom_quantity = self.product_id.uom_id._compute_quantity(quantity, self.product_uom, rounding_method='HALF-UP')
             vals = dict(vals, product_uom_qty=uom_quantity)
+            
+            print ("########## -",  uom_quantity, vals,"- ##########")
         if reserved_quant:
+            print ("########## - RESERVED QUANT - ##########")
+            print ("########## -", reserved_quant,"- ##########")
+            
             vals = dict(
                 vals,
-                #location_id=reserved_quant.location_id.id,
-                location_id=src_loc_id or self.location_id.id,
+                location_id=reserved_quant.location_id.id,
+                #location_id=src_loc_id or self.location_id.id,
                 lot_id=reserved_quant.lot_id.id or False,
                 package_id=reserved_quant.package_id.id or False,
                 owner_id =reserved_quant.owner_id.id or False,
             )
+            print ("########## -", vals,"- ##########")
         
         print ("########## |VALS|", vals, " ##########")
         print ("########## |SRC CUSTOM|", src_loc_id, " ##########")
