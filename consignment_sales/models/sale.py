@@ -156,28 +156,45 @@ class sale_order_line(models.Model):
         
     @api.onchange('price_unit')
     def _compute_consignment_stock(self):
+        
+        #
+        print("A")
+        
         if self.product_id and self.order_id.order_type == 'con_sale':
-            print("CON_SALE - Negativa")
+            stock = self.env.cr.execute("""SELECT consignment_stock stock, product_id product_id
+            FROM public.sale_order_line where product_id = {} and consignment_stock > 0;
+            """.format(self.product_id.id))
+             
+            consignment_stock = 0.0
+             
+            for x in self._cr.dictfetchall():
+                
+                print ("########## VARRENDO RESULT QUERY ##########")
+                
+                print ("########## ", x["stock"] ," ##########")
+                
+                print ("########## ", x["product_id"] ," ##########")
+                
+                print ("########## FINALIZANDO VARREDURA ##########")
 
-            consignment_quants = self.env['sale.order.line'].search([('product_id','=', self.product_id.id), ('consignment_stock', '>', 0)])
-            print("A")
+                print ("########## INICIANDO ATUALIZAÇÃO ##########")
+                
+                consignment_stock = x["stock"]
+                
+                print ("########## FINALIZANDO ATUALIZAÇÃO ##########")
+            #   
             
-            #consignment_stock = 0
             print("B")
+            print("CONS_STOCK ", consignment_stock, "| QUANTITY ", self.product_uom_qty)
             
-            print(consignment_quants.consignment_stock)
-            print("C")
-            
-            #print("PROD_ID", self.product_id.id, "PRICE_UNIT", self.price_unit, "QTY", self.product_uom_qty, "CONSIG_STOCK", self.consignment_stock)
-            return {
-                'warning': {
-                    'title': "Negativação - Consignment Sale",
-                    'message': "Esta Consignment Sale irá negativar o estoque atual de consignação para este produto.",
-                },
-            }
-        #if self.product_id: 
-        #consignent_location = self.order_id.partner_id.consignee_location_id
-        #consignment_stock = self.env['stock.quant'].search([('location_id','=',consignent_location.id),
-        #('product_id','=', self.product_id.id)])
-        #print(self.product_id.product_tmpl_id.consignment_stock)
-        #and self.product_id.product_tmpl_id.consignment_stock and < self.product_uom_qty
+            if self.product_uom_qty > consignment_stock:
+                print("CON_SALE - Negativa")
+
+                print("C")
+                return {
+                    'warning': {
+                        'title': "Negativação - Consignment Sale",
+                        'message': "Esta Consignment Sale irá negativar o estoque atual de consignação para este produto.",
+                    },
+                }
+        
