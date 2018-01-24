@@ -192,10 +192,10 @@ class res_partner(models.Model):
         #file_data = output.getvalue()
         
         print("{:=^20}".format("H"))
-        print("file_data", file_data)
+        #print("file_data", file_data)
         
         print("{:=^20}".format("I"))
-        print("output getvalue()", output.getvalue())
+        #print("output getvalue()", output.getvalue())
         
         """
         print("{:=^20}".format("I"))
@@ -217,19 +217,60 @@ class res_partner(models.Model):
         attachment_id = self.env['ir.attachment'].create(attachment_vals)
         print ("attachment_id-----------",attachment_id)
         return attachment_id.id
-
+    
+    #@api.one
+    #@api.multi
     @api.model
     def consignment_report_cron(self):
         print ("consignment_report_cron---------------CALLED-------",self)
         customers = self.search([('send_auto_email','=',True)])
         template_id = self.env['ir.model.data'].get_object_reference('consignment_sales',
                                                                      'email_template_partner_consignment_report')[1]
+        
+        
+        print ("template----------", customers)
+        
+        #email_tmpl_obj = self.env['mail.template']
+        
+        print("##### FOR EACH #####")
+        for each_cst in customers:
+            print("##### ATTACHMENT_ID #####")
+            attachment_id = each_cst.with_context({'mode':'auto'}).create_xls_consignment_report()
+        
+            #email_tmpl_obj.send_mail(template_id, each_cst.id, force_send=True)
+            
+            print("##### EMAIL_TMPL_OBJ #####")
+            print("##### ", each_cst.id ," #####")
+            print("##### ", each_cst ," #####")
+            
+            print("##### TEMPLATE_ID #####")
+            print("##### ", template_id ," #####")
+            
+            #email_tmpl_obj.send_mail(template_id, force_send=True, email_values=None)
+            self.env['mail.template'].browse(template_id).send_mail(each_cst.id)
+            
+    """
+    #@api.model
+    @api.one
+    #@api.multi
+    def consignment_report_cron(self):
+        print ("consignment_report_cron---------------CALLED-------",self)
+        customers = self.search([('send_auto_email','=',True)])
+        
+        #template_id = self.env['ir.model.data'].get_object('consignment_sales', #'email_template_partner_consignment_report')
+        
+        template_id = self.env['ir.model.data'].get_object_reference('consignment_sales',
+        'email_template_partner_consignment_report')[1]
+        
+        #self.ensure_one() 
+        
         print ("template----------",template_id, customers)
         email_tmpl_obj = self.env['mail.template']
         for each_cst in customers:
             attachment_id = each_cst.with_context({'mode':'auto'}).create_xls_consignment_report()
-            email_tmpl_obj.send_mail(template_id, each_cst.id, force_send=True)
-
+            email_tmpl_obj.send_mail(self, template_id, each_cst.id, True)
+            #              send_mail(cr, uid, template.id, sched, True, context=context)
+    """
 
 #class mail_compose_message(models.Model):
 class mail_compose_message(models.TransientModel):
