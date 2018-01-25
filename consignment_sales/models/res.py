@@ -147,11 +147,17 @@ class res_partner(models.Model):
         #workbook = xlsxwriter.Workbook(filename, {'in_memory':True})
         worksheet = workbook.add_worksheet()
         
-        print("{:=^20}".format("C"))
+        #print("{:=^20}".format("C-1"))
         # Customer Details at top rows
-        worksheet.write(0,0,u"Mapa de consignação da Editora Hedra")
-        worksheet.write(1,0,u"comercial@hedra.com.br")
-        worksheet.write(1,2,u"11-3097-8304")
+        #worksheet.write(0,0,u"Mapa de consignação da Editora Hedra")
+        #worksheet.write(1,0,u"comercial@hedra.com.br")
+        #worksheet.write(1,2,u"11-3097-8304")
+        
+        print("{:=^20}".format("C-2"))
+        # Customer Details at top rows
+        worksheet.write(0,0,self.company_id.name)
+        worksheet.write(1,0,self.company_id.email)
+        worksheet.write(1,2,self.company_id.phone)
         
         print("{:=^20}".format("D"))
         worksheet.write(3,0,self.name)
@@ -210,8 +216,8 @@ class res_partner(models.Model):
         mode = 'manual'
         if self._context.get('mode') and self._context.get('mode') == 'auto':
             mode = 'auto'
-        attachment_vals = {'name': u'Consignment Report.xlsx', 'res_model': 'mail.compose.message',
-                           'res_id': 0, 'datas_fname': u'Consignment Report', 
+        attachment_vals = {'name': u'Relatório de Consignação.xlsx', 'res_model': 'mail.compose.message',
+                           'res_id': 0, 'datas_fname': u'Relatório de Consignação', 
                            'type': 'binary', 'datas': file_data, 'consignment_partner_id': self.id,
                            'consignment_mode': mode}
         attachment_id = self.env['ir.attachment'].create(attachment_vals)
