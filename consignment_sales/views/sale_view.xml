@@ -1,6 +1,5 @@
 <odoo>
     <data>
-
         <record id="view_sale_order_form_inherit" model="ir.ui.view">
             <field name="name">sale.order.inherit</field>
             <field name="model">sale.order</field>
@@ -8,16 +7,8 @@
             <field name="priority">50</field>
             <field name="arch" type="xml">
                 <field name="partner_id" position="after">
-                    <!-- <field name="order_type" on_change="onchange_order_type(order_type,partner_id)"/> -->
                     <field name="order_type" on_change="onchange_order_type(order_type,partner_id)"/>
                 </field>
-                <!--
-                <h1 position="before">
-                    <div class="oe_right oe_button_box">
-                        <button name="action_view_sale_consignment_products" type="object" class="oe_stock_scan_button" ><img src="/consignment_sales/static/src/img/stock.png" /></button>
-                    </div>
-                </h1>
-                -->
                 <xpath expr="//form/sheet/div[1]" position="inside">
                     <button class="oe_stat_button" name="action_view_sale_consignment_products" 
                             icon="fa-building-o"
@@ -25,21 +16,10 @@
                     </button>
                     <br/>
                 </xpath>
-                
-                <xpath expr="//notebook/page/field[@name='order_line']/form/group/group/field[@name='product_id']" position="after">
-                         <field name="consignment_stock"/>
-                
-                <!--
-                <xpath expr="//notebook/page/field[@name='order_line']/tree[@string='Sales Order Lines']/field[@name='product_id']" position="after">
-                         <field name="consignment_stock"/>
-                -->
-                         
-                </xpath>
-                <xpath expr="//field[@name='order_line']/form/group/group/field[@name='product_id']" position="after">
-                    <field name="consignment_stock"/>
+                <xpath expr="//notebook/page/field[@name='order_line']/form/group/group/field[@name='product_id']"                                                              position="after">
+                    <field name="consignment_stock" on_change="onchange_product()"/>
                 </xpath>
             </field>
         </record>
-
     </data>
 </odoo>

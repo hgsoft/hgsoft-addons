@@ -9,15 +9,24 @@ class consignment_order(models.Model):
     partner_id = fields.Many2one("res.partner", string="Customer", 
                                 domain=[('customer','=',True),('allow_consignment','=',True)], required=True)
     order_date = fields.Datetime("Date", default=fields.Datetime.now, required=True)
+    
     pricelist_id = fields.Many2one("product.pricelist", string="Pricelist", required=True)
+    
     state = fields.Selection([('draft','Draft'),('confirmed','Confirmed'),
                               ('transferred','Transferred'),('cancelled','Cancelled')], string='State', default='draft')
+    
     name = fields.Char("Name",default=lambda self: self.env['ir.sequence'].next_by_code('con.order'), required=True, readonly=True)
+    
     client_order_ref = fields.Char("Client Ref.")
+    
     order_line = fields.One2many('consignment.order.line','order_id','Order Lines')
+    
     user_id = fields.Many2one('res.partner', string="Sale Person")
+    
     warehouse_id = fields.Many2one('stock.warehouse','Source Warehouse', required=True)
+    
     picking_id = fields.Many2one('stock.picking','Transfer Document')
+    
     invoice_id = fields.Many2one('account.invoice','Consignment Invoice')
 
     @api.multi
@@ -35,23 +44,27 @@ class consignment_order(models.Model):
     @api.multi
     def button_confirm(self):
         picking = self.create_picking()
+        
         self.picking_id = picking.id
+        
         self.state = 'confirmed'
+        
         try:
             invoice = self.create_invoice()
             self.invoice_id = invoice.id
             print ("invoice-------",invoice)
         except Exception as e:
-            print ("ERROR CREATING INVOICE-----e",e)
+            print ("##### Erro ao criar fatura: ",e)
         
-
     @api.multi
     def button_view_invoice(self):
         action = self.env.ref('account.action_invoice_tree')
+        
         result = action.read()[0]
 
         #override the context to get rid of the default filtering
         result['context'] = {'type': 'out_invoice' }
+        
         if self.invoice_id:
         #choose the view_mode accordingly
             result['domain'] = "[('id', '=', " + str(self.invoice_id.id) + ")]"
@@ -67,7 +80,7 @@ class consignment_order(models.Model):
         move_obj = self.env['stock.move']
         pick_type = self.env['stock.picking.type'].search([('code','=','internal'),
                                                             ('warehouse_id','=',self.warehouse_id.id)], limit=1)
-        print ("pcik_type-------",pick_type)
+        print ("pick_type-------",pick_type)
         source_loc_id = pick_type.default_location_src_id and pick_type.default_location_src_id.id or \
                             self.env['ir.model.data'].get_object_reference('stock', 'stock_location_stock')[1]
         dest_loc_id = self.partner_id.consignee_location_id.id
