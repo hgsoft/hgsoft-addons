@@ -6,18 +6,45 @@ from odoo import models, fields, api
 class sale_order(models.Model):
     _inherit = 'sale.order'
 
-    @api.multi
-    def onchange_order_type(self, order_type, partner_id):
+    @api.onchange('order_type')
+    #@api.onchange()
+    #@api.multi
+    def onchange_order_type(self):
+        print("##### ON CHANGE #####")
         result = {}
-        if order_type and order_type != 'sale':
+        print("##### RESULT #####", result)
+        if self.order_type and self.order_type != 'sale':
+            print("##### ORDER_TYPE NOT SALE #####")
             result['domain'] = {'partner_id':[('allow_consignment','=',True),('customer','=',True)]}
-            if partner_id:
-                partner = self.env['res.partner'].browse(partner_id)
-                if not partner.allow_consignment:
+            print("##### RESULT #####", result)
+            if self.partner_id:
+                print("##### IF PARTNER_ID #####")
+                #partner = self.env['res.partner'].browse(self.partner_id)
+                partner = self.env['res.partner'].search([('id','=',self.partner_id.id)])
+                print("##### PARTNER #####", partner)
+                #
+                if not partner['allow_consignment']:
+                #if not partner.allow_consignment:
+                    print("##### IF NOT PARTNER.ALLOW_CONSIGNMENT #####")
                     result['value'] = {'partner_id':False}
-        elif order_type and order_type == 'sale':
+                    result['warning'] = {'title': "Opção inválida.",
+                                 'message': "Não é permitido realizar operações de consignação para este Partner."}
+                    print("##### RESULT #####", result)
+        elif self.order_type and self.order_type == 'sale':
+            print("##### ORDER_TYPE SALE #####")
             result['domain'] = {'partner_id':[('customer','=',True)]}
+            #result['title'] = { "Opção inválida."}
+            #result['message'] = {"Não é permitido realizar operações de consignação para este Partner."}
+            print("##### RESULT #####", result)
         return result
+        #
+        #return {
+        #            'warning': {
+        #                'title': "Negativação - Consignment Sale",
+        #                'message': "Esta Consignment Sale irá negativar o estoque atual de consignação para este produto.",
+        #            },
+        #        }
+        #
         # domain = {'partner_id':[('allow_consignment','=',True)]}
         # return {'domain':domain,'value':{'partner_id':False}}
 

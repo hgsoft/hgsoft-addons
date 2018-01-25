@@ -8,6 +8,7 @@
             <field name="priority">50</field>
             <field name="arch" type="xml">
                 <field name="partner_id" position="after">
+                    <!-- <field name="order_type" on_change="onchange_order_type(order_type,partner_id)"/> -->
                     <field name="order_type" on_change="onchange_order_type(order_type,partner_id)"/>
                 </field>
                 <!--
