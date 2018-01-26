@@ -68,31 +68,23 @@ class sale_order_line(models.Model):
             return
         
         consignent_location = self.order_id.partner_id.consignee_location_id
-        print ("##### consignent_location [", consignent_location,"] #####")
         
         if not consignent_location:
             print ("##### _compute_consignment_stock [B] #####")
-            print ("##### consignent_location [", consignent_location,"] #####")
             return False
         
         consignment_quants = self.env['stock.quant'].search([('location_id','=',consignent_location.id),
-                                                              ('product_id','=', self.product_id.id)
-                                                            ])
-        print ("##### _compute_consignment_stock [", consignment_quants,"] #####")
+            ('product_id','=', self.product_id.id)])
         
         line_data = []
-        print ("##### _compute_consignment_stock [", line_data,"] #####")
         
         product_qty = 0
         
         for each_quant in consignment_quants:
             print ("##### _compute_consignment_stock [B] #####")
-            print ("##### _compute_consignment_stock [", each_quant,"] #####")
             product_qty += each_quant.quantity
 
-        print ("##### _compute_consignment_stock [", product_qty,"] #####")
         consignment_stock = product_qty
-        print ("##### _compute_consignment_stock [", consignment_stock,"] #####")
         
     print ("##### _compute_consignment_stock [END] #####")
     #
@@ -103,20 +95,25 @@ class sale_order_line(models.Model):
     def onchange_product(self):
         print ("##### onchange_product [START] #####")
         
-        title = self.product_id
-        
-        message = self.order_id.partner_id
-        
-        return {
-            'warning': {
-                'title': title,
-                'message': message,
-            },
-        }
-        
-    #
-    #####===TESTE===#####
-    
+        if self.product_id:
+            consignment_quants = self.env['stock.quant'].search([('location_id','=',self.order_id.partner_id.consignee_location_id.id),
+                ('product_id','=', self.product_id.id)])
+            
+            product_qty = 0
+            
+            for each_quant in consignment_quants:
+                product_qty += each_quant.quantity
+
+            consignment_stock = product_qty
+            
+            title = str(self.product_id.id) + " | " + str(self.order_id.partner_id.consignee_location_id.id)
+            
+            message = consignment_stock
+            
+            self.consignment_stock = consignment_stock
+            
+            print ("##### onchange_product [END] #####")
+            
     @api.onchange('price_unit')
     def _onchange_consignment_stock(self):
         print ("##### _onchange_consignment_stock [START] #####")
