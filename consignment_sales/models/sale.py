@@ -6,6 +6,26 @@ from odoo import models, fields, api
 class sale_order(models.Model):
     _inherit = 'sale.order'
 
+    order_type = fields.Selection([('sale','Regular Sale'),('con_order','Consignment Order'),
+    ('con_sale','Consignment Sales')], string = "Sale Order Type", default='sale', required=True)
+    
+    @api.onchange('order_type', 'partner_id')
+    def onchange_order_type_partner(self):
+        print("##### onchange_order_type_partner [START] #####")
+        
+        result = {}
+        
+        count = 0
+        
+        for each_line in self.order_line:
+            count += 1
+        
+        if count > 0:
+            result['warning'] = {'title': "Aviso!",'message': "Alterações no Cliente ou Order Type após inserir um produto, pode causar inconsistência nos dados."}
+        
+        print("##### onchange_order_type_partner [END] #####")
+        return result
+    
     @api.onchange('order_type')
     def onchange_order_type(self):
         print("##### onchange_order_type [START] #####")
@@ -21,16 +41,13 @@ class sale_order(models.Model):
                 if not partner['allow_consignment']:
                     result['value'] = {'partner_id':False}
                     
-                    result['warning'] = {'title': "Opção inválida.",'message': "Não é permitido realizar operações de consignação para este Partner."}
+                    result['warning'] = {'title': "Aviso!",'message': "Não é permitido realizar operações de consignação para este Partner."}
                     
         elif self.order_type and self.order_type == 'sale':
             result['domain'] = {'partner_id':[('customer','=',True)]}
-            
-        return result
         
-    order_type = fields.Selection([('sale','Regular Sale'),('con_order','Consignment Order'),
-                                   ('con_sale','Consignment Sales')], string = "Sale Order Type",
-                                   default='sale', required=True)
+        print("##### onchange_order_type [END] #####")
+        return result
     
     @api.multi
     def action_view_sale_consignment_products(self):
@@ -70,8 +87,7 @@ class sale_order_line(models.Model):
         if not consignent_location:
             return False
         
-        consignment_quants = 
-        self.env['stock.quant'].search([('location_id','=',consignent_location.id),
+        consignment_quants = self.env['stock.quant'].search([('location_id','=',consignent_location.id),
             ('product_id','=', self.product_id.id)])
         
         line_data = []
@@ -107,6 +123,8 @@ class sale_order_line(models.Model):
     @api.onchange('product_uom_qty', 'product_id')
     def _onchange_consignment_stock(self):
         print ("##### _onchange_consignment_stock [START] #####")
+        
+        print("##### SALE ORDER LINE OR SALE ORDER CHANGED #####")
         
         if self.product_id and self.order_id.order_type == 'con_sale':
             
