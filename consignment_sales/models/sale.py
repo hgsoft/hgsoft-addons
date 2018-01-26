@@ -57,23 +57,21 @@ class sale_order_line(models.Model):
 
     consignment_stock = fields.Float(string='Consignment Stock', compute='_compute_consignment_stock', store=True)
     
-    #
     @api.one
     @api.depends('product_id')
     def _compute_consignment_stock(self):
         print ("##### _compute_consignment_stock [START] #####")
         
         if not self.product_id:
-            print ("##### _compute_consignment_stock [A] #####")
             return
         
         consignent_location = self.order_id.partner_id.consignee_location_id
         
         if not consignent_location:
-            print ("##### _compute_consignment_stock [B] #####")
             return False
         
-        consignment_quants = self.env['stock.quant'].search([('location_id','=',consignent_location.id),
+        consignment_quants = 
+        self.env['stock.quant'].search([('location_id','=',consignent_location.id),
             ('product_id','=', self.product_id.id)])
         
         line_data = []
@@ -81,16 +79,12 @@ class sale_order_line(models.Model):
         product_qty = 0
         
         for each_quant in consignment_quants:
-            print ("##### _compute_consignment_stock [B] #####")
             product_qty += each_quant.quantity
 
         consignment_stock = product_qty
         
     print ("##### _compute_consignment_stock [END] #####")
-    #
-    
-    #####===TESTE===#####
-    #
+
     @api.onchange('product_id')
     def onchange_product(self):
         print ("##### onchange_product [START] #####")
@@ -106,29 +100,28 @@ class sale_order_line(models.Model):
 
             consignment_stock = product_qty
             
-            title = str(self.product_id.id) + " | " + str(self.order_id.partner_id.consignee_location_id.id)
-            
-            message = consignment_stock
-            
             self.consignment_stock = consignment_stock
             
             print ("##### onchange_product [END] #####")
-            
-    @api.onchange('price_unit')
+    
+    @api.onchange('product_uom_qty', 'product_id')
     def _onchange_consignment_stock(self):
         print ("##### _onchange_consignment_stock [START] #####")
         
         if self.product_id and self.order_id.order_type == 'con_sale':
-            stock = self.env.cr.execute("""SELECT consignment_stock stock, product_id product_id
-            FROM public.sale_order_line where product_id = {} and consignment_stock > 0;
-            """.format(self.product_id.id))
-             
-            consignment_stock = 0.0
-             
-            for x in self._cr.dictfetchall():
-                consignment_stock = x["stock"]
+            
+            consignment_quants = self.env['stock.quant'].search([('location_id','=',self.order_id.partner_id.consignee_location_id.id),
+                ('product_id','=', self.product_id.id)])
+            
+            product_qty = 0
+            
+            for each_quant in consignment_quants:
+                product_qty += each_quant.quantity
+
+            consignment_stock = product_qty
                 
             print ("##### _onchange_consignment_stock [END] #####")
+            
             if self.product_uom_qty > consignment_stock:
                 return {
                     'warning': {
