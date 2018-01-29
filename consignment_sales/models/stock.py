@@ -13,7 +13,7 @@ class StockQuantity(models.Model):
         if self.flag:
             self.flag = False
             
-            print ("##### stock.quant [START] #####")
+            print ("##### _onchange_quantity [START] #####")
             
             stock_quant_consignment = self.env.cr.execute("""select sol.id sol_id, pp.id p_id, sol.consignment_stock consig, sq.quantity qty, sq.location_id loc
         FROM sale_order_line sol
@@ -27,32 +27,26 @@ class StockQuantity(models.Model):
             
             sol_for_update = ''
             
-            print ("##### result query [START] #####")
-            
-            print ("##### stock.quant [END] #####")
-            
-            print ("##### update [START] #####")
-            
             sol_for_update = self.env['sale.order.line'].search([('id','=', x["sol_id"])])
             
             sol_for_update["consignment_stock"] = x["qty"]
             
-            print ("##### update [END] #####")
-        
         self.flag = True
+        
+        print ("##### _onchange_quantity [END] #####")
     
 class stock_location(models.Model):
     _inherit = 'stock.location'
 
-    consignee_id = fields.Many2one('res.partner','Consignee', readonly=True)
+    consignee_id = fields.Many2one('res.partner','Consignatário', readonly=True)
     
-    is_consignment = fields.Boolean('Consignment Location', readonly=True)
+    is_consignment = fields.Boolean('Local de Consignação', readonly=True)
 
     @api.one
     @api.constrains('consignee_id')
     def _check_internal_location(self):
         if self.consignee_id and self.usage != 'internal':
-            raise Warning(_('Um local de consignação deve ser internal'))
+            raise Warning(_('O local de consignação deve ser internal'))
 
 
 class StockMoves(models.Model):
@@ -67,12 +61,12 @@ class StockMoves(models.Model):
         if self.sale_line_id.order_id.order_type == 'con_sale':
             location_id = self.sale_line_id.order_id.partner_id.consignee_location_id
             
-            print("##### _update_reserved_quantity [END] #####")
-        
         if not lot_id:
             lot_id = self.env['stock.production.lot']
+
         if not package_id:
             package_id = self.env['stock.quant.package']
+
         if not owner_id:
             owner_id = self.env['res.partner']
 
@@ -103,6 +97,8 @@ class StockMoves(models.Model):
                         self.env['stock.move.line'].create(self._prepare_move_line_vals(quantity=1, reserved_quant=reserved_quant))
                 else:
                     self.env['stock.move.line'].create(self._prepare_move_line_vals(quantity=quantity, reserved_quant=reserved_quant))
+        
+        print("##### _update_reserved_quantity [END] #####")
         
         return taken_quantity
     

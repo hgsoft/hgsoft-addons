@@ -13,6 +13,5 @@ class product_template(models.Model):
             raise Warning(_('Este EAN já está em uso.'))
 
     ean13 = fields.Char('EAN13 Barcode', type='char')
-    author_id = fields.Many2one('res.partner', 'Author', domain=[('is_author','=',True)])
-    pages = fields.Integer('Pages')
-    
+    author_id = fields.Many2one('res.partner', 'Autor', domain=[('is_author','=',True)])
+    pages = fields.Integer('Páginas')

@@ -6,8 +6,8 @@ from odoo import models, fields, api
 class sale_order(models.Model):
     _inherit = 'sale.order'
 
-    order_type = fields.Selection([('sale','Regular Sale'),('con_order','Consignment Order'),
-    ('con_sale','Consignment Sales')], string = "Sale Order Type", default='sale', required=True)
+    order_type = fields.Selection([('sale','Venda Regular'),('con_order','Pedido Consignado'),
+    ('con_sale','Venda Consignada')], string = "Tipo de Venda/Pedido", default='sale', required=True)
     
     @api.onchange('order_type', 'partner_id')
     def onchange_order_type_partner(self):
@@ -21,9 +21,10 @@ class sale_order(models.Model):
             count += 1
         
         if count > 0:
-            result['warning'] = {'title': "Aviso!",'message': "Alterações no Cliente ou Order Type após inserir um produto, pode causar inconsistência nos dados."}
+            result['warning'] = {'title': "Aviso!",'message': "Alterações no Cliente ou Tipo de Venda/Pedido após inserir um produto, poderá causar inconsistência."}
         
         print("##### onchange_order_type_partner [END] #####")
+        
         return result
     
     @api.onchange('order_type')
@@ -41,12 +42,13 @@ class sale_order(models.Model):
                 if not partner['allow_consignment']:
                     result['value'] = {'partner_id':False}
                     
-                    result['warning'] = {'title': "Aviso!",'message': "Não é permitido realizar operações de consignação para este Partner."}
+                    result['warning'] = {'title': "Aviso!",'message': "Este Cliente não permite operações de consignação."}
                     
         elif self.order_type and self.order_type == 'sale':
             result['domain'] = {'partner_id':[('customer','=',True)]}
         
         print("##### onchange_order_type [END] #####")
+        
         return result
     
     @api.multi
@@ -72,7 +74,7 @@ class sale_order(models.Model):
 class sale_order_line(models.Model):
     _inherit = 'sale.order.line'
 
-    consignment_stock = fields.Float(string='Consignment Stock', compute='_compute_consignment_stock', store=True)
+    consignment_stock = fields.Float(string='Estoque em Consignação', compute='_compute_consignment_stock', store=True)
     
     @api.one
     @api.depends('product_id')
@@ -90,8 +92,6 @@ class sale_order_line(models.Model):
         consignment_quants = self.env['stock.quant'].search([('location_id','=',consignent_location.id),
             ('product_id','=', self.product_id.id)])
         
-        line_data = []
-        
         product_qty = 0
         
         for each_quant in consignment_quants:
@@ -106,9 +106,20 @@ class sale_order_line(models.Model):
         print ("##### onchange_product [START] #####")
         
         if self.product_id:
+            if self.order_id.order_type != 'sale' and self.product_id.product_tmpl_id.type != 'product':
+                result = {}
+        
+                result['value'] = {'product_id':False, 'name':False, 'product_uom_qty':1, 'price_unit':False, 'tax_id':False, 'price_subtotal':False}
+                
+                result['warning'] = {'title': "Aviso!",'message': "Este Tipo de Produto não é permitido em operações de consignação."}
+                
+                return result
+            
             consignment_quants = self.env['stock.quant'].search([('location_id','=',self.order_id.partner_id.consignee_location_id.id),
                 ('product_id','=', self.product_id.id)])
             
+            print("B")
+            print(self.product_id)
             product_qty = 0
             
             for each_quant in consignment_quants:
@@ -123,8 +134,6 @@ class sale_order_line(models.Model):
     @api.onchange('product_uom_qty', 'product_id')
     def _onchange_consignment_stock(self):
         print ("##### _onchange_consignment_stock [START] #####")
-        
-        print("##### SALE ORDER LINE OR SALE ORDER CHANGED #####")
         
         if self.product_id and self.order_id.order_type == 'con_sale':
             
@@ -143,8 +152,8 @@ class sale_order_line(models.Model):
             if self.product_uom_qty > consignment_stock:
                 return {
                     'warning': {
-                        'title': "Negativação - Consignment Sale",
-                        'message': "Esta Consignment Sale irá negativar o estoque atual de consignação para este produto.",
+                        'title': "Aviso!",
+                        'message': "Esta Venda Consignada irá negativar o estoque de consignação deste produto.",
                     },
                 }
         

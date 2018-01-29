@@ -1,51 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <data>
-        <!--  -->
-
         <record model="ir.actions.act_window" id="consignee_open_quants">
             <field name="context">{'search_default_productgroup': 1}</field>
             <field name="name">Consignment Stock</field>
             <field name="res_model">stock.quant</field>
         </record>
-<!-- 
-        <record model="ir.actions.act_window" id="location_open_quants">
-            <field name="context">{'search_default_productgroup': 1}</field>
-            <field name="domain">[('location_id', 'child_of', active_ids)]</field>
-            <field name="name">Current Stock</field>
-            <field name="res_model">stock.quant</field>
-        </record> -->
-
+        
         <record id="view_partner_form_inherit" model="ir.ui.view">
             <field name="name">res.partner.inherit.consignment</field>
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="base.view_partner_form"/>
             <field name="arch" type="xml">
-            
-            <!--
-                <xpath expr="//div[@name='buttons']" position="inside">
-            -->    
                 <xpath expr="//form/sheet/div[1]/button[@name='toggle_active']" position="after">
                     <button class="oe_stat_button" name="action_view_consignment_products" icon="fa-building-o"
-                            type="object" attrs="{'invisible':[('type', '=', 'service')]}" string="Consignment Stock">
+                            type="object" attrs="{'invisible':[('type', '=', 'service')]}" string="Estoque em Consignação">
                     </button>
                     <br/>
                 </xpath>
-                <!--  <button name="create_xls_consignment_report" type="object" string="Report Test"/> -->
-                    
-
                 <field name="company_id" position="after">
                     <field name="allow_consignment"/>
                     <field name="send_auto_email"/>
                     <field name="is_author"/>
                     <field name="consignee_location_id" readonly="1"/>
                 </field>
-
                 <page name="accounting" position="after">
-                    <page string="Report History" name="consignment_reports">
+                    <page string="Histórico de Relatórios" name="consignment_reports">
                         <group>
                             <field name="report_attachment_ids" readonly="1" nolabel="1">
-                                <tree string="Consignment Reports">
+                                <tree string="Relatório de Consignação">
                                     <field name="create_date"/>
                                     <field name="consignment_mode"/>
                                     <field name="datas_fname"/>
@@ -54,20 +37,14 @@
                         </group>
                     </page>
                 </page>
-
             </field>
         </record>
-
+        
         <record id="view_product_inherit_form" model="ir.ui.view">
             <field name="name">res.partner.inherit</field>
             <field name="model">product.template</field>
             <field name="inherit_id" ref="product.product_template_only_form_view"/>
             <field name="arch" type="xml">
-                <!--
-                <field name="ean13" position="replace">
-                    <field name="ean13" attrs="{'invisible': [('product_variant_count', '&gt;', 1)]}"/>
-                </field>
-                -->
                 <field name="barcode" position="replace">
                     <field name="barcode" attrs="{'invisible': [('product_variant_count', '&gt;', 1)]}"/>
                 </field>
@@ -79,9 +56,8 @@
         </record>
 
         <!-- Consignment Report Email Template -->
-
         <record id="email_template_partner_consignment_report" model="mail.template">
-            <field name="name">Consignment Quantity Report</field>
+            <field name="name">Relatório de Consignação</field>
             <field name="model_id" ref="base.model_res_partner"/>
             <field name="auto_delete" eval="False"/>
             <field name="email_from">${object.user_id.email|safe}</field>
@@ -92,7 +68,7 @@
 
     <p>Olá ${object.name},</p>
     <br/>
-    <p>Neste e-mail, há um relatório de consignação anexado. </p>
+    <p>Há um relatório de consignação anexado neste e-mail. </p>
     <br/>
     <p>Se você tiver alguma dúvida, não hesite em nos responder.</p>
     <br/>
@@ -138,7 +114,7 @@
         
         <!-- "Email Consignment Report" button in Customer -> More -->
         <act_window id="partner_consignment_action"
-            name="Email Consignment Report"
+            name="E-mail: Relatório de Consignação"
             src_model="res.partner"
             res_model="mail.compose.message"
             view_type="form" view_mode="form"
@@ -159,12 +135,6 @@
             <!-- <field name="context">{'mode':'manual'}</field> -->
             <field name="inherit_id" ref="base.view_attachment_form"/>
             <field name="arch" type="xml">
-                <!--
-                <field name="partner_id" position="after">
-                    <field name="consignment_partner_id"/>
-                    <field name="consignment_mode"/>
-                </field>
-                -->
                 <xpath expr="//form/sheet/group/group[2]" position="inside">
                     <field name="consignment_partner_id"/>
                     <field name="consignment_mode"/>
@@ -172,24 +142,9 @@
             </field>
         </record>
 
-
         <!-- CRON JOB FOR SENDING MAIL OF REPORT AUTOMATICALLY -->
-        <!--
         <record id="ir_cron_consignment_report_action" model="ir.cron">
-            <field name="name">Consignment Report</field>
-            <field name="interval_number">1</field>
-            <field name="interval_type">months</field>
-            <field name="numbercall">-1</field>
-            <field name="doall" eval="False"/>
-            <field name="model">res.partner</field>
-            <field name="model_id" ref="base.model_res_partner"/>
-            <field name="function">consignment_report_cron</field>
-            <field name="args">()</field>
-            <field name="user_id" ref="base.user_root" />
-        </record>
-        -->
-        <record id="ir_cron_consignment_report_action" model="ir.cron">
-            <field name="name">Consignment Report</field>
+            <field name="name">Consignment Sales: Relatório de Consignação</field>
             <field name="interval_number">1</field>
             <field name="interval_type">months</field>
             <field name="numbercall">-1</field>

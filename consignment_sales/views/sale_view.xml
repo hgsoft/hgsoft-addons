@@ -12,7 +12,7 @@
                 <xpath expr="//form/sheet/div[1]" position="inside">
                     <button class="oe_stat_button" name="action_view_sale_consignment_products" 
                             icon="fa-building-o"
-                            type="object" string="Consignment Stock">
+                            type="object" string="Estoque em Consignação">
                     </button>
                     <br/>
                 </xpath>

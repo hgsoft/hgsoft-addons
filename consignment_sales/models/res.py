@@ -9,15 +9,15 @@ from datetime import datetime
 class res_partner(models.Model):
     _inherit = 'res.partner'
 
-    allow_consignment = fields.Boolean("Allow Consignments")
+    allow_consignment = fields.Boolean("Permite Consignação")
 
-    is_author = fields.Boolean("Author", default=False)
+    is_author = fields.Boolean("Autor", default=False)
 
-    consignee_location_id = fields.Many2one('stock.location','Consignment Location')
+    consignee_location_id = fields.Many2one('stock.location','Local de Consignação')
 
-    report_attachment_ids = fields.One2many('ir.attachment','consignment_partner_id',string='Consignment Reports')
+    report_attachment_ids = fields.One2many('ir.attachment','consignment_partner_id',string='Relatórios de Consignação')
 
-    send_auto_email = fields.Boolean("Send Auto Report")
+    send_auto_email = fields.Boolean("Enviar Relatório Automático")
 
     @api.multi
     def create_consignee_location(self):
@@ -26,7 +26,7 @@ class res_partner(models.Model):
         default_vals = location_obj.default_get(location_obj.fields_get())
 
         location_vals = {'usage':'internal',
-                         'name': self.name+' Consignee Location',
+                         'name': self.name+' - Local de Consignação',
                          'consignee_id': self.id,
                          'is_consignment': True
                         }
@@ -59,8 +59,6 @@ class res_partner(models.Model):
     def action_view_consignment_products(self):
         self.ensure_one()
         
-        print ("##### action_view_consignment_products [START] #####")
-        
         imd = self.env['ir.model.data']
         
         list_view_id = imd.xmlid_to_res_id('stock.view_stock_quant_tree')
@@ -74,8 +72,6 @@ class res_partner(models.Model):
         action['context'] = {'search_default_internal_loc': 1, 'search_default_productgroup': 1}
         
         action['views'] = [[list_view_id, 'tree'], [form_view_id, 'form']]
-        
-        print ("##### action_view_consignment_products [END] #####")
         
         return action
 
@@ -133,7 +129,7 @@ class res_partner(models.Model):
         worksheet.write(5,0,datetime.now().strftime('%Y-%m-%d'))
         worksheet.write(7,7,'* Preencher e devolver')
         worksheet.write(8,0,"ISBN")
-        worksheet.write(8,1,"Titulo")
+        worksheet.write(8,1,"Título")
         worksheet.write(8,2,"Qde")
         worksheet.write(8,3,"Desc.")
         worksheet.write(8,4,"Valor c/ desc.")
@@ -157,6 +153,7 @@ class res_partner(models.Model):
         mode = 'manual'
         if self._context.get('mode') and self._context.get('mode') == 'auto':
             mode = 'auto'
+        
         attachment_vals = {'name': u'Relatório de Consignação.xlsx', 'res_model': 'mail.compose.message',
                            'res_id': 0, 'datas_fname': u'Relatório de Consignação', 
                            'type': 'binary', 'datas': file_data, 'consignment_partner_id': self.id,
@@ -164,6 +161,7 @@ class res_partner(models.Model):
         attachment_id = self.env['ir.attachment'].create(attachment_vals)
         
         print ("##### create_xls_consignment_report [END]] #####")
+        
         return attachment_id.id
     
     @api.model
@@ -178,7 +176,8 @@ class res_partner(models.Model):
             attachment_id = each_cst.with_context({'mode':'auto'}).create_xls_consignment_report()
         
             self.env['mail.template'].browse(template_id).send_mail(each_cst.id)
-            print ("##### consignment_report_cron [END] #####")
+        
+        print ("##### consignment_report_cron [END] #####")
             
 class mail_compose_message(models.TransientModel):
     _inherit = 'mail.compose.message'
@@ -201,9 +200,9 @@ class mail_compose_message(models.TransientModel):
 class ir_attachment(models.Model):
     _inherit = 'ir.attachment'
 
-    consignment_partner_id = fields.Many2one('res.partner','Report For', readonly=True)
+    consignment_partner_id = fields.Many2one('res.partner','Relatório para:', readonly=True)
     
-    consignment_mode = fields.Selection([('auto','Automatic'),('manual','Manual')], string="Create Mode")
+    consignment_mode = fields.Selection([('auto','Automatic'),('manual','Manual')], string="Modo de Criação")
     
     @api.model
     def create(self, vals):

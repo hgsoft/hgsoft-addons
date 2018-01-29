@@ -2,7 +2,7 @@
 
 ###############################################################################
 #                                                                             #
-# Copyright (C) 2017 HGSOFT - www.hgsoft.com.br                               #
+# Copyright (C) 2018 HGSOFT - www.hgsoft.com.br                               #
 #                                                                             #
 #This program is free software: you can redistribute it and/or modify         #
 #it under the terms of the GNU Affero General Public License as published by  #
@@ -29,7 +29,7 @@
     
     'website': "http://www.hgsoft.com.br/",
 
-    'category': 'Site',
+    'category': 'General',
     
     'version': '1.0',
 
