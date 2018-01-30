@@ -62,37 +62,13 @@
             <field name="model">account.invoice.line</field>
             <field name="inherit_id" ref="account.view_invoice_line_tree" />
             <field name="arch" type="xml">
-                <!--
-                <xpath expr="//tree" position="replace">
-                    <tree string="TESTE">
-                        <field name="account_id" groups="account.group_account_user"/>
-                        <field name="partner_id" string="Partner"/>
-                        <field name="origin" string="Origin"/>
-                        <field name="invoice_id" string="Invoice"/>
-                        <field name="cfop_code" string="CFOP"/>
-                        <field name="product_id" string="Product"/>
-                        <field name="state" string="State"/>
-                    </tree>
-                </xpath>
-                -->
-                
                 <xpath expr="//tree/field[1]" position="before">
-                
                     <field name="partner_id" string="Partner"/>
                     <field name="origin" string="Origin"/>
                     <field name="invoice_id" string="Invoice"/>
                     <field name="state" string="State"/>
                     <field name="fiscal_position" string="Fiscal Position"/>
-                    <field name="product_id" string="Product"/>
-                    
                 </xpath>
-                
-                <!--
-                partner_id, origin, invoice_id, cfop_id,
-                [VER] fiscal_position_id account.invoice,
-                product_id, name, price_unit, quantity, price_subtotal, state
-                -->
-                
             </field>
         </record>
         
@@ -100,11 +76,47 @@
             <field name="name">custom.account.invoice.select</field>
             <field name="model">account.invoice.line</field>
             <field name="arch" type="xml">
+                
                 <search string="Search Invoice">
                     
-                    <field name="origin" string="Origin"/>
+                    <filter name="pending" string="Pending" domain="[('state','=','pendente')]"/>
+                    <filter name="transmitted" string="Transmitted" domain="[('state','=','transmitido')]"/>
                     
-                </search>
+                    <separator/>
+                    
+                    <filter name="invoices" string="Invoices" domain="['&amp;', ('invoice_id.state','in',['draft','open','paid']),('invoice_id.type','in',('out_invoice','in_invoice'))]"/>
+                    
+                    <filter name="refunds" string="Credit Notes" domain="['&amp;', ('invoice_id.state','in',['draft','open','paid']),('invoice_id.type','in',('out_refund','in_refund'))]"/>
+                    
+                    <separator/>
+                    
+                    <filter name="unpaid" string="Not Paid" domain="[('invoice_id.state','=','open')]"/>
+                    <filter name="late" string="Overdue" domain="['&amp;', ('invoice_id.date_due', '&lt;', time.strftime('%%Y-%%m-%%d')), ('invoice_id.state', '=', 'open')]" help="Overdue invoices, maturity date passed"/>
+                    
+                    <separator/>
+                    
+                    <field name="partner_id" operator="child_of"/>
+                    
+                    <group expand="0" string="Group By">
+                        
+                        <filter name="group_by_partner_id" string="Partner" context="{'group_by':'partner_id'}"/>
+                        <!--
+                        <filter string="Salesperson" context="{'group_by':'invoice_id:user_id'}"/>
+                        
+                        <separator/>
+                        -->
+                        <filter name="status" string="Status" context="{'group_by':'state'}"/>
+                        <!--
+                        <filter string="Invoice Date" context="{'group_by':'invoice_id:date_invoice'}"/>
+                        
+                        <filter string="Due Date" context="{'group_by':'invoice_id:date_due'}"/>
+                        
+                        <filter string="Fiscal Position" context="{'group_by':'fiscal_position'}"/>
+                        -->
+                        <filter string="CFOP" context="{'group_by':'cfop_id'}"/>
+                        
+                    </group>
+               </search>
                 
             </field>
         </record>
