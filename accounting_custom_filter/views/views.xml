@@ -13,7 +13,7 @@
         </field>
         </record>
         -->
-        
+        <!--
         <record id="custom_view_account_invoice_filter" model="ir.ui.view">
             <field name="name">custom.account.invoice.select</field>
             <field name="model">account.invoice</field>
@@ -56,7 +56,60 @@
                </search>
             </field>
         </record>
+        -->
+         <record id="custom_view_account_invoice_tree" model="ir.ui.view">
+            <field name="name">custom.account.invoice.tree</field>
+            <field name="model">account.invoice.line</field>
+            <field name="inherit_id" ref="account.view_invoice_line_tree" />
+            <field name="arch" type="xml">
+                <!--
+                <xpath expr="//tree" position="replace">
+                    <tree string="TESTE">
+                        <field name="account_id" groups="account.group_account_user"/>
+                        <field name="partner_id" string="Partner"/>
+                        <field name="origin" string="Origin"/>
+                        <field name="invoice_id" string="Invoice"/>
+                        <field name="cfop_code" string="CFOP"/>
+                        <field name="product_id" string="Product"/>
+                        <field name="state" string="State"/>
+                    </tree>
+                </xpath>
+                -->
+                
+                <xpath expr="//tree/field[1]" position="before">
+                
+                    <field name="partner_id" string="Partner"/>
+                    <field name="origin" string="Origin"/>
+                    <field name="invoice_id" string="Invoice"/>
+                    <field name="state" string="State"/>
+                    <field name="fiscal_position" string="Fiscal Position"/>
+                    <field name="product_id" string="Product"/>
+                    
+                </xpath>
+                
+                <!--
+                partner_id, origin, invoice_id, cfop_id,
+                [VER] fiscal_position_id account.invoice,
+                product_id, name, price_unit, quantity, price_subtotal, state
+                -->
+                
+            </field>
+        </record>
+        
+        <record id="custom_view_account_invoice_filter" model="ir.ui.view">
+            <field name="name">custom.account.invoice.select</field>
+            <field name="model">account.invoice.line</field>
+            <field name="arch" type="xml">
+                <search string="Search Invoice">
+                    
+                    <field name="origin" string="Origin"/>
+                    
+                </search>
+                
+            </field>
+        </record>
 
+        <!--
         <record id="custom_view_account_invoice_filter_inherit_invoices" model="ir.ui.view">
             <field name="name">custom.account.invoice.select.invoices</field>
             <field name="model">account.invoice</field>
@@ -71,7 +124,19 @@
                 </data>
             </field>
         </record>
-        
+        -->
+        <!--
+        <record id="custom_view_account_invoice_filter_inherit_invoices" model="ir.ui.view">
+            <field name="name">custom.account.invoice.select.invoices</field>
+            <field name="model">account.invoice.line</field>
+            <field name="mode">primary</field>
+            <field name="inherit_id" ref="custom_view_account_invoice_filter"/>
+            <field name="arch" type="xml">
+            
+            </field>
+        </record>
+        -->
+        <!--
         <record id="custom_action_invoice_tree1" model="ir.actions.act_window">
             <field name="name">Custom Customer Invoices</field>
             <field name="res_model">account.invoice</field>
@@ -95,22 +160,35 @@
               </p>
             </field>
         </record>
-                
+        -->        
+        
+        <record id="custom_action_invoice_tree1" model="ir.actions.act_window">
+            <field name="name">Custom Customer Invoices</field>
+            <field name="res_model">account.invoice.line</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field eval="False" name="view_id"/>
+            <field name="search_view_id" ref="custom_view_account_invoice_filter"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to create a customer invoice.
+              </p><p>
+                Odoo's electronic invoicing allows to ease and fasten the
+                collection of customer payments. Your customer receives the
+                invoice by email and he can pay online and/or import it
+                in his own system.
+              </p><p>
+                The discussions with your customer are automatically displayed at
+                the bottom of each invoice.
+              </p>
+            </field>
+        </record>
+        
         <menuitem id="teste"
         name="TESTE"
         action="custom_action_invoice_tree1"
         parent="account.menu_finance_receivables_documents"
         sequence="30"/>
-        
-        <!--
-        
-        <menuitem id="royalties_invoice_report"
-        name="Royalties"
-        action="action_invoice_royalties_report_all"
-        parent="account.account_reports_management_menu"
-        sequence="19"/>
-        
-        -->
             
     </data>
 </odoo>
