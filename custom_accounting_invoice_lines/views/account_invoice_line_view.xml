@@ -63,6 +63,7 @@
             <field name="inherit_id" ref="account.view_invoice_line_tree" />
             <field name="arch" type="xml">
                 <xpath expr="//tree/field[1]" position="before">
+                    <field name="product_serie" string="Series"/>
                     <field name="partner_id" string="Partner"/>
                     <field name="origin" string="Origin"/>
                     <field name="invoice_id" string="Invoice"/>
@@ -116,6 +117,8 @@
                         <filter string="CFOP" context="{'group_by':'code'}"/>
                         
                         <filter string="Fiscal Position" context="{'group_by':'fiscal_position'}"/>
+                        
+                        <filter string="Series" context="{'group_by':'product_serie'}"/>
                         
                     </group>
                </search>
@@ -210,8 +213,8 @@
         </record>
         -->
         
-        <menuitem id="teste"
-        name="TESTE"
+        <menuitem id="Invoice Lines"
+        name="Invoice Lines"
         action="custom_action_invoice_tree1"
         parent="account.menu_finance_receivables_documents"
         sequence="30"/>

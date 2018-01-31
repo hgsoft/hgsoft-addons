@@ -14,7 +14,13 @@ class customAccountInvoice(models.Model):
     
     code = fields.Char('CFOP', compute='_compute_group_by_vars', store=True)
     
-    fiscal_position = fields.Char('Fiscal Position', compute='_compute_group_by_vars', store=True) 
+    fiscal_position = fields.Char('Fiscal Position', compute='_compute_group_by_vars', store=True)
+    
+    ###
+    
+    #product_document_id = fields.Char('Fiscal Position', compute='_compute_group_by_vars', store=True) 
+    
+    product_serie = fields.Char('Series', compute='_compute_group_by_vars', store=True) 
     
     @api.one
     def _compute_group_by_vars(self):
@@ -23,6 +29,8 @@ class customAccountInvoice(models.Model):
         self.code = self.cfop_id.code
         
         self.fiscal_position = self.invoice_id.fiscal_position_id.name
+        
+        self.product_serie = self.invoice_id.product_serie_id.name
         
         print ("##### _compute_group_by_vars [END] #####")
 

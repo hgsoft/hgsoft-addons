@@ -1,0 +1,146 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* custom_accounting_invoice_lines
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 11.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-01-31 20:11+0000\n"
+"PO-Revision-Date: 2018-01-31 20:11+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: custom_accounting_invoice_lines
+#: model:ir.model.fields,field_description:custom_accounting_invoice_lines.field_account_invoice_line_code
+#: model:ir.ui.view,arch_db:custom_accounting_invoice_lines.custom_view_account_invoice_filter
+msgid "CFOP"
+msgstr "CFOP"
+
+#. module: custom_accounting_invoice_lines
+#: model:ir.actions.act_window,help:custom_accounting_invoice_lines.custom_action_invoice_tree1
+msgid "Click to create a customer invoice."
+msgstr "Clique para criar uma fatura de cliente."
+
+#. module: custom_accounting_invoice_lines
+#: model:ir.ui.view,arch_db:custom_accounting_invoice_lines.custom_view_account_invoice_filter
+msgid "Credit Notes"
+msgstr "Notas de crédito"
+
+#. module: custom_accounting_invoice_lines
+#: model:ir.actions.act_window,name:custom_accounting_invoice_lines.custom_action_invoice_tree1
+msgid "Custom Customer Invoices"
+msgstr "Facturas personalizadas do cliente"
+
+#. module: custom_accounting_invoice_lines
+#: model:ir.model.fields,field_description:custom_accounting_invoice_lines.field_account_invoice_line_fiscal_position
+#: model:ir.ui.view,arch_db:custom_accounting_invoice_lines.custom_view_account_invoice_filter
+#: model:ir.ui.view,arch_db:custom_accounting_invoice_lines.custom_view_account_invoice_tree
+msgid "Fiscal Position"
+msgstr "Posição Fiscal"
+
+#. module: custom_accounting_invoice_lines
+#: model:ir.ui.view,arch_db:custom_accounting_invoice_lines.custom_view_account_invoice_filter
+msgid "Group By"
+msgstr "Agrupar Por"
+
+#. module: custom_accounting_invoice_lines
+#: model:ir.ui.view,arch_db:custom_accounting_invoice_lines.custom_view_account_invoice_tree
+msgid "Invoice"
+msgstr "Fatura"
+
+#. module: custom_accounting_invoice_lines
+#: model:ir.model,name:custom_accounting_invoice_lines.model_account_invoice_line
+msgid "Invoice Line"
+msgstr "Linha da Fatura"
+
+#. module: custom_accounting_invoice_lines
+#: model:ir.ui.menu,name:custom_accounting_invoice_lines.Invoice Lines
+msgid "Invoice Lines"
+msgstr "Linhas da fatura"
+
+#. module: custom_accounting_invoice_lines
+#: model:ir.ui.view,arch_db:custom_accounting_invoice_lines.custom_view_account_invoice_filter
+msgid "Invoices"
+msgstr "Faturas"
+
+#. module: custom_accounting_invoice_lines
+#: model:ir.ui.view,arch_db:custom_accounting_invoice_lines.custom_view_account_invoice_filter
+msgid "Not Paid"
+msgstr "Não Pago"
+
+#. module: custom_accounting_invoice_lines
+#: model:ir.actions.act_window,help:custom_accounting_invoice_lines.custom_action_invoice_tree1
+msgid "Odoo's electronic invoicing allows to ease and fasten the\n"
+"                collection of customer payments. Your customer receives the\n"
+"                invoice by email and he can pay online and/or import it\n"
+"                in his own system."
+msgstr "Faturamento eletrônico do Odoo permite facilitar e acelerar a\n"
+"coleção de pagamentos de clientes. Seu cliente recebe a\n"
+"fatura por e-mail e ele pode pagar on-line e/ou importá-la\n"
+"em seu próprio sistema."
+
+#. module: custom_accounting_invoice_lines
+#: model:ir.ui.view,arch_db:custom_accounting_invoice_lines.custom_view_account_invoice_tree
+msgid "Origin"
+msgstr "Origem"
+
+#. module: custom_accounting_invoice_lines
+#: model:ir.ui.view,arch_db:custom_accounting_invoice_lines.custom_view_account_invoice_filter
+msgid "Overdue"
+msgstr "Vencido"
+
+#. module: custom_accounting_invoice_lines
+#: model:ir.ui.view,arch_db:custom_accounting_invoice_lines.custom_view_account_invoice_filter
+msgid "Overdue invoices, maturity date passed"
+msgstr "Faturas em atraso, data de vencimento passou"
+
+#. module: custom_accounting_invoice_lines
+#: model:ir.ui.view,arch_db:custom_accounting_invoice_lines.custom_view_account_invoice_filter
+#: model:ir.ui.view,arch_db:custom_accounting_invoice_lines.custom_view_account_invoice_tree
+msgid "Partner"
+msgstr "Cliente"
+
+#. module: custom_accounting_invoice_lines
+#: model:ir.ui.view,arch_db:custom_accounting_invoice_lines.custom_view_account_invoice_filter
+msgid "Pending"
+msgstr "Pendente"
+
+#. module: custom_accounting_invoice_lines
+#: model:ir.ui.view,arch_db:custom_accounting_invoice_lines.custom_view_account_invoice_filter
+msgid "Search Invoice"
+msgstr "Procurar Fatura"
+
+#. module: custom_accounting_invoice_lines
+#: model:ir.model.fields,field_description:custom_accounting_invoice_lines.field_account_invoice_line_product_serie
+#: model:ir.ui.view,arch_db:custom_accounting_invoice_lines.custom_view_account_invoice_filter
+#: model:ir.ui.view,arch_db:custom_accounting_invoice_lines.custom_view_account_invoice_tree
+msgid "Series"
+msgstr "Série"
+
+#. module: custom_accounting_invoice_lines
+#: model:ir.ui.view,arch_db:custom_accounting_invoice_lines.custom_view_account_invoice_tree
+msgid "State"
+msgstr "Situação"
+
+#. module: custom_accounting_invoice_lines
+#: model:ir.ui.view,arch_db:custom_accounting_invoice_lines.custom_view_account_invoice_filter
+msgid "Status"
+msgstr "Situação"
+
+#. module: custom_accounting_invoice_lines
+#: model:ir.actions.act_window,help:custom_accounting_invoice_lines.custom_action_invoice_tree1
+msgid "The discussions with your customer are automatically displayed at\n"
+"                the bottom of each invoice."
+msgstr "As discussões com o seu cliente são exibidas automaticamente na\n"
+"parte inferior de cada fatura."
+
+#. module: custom_accounting_invoice_lines
+#: model:ir.ui.view,arch_db:custom_accounting_invoice_lines.custom_view_account_invoice_filter
+msgid "Transmitted"
+msgstr "Transmitido"
+
