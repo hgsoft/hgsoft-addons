@@ -7,18 +7,33 @@
             <field name="inherit_id" ref="br_account_payment.view_payments_tree_a_receber" />
             <field name="arch" type="xml">
                 <xpath expr="//tree/field[1]" position="before">
-                    <field name="partner_id" string="Nº NF"/>
+                    <field name="numberNF" string="Number NF"/>
                 </xpath>
             </field>
         </record>
         
-         <record id="custom_view_account_invoice_tree" model="ir.ui.view">
+        <record id="custom_view_payments_tree_a_receber_filter" model="ir.ui.view">
+            <field name="name">custom.account.move.line.select</field>
+            <field name="model">account.move.line</field>
+            <field name="inherit_id" ref="br_account_payment.view_payments_filter" />
+            <field name="arch" type="xml">
+                <xpath expr="//search/group" position="inside">
+                    <filter string="Number NF" context="{'group_by':'numberNF'}"/>
+                </xpath>
+            </field>
+        </record>
+        
+        <record id="custom_view_account_invoice_tree" model="ir.ui.view">
             <field name="name">custom.account.invoice.tree</field>
             <field name="model">account.invoice.line</field>
             <field name="inherit_id" ref="account.view_invoice_line_tree" />
             <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="create">false</attribute>
+                </xpath>
                 <xpath expr="//tree/field[1]" position="before">
-                    <field name="product_serie" string="Series"/>
+                    <field name="numberNF" string="Number NF"/>
+                    <field name="modelNF" string="Model"/>
                     <field name="partner_id" string="Partner"/>
                     <field name="origin" string="Origin"/>
                     <field name="invoice_id" string="Invoice"/>
@@ -44,11 +59,12 @@
                     <separator/>
                     <field name="partner_id" operator="child_of"/>
                     <group expand="0" string="Group By">
+                        <filter string="Number NF" context="{'group_by':'numberNF'}"/>
+                        <filter string="Model NF" context="{'group_by':'modelNF'}"/>
                         <filter name="group_by_partner_id" string="Partner" context="{'group_by':'partner_id'}"/>
-                        <filter name="status" string="Status" context="{'group_by':'state'}"/>
                         <filter string="CFOP" context="{'group_by':'code'}"/>
                         <filter string="Fiscal Position" context="{'group_by':'fiscal_position'}"/>
-                        <filter string="Series" context="{'group_by':'product_serie'}"/>
+                        <filter name="status" string="Status" context="{'group_by':'state'}"/>
                     </group>
                </search>
             </field>
