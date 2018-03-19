@@ -7,7 +7,7 @@ class customInvoiceEletronic(models.Model):
     
     @api.multi
     def create(self, vals):
-        print ("##### create [START] #####")
+        #print ("##### create [START] #####")
         
         new_invoice_eletronic = super(customInvoiceEletronic, self).create(vals)
         
@@ -19,7 +19,7 @@ class customInvoiceEletronic(models.Model):
         
         aml._update_values()
         
-        print ("##### create [END] #####")
+        #print ("##### create [END] #####")
         
         return new_invoice_eletronic
 
@@ -39,17 +39,17 @@ class customAccountInvoice(models.Model):
     
     @api.one
     def _compute_inicial_fields(self):
-        print ("##### _compute_inicial_fields [START] #####")
+        #print ("##### _compute_inicial_fields [START] #####")
         
         self._update_values()
         
         self.on_install = 'done'
         
-        print ("##### _compute_inicial_fields [END] #####")
+        #print ("##### _compute_inicial_fields [END] #####")
     
     @api.multi
     def create(self, vals):
-        print ("##### create [START] #####")
+        #print ("##### create [START] #####")
         
         new_ail = super(customAccountInvoice, self).create(vals)
         
@@ -59,13 +59,13 @@ class customAccountInvoice(models.Model):
 
         super(customAccountInvoice, new_ail).write(vals)
         
-        print ("##### create [END] #####")
+        #print ("##### create [END] #####")
         
         return new_ail
     
     @api.one
     def _update_dict(self, vals):
-        print ("##### _update_dict [START] #####")
+        #print ("##### _update_dict [START] #####")
         
         eletronic_invoice = self.env['invoice.eletronic'].search([('invoice_id','=', self.invoice_id.id)])
         
@@ -83,11 +83,11 @@ class customAccountInvoice(models.Model):
         
         vals['code'] = cfop.code
                
-        print ("##### _update_dict [END] #####")
+        #print ("##### _update_dict [END] #####")
     
     @api.one
     def _update_values(self):
-        print ("##### _update_values [START] #####")
+        #print ("##### _update_values [START] #####")
                
         ail = self.env['account.invoice.line'].search([('id','!=', False)])
         
@@ -98,7 +98,7 @@ class customAccountInvoice(models.Model):
             
             super(customAccountInvoice, line).write(vals)
                
-        print ("##### _update_values [END] #####")
+        #print ("##### _update_values [END] #####")
     
 class customAccountMove(models.Model):
     
@@ -110,17 +110,17 @@ class customAccountMove(models.Model):
     
     @api.one
     def _compute_inicial_fields(self):
-        print ("##### _compute_inicial_fields [START] #####")
+        #print ("##### _compute_inicial_fields [START] #####")
         
         self._update_values()
         
         self.on_install = 'done'
         
-        print ("##### _compute_inicial_fields [END] #####")
+        #print ("##### _compute_inicial_fields [END] #####")
     
     @api.multi
     def create(self, vals):
-        print ("##### create [START] #####")
+        #print ("##### create [START] #####")
         
         new_aml = super(customAccountMove, self).create(vals)
         
@@ -130,13 +130,13 @@ class customAccountMove(models.Model):
                 
         super(customAccountMove, new_aml).write(vals)
         
-        print ("##### create [END] #####")
+        #print ("##### create [END] #####")
         
         return new_aml
     
     @api.one
     def _update_dict(self, vals):
-        print ("##### _update_dict [START] #####")
+        #print ("##### _update_dict [START] #####")
                
         eletronic_invoice = self.env['invoice.eletronic'].search([('invoice_id','=', self.invoice_id.id)])
         
@@ -145,11 +145,11 @@ class customAccountMove(models.Model):
         else:
             vals['numberNF'] = eletronic_invoice.numero
         
-        print ("##### _update_dict [END] #####")
+        #print ("##### _update_dict [END] #####")
     
     @api.one
     def _update_values(self):
-        print ("##### _update_values [START] #####")
+        #print ("##### _update_values [START] #####")
                
         aml = self.env['account.move.line'].search([('id','!=', self.id)])
         
@@ -160,4 +160,4 @@ class customAccountMove(models.Model):
             
             super(customAccountMove, line).write(vals)
                
-        print ("##### _update_values [END] #####")
+        #print ("##### _update_values [END] #####")
