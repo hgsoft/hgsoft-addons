@@ -71,7 +71,7 @@
         </record>
         
         <record id="custom_action_invoice_tree1" model="ir.actions.act_window">
-            <field name="name">Custom Invoice Lines</field>
+            <field name="name">Detalhes da Fatura</field>
             <field name="res_model">account.invoice.line</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
@@ -92,8 +92,8 @@
             </field>
         </record>
         
-        <menuitem id="Linhas Customizadas da Fatura"
-        name="Linhas Customizadas da Fatura"
+        <menuitem id="Detalhes da Fatura"
+        name="Detalhes da Fatura"
         action="custom_action_invoice_tree1"
         parent="account.menu_finance_receivables_documents"
         sequence="30"/>
