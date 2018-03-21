@@ -1,60 +1,98 @@
 <odoo>
-  <data>
-    <!-- explicit list view definition -->
-    <!--
-    <record model="ir.ui.view" id="shop_batch_sales.list">
-      <field name="name">shop_batch_sales list</field>
-      <field name="model">shop_batch_sales.shop_batch_sales</field>
-      <field name="arch" type="xml">
-        <tree>
-          <field name="name"/>
-          <field name="value"/>
-          <field name="value2"/>
-        </tree>
-      </field>
-    </record>
-    -->
-
-    <!-- actions opening views on models -->
-    <!--
-    <record model="ir.actions.act_window" id="shop_batch_sales.action_window">
-      <field name="name">shop_batch_sales window</field>
-      <field name="res_model">shop_batch_sales.shop_batch_sales</field>
-      <field name="view_mode">tree,form</field>
-    </record>
-    -->
-
-    <!-- server action to the one above -->
-    <!--
-    <record model="ir.actions.server" id="shop_batch_sales.action_server">
-      <field name="name">shop_batch_sales server</field>
-      <field name="model_id" ref="model_shop_batch_sales_shop_batch_sales"/>
-      <field name="state">code</field>
-      <field name="code">
-        action = {
-          "type": "ir.actions.act_window",
-          "view_mode": "tree,form",
-          "res_model": self._name,
-        }
-      </field>
-    </record>
-    -->
-
-    <!-- Top menu item -->
-    <!--
-    <menuitem name="shop_batch_sales" id="shop_batch_sales.menu_root"/>
-    -->
-    <!-- menu categories -->
-    <!--
-    <menuitem name="Menu 1" id="shop_batch_sales.menu_1" parent="shop_batch_sales.menu_root"/>
-    <menuitem name="Menu 2" id="shop_batch_sales.menu_2" parent="shop_batch_sales.menu_root"/>
-    -->
-    <!-- actions -->
-    <!--
-    <menuitem name="List" id="shop_batch_sales.menu_1_list" parent="shop_batch_sales.menu_1"
-              action="shop_batch_sales.action_window"/>
-    <menuitem name="Server to list" id="shop_batch_sales" parent="shop_batch_sales.menu_2"
-              action="shop_batch_sales.action_server"/>
-    -->
-  </data>
+    <data>
+        
+        <!---->
+        
+        <template id="shop_batch_sales_grid" inherit_id="website_sale.variants" name="Shop Batch Sales - Grid">
+            <xpath expr="//ul" position="replace">
+                <t t-set="attribute_value_ids" t-value="get_attribute_value_ids(product)"/>
+                <ul t-attf-class="list-unstyled js_add_cart_variants #{ul_class}" t-att-data-attribute_value_ids="attribute_value_ids">
+                    <table class="table">
+                        <t t-foreach="product.attribute_line_ids.sorted(key=lambda x: x.attribute_id.sequence)" t-as="variant_id">
+                            <li t-if="len(variant_id.value_ids) &gt; 1">
+                                <t t-if="variant_id.attribute_id.type == 'color'">
+                                    <ul class="list-inline">
+                                    <t t-set="inc" t-value="0"/>
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th scope="col">Cor</th>
+                                                <li t-foreach="variant_id.value_ids" t-as="value_id">
+                                                    <th scope="col">
+                                                        <label t-attf-style="background-color:#{value_id.html_color or value_id.name}" 
+                                                            t-attf-class="css_attribute_color #{'active' if not inc else ''}">
+                                                        <input type="radio" t-att-class="'js_variant_change' if variant_id.attribute_id.create_variant else None" 
+                                                            t-att-checked="'checked' if not inc else None" t-att-name="'attribute-%s-%s' % (product.id, variant_id.attribute_id.id)" t-att-value="value_id.id" t-att-title="value_id.name"/>
+                                                        </label>
+                                                        <t t-set="inc" t-value="inc+1"/>
+                                                    </th>
+                                                </li>
+                                            </tr>
+                                        </thead>
+                                    </ul>
+                                </t>
+                                <t t-if="variant_id.attribute_id.type == 'radio'">
+                                    <ul class="list-unstyled">
+                                    <t t-set="inc" t-value="0"/>
+                                        <tbody>
+                                            <tr>
+                                            <th scope="row">Tamanho</th>
+                                                <t t-foreach="variant_id.value_ids" t-as="value_id">
+                                                    <li class="form-group js_attribute_value" style="margin: 0;">
+                                                        <tr>
+                                                            <th id="rows_tam" scope="row">
+                                                                <label class="control-label" style="margin: 0 20px;">
+                                                                    <input type="radio" t-att-class="'js_variant_change' if variant_id.attribute_id.create_variant else None" 
+                                                                        t-att-checked="'checked' if not inc else None" t-att-name="'attribute-%s-%s' % (product.id, variant_id.attribute_id.id)" t-att-value="value_id.id" 
+                                                                        style="vertical-align: top; margin-right: 10px;"/>
+                                                                    <span t-field="value_id.name"/>
+                                                                        <span class="badge" t-if="value_id.price_extra">
+                                                                        <t t-esc="value_id.price_extra &gt; 0 and '+' or ''"/>
+                                                                        <span t-field="value_id.price_extra" style="white-space: nowrap;" t-options="{                                                                 &quot;widget&quot;: &quot;monetary&quot;,                                                                 &quot;from_currency&quot;: product.currency_id,                                                                 &quot;display_currency&quot;: website.currency_id                                                             }"/>
+                                                                    </span>
+                                                                </label>
+                                                            </th>       
+                                                        </tr>
+                                                    </li>
+                                                <t t-set="inc" t-value="inc+1"/>
+                                                </t>
+                                            </tr>
+                                        </tbody>
+                                    </ul>
+                                </t>
+                            </li>
+                        </t>
+                    </table>
+                </ul>
+            </xpath>
+        </template>
+        
+        <!---->
+        
+        <template id="shop_batch_sales_grid_inputs" inherit_id="shop_batch_sales.shop_batch_sales_grid" name="Shop Batch Sales - Grid Inputs">
+            <xpath expr="//th[@id='rows_tam']" position="inside">
+                <t t-set="attribute_value_ids" t-value="get_attribute_value_ids(product)"/>
+                <ul t-attf-class="list-unstyled js_add_cart_variants #{ul_class}" t-att-data-attribute_value_ids="attribute_value_ids">
+                    <t t-foreach="product.attribute_line_ids.sorted(key=lambda x: x.attribute_id.sequence)" t-as="variant_id">
+                        <li t-if="len(variant_id.value_ids) &gt; 1">
+                            <t t-if="variant_id.attribute_id.type == 'color'">
+                                <ul class="list-inline">
+                                <t t-set="inc" t-value="0"/>
+                                    <li t-foreach="variant_id.value_ids" t-as="value_id">
+                                        <th>
+                                            <label>
+                                                INPUT
+                                            </label>
+                                        </th>
+                                    </li>
+                                </ul>
+                            </t>
+                        </li>
+                    </t>
+                </ul>
+            </xpath>
+        </template>
+        
+        <!---->
+        
+    </data>
 </odoo>
