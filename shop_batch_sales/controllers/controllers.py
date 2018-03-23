@@ -18,6 +18,10 @@ class WebsiteSale(WebsiteSale.WebsiteSale):
         
         print(" ##### CONTROLLER OVERRIDE #####")
 
+        print("Quantidade: " + str(add_qty))
+
+        print("product_id: " + product_id)
+
         if isinstance(product_id, int):
             request.website.sale_get_order(force_create=1)._cart_update(
                 product_id=int(product_id),

@@ -8,12 +8,13 @@
             </xpath>    
         </template>
         -->
+        <!--
         <template id="assets_website_sale_inherit" inherit_id="website_sale.assets_frontend" name="Website Sale Inherit">
             <xpath expr="//script[@src='/website_sale/static/src/js/website_sale_tracking.js']" position="replace">
                 <script type='text/javascript' src='/shop_batch_sales/static/src/js/scripts.js'></script>
             </xpath>
         </template>
-        
+        -->
         <!--
             <template id="assets_frontend" inherit_id="website.assets_frontend" name="Shop">
     
