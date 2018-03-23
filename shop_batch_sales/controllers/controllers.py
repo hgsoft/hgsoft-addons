@@ -16,8 +16,8 @@ class WebsiteSale(WebsiteSale.WebsiteSale):
     @http.route(['/shop/cart/update'], type='http', auth="public", methods=['POST'], website=True, csrf=False)
     def cart_update(self, product_id, add_qty=1, set_qty=0, **kw):
         
-        print(" ##### CONTROLLER OVERRIDE #####")
-
+        print("##### WebsiteSale - [START] #####")
+        
         print("Quantidade: " + str(add_qty))
 
         print("product_id: " + product_id)
@@ -30,9 +30,27 @@ class WebsiteSale(WebsiteSale.WebsiteSale):
                 attributes=self._filter_attributes(**kw),
             )
         else:
-            product_ids = re.sub('[^0-9,]','', product_id).split(",")
+            grid_values = product_id
             
-            for x in product_ids:
+            grid_values = grid_values.split("|");
+            
+            product_list = re.sub('[^0-9,]','', grid_values[0]).split(",")
+            
+            product_qty_list = grid_values[1].split("#");
+            
+            del product_qty_list[0]
+            
+            for x in range(len(product_list)):
+                if int(product_qty_list[x]) > 0:
+                    request.website.sale_get_order(force_create=1)._cart_update(
+                        product_id=int(product_list[x]),
+                        add_qty=int(product_qty_list[x]),
+                        set_qty=set_qty,
+                        attributes=self._filter_attributes(**kw),
+                    )
+                
+            '''
+            for x in product_list:
                 print(x)
                 request.website.sale_get_order(force_create=1)._cart_update(
                     product_id=int(x),
@@ -40,7 +58,9 @@ class WebsiteSale(WebsiteSale.WebsiteSale):
                     set_qty=set_qty,
                     attributes=self._filter_attributes(**kw),
                 )
+            '''
         
+        print("##### WebsiteSale - [END] #####")
         
         return request.redirect("/shop/cart")
 

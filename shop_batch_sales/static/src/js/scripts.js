@@ -8,7 +8,7 @@ function addQtyList() {
     var final_value;
     
     for(var i = 0; i < inputs_qty.length; i++){
-        full_list += $(inputs_qty[i]).val();
+        full_list += "#" + $(inputs_qty[i]).val();
     }
     
     final_value = value + "|" + full_list;
