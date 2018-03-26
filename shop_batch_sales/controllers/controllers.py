@@ -22,6 +22,8 @@ class WebsiteSale(WebsiteSale.WebsiteSale):
 
         print("product_id: " + product_id)
 
+        #product_id = int(product_id)
+
         if isinstance(product_id, int):
             request.website.sale_get_order(force_create=1)._cart_update(
                 product_id=int(product_id),
@@ -34,17 +36,47 @@ class WebsiteSale(WebsiteSale.WebsiteSale):
             
             grid_values = grid_values.split("|");
             
-            product_list = re.sub('[^0-9,]','', grid_values[0]).split(",")
+            #product_list = re.sub('[^0-9,]','', grid_values[0]).split(",")
+            
+            product_list = grid_values[0].split("#")
+            
+            del product_list[0]
             
             product_qty_list = grid_values[1].split("#");
             
             del product_qty_list[0]
+            
+            #####
+            print("##### NEW LOGIC #####")
+            '''
+            qty_col = int(grid_values[2])
+            qty_row = int(grid_values[3])
+
+            size=qty_col
+            custom_list = [product_qty_list[i:i+size] for i  in range(0, len(product_qty_list), size)]
+            print(custom_list)
+            #print(custom_list[0][1])
+            #for x in custom_list:
+
+            final_list = []
+
+            for y in range(0, qty_col):
+                for x in custom_list:
+                    print(x[y])
+                    final_list.append(int(x[y]))
+                    #print(y)
+                    
+            print(final_list)
+            '''
+            print("##### NEW LOGIC #####")
+            #####
             
             for x in range(len(product_list)):
                 if int(product_qty_list[x]) > 0:
                     request.website.sale_get_order(force_create=1)._cart_update(
                         product_id=int(product_list[x]),
                         add_qty=int(product_qty_list[x]),
+                        #add_qty=int(final_list[x]) or int(product_qty_list[x]),
                         set_qty=set_qty,
                         attributes=self._filter_attributes(**kw),
                     )
