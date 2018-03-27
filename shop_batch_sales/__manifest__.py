@@ -31,10 +31,9 @@
     
     'version': '1.0',
 
-    'depends': ['base'],
+    'depends': ['base', 'website_sale'],
 
     'data': [
-        'views/views.xml',
         'views/templates.xml',
     ],
     
