@@ -33,7 +33,7 @@
     
     'version': '1.0',
 
-    'depends': ['account_invoicing', 'br_account_payment', 'br_account_einvoice', 'br_nfe'],
+    'depends': ['br_account_payment', 'br_account_einvoice', 'br_nfe'],
 
     'data': [
         # 'security/ir.model.access.csv',
