@@ -237,6 +237,10 @@
                                             <div>
                                                 <span><t t-esc="p_attribute_value.attribute_id.name"/>: </span>
                                                 <span><t t-esc="p_attribute_value.name"/></span>
+                                                <t t-if="p_attribute_value.attribute_id.type == 'color'">
+                                                    <label t-attf-style="background-color:#{p_attribute_value.html_color};
+                                                    width: 50px; height: 10px; border: 1px solid #232323;"/>    
+                                                </t>
                                             </div>
                                         </t>
                                         <t t-if="not variant_id.attribute_value_ids">
