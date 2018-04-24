@@ -1,0 +1,16 @@
+label {
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 5px;
+    font-weight: bold;
+    width: 50px;
+    height: 10px;
+}
+                                    <td colspan="2">
+                                        <t t-if="variant_id.attribute_value_ids" t-foreach="variant_id.attribute_value_ids" t-as="p_attribute_value">
+                                            <div>
+                                                <span><t t-esc="p_attribute_value.attribute_id.name"/>: </span>
+                                                <span><t t-esc="p_attribute_value.name"/></span>
+                                                <label t-attf-style="background-color:#{p_attribute_value.html_color}"/>
+                                            </div>
+                                        </t>
