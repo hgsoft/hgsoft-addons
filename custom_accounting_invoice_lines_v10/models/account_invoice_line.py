@@ -161,3 +161,35 @@ class customAccountMove(models.Model):
             super(customAccountMove, line).write(vals)
                
         #print ("##### _update_values [END] #####")
+    
+class customAccountMoveB(models.Model):
+    
+    _inherit = 'account.move'
+    
+    @api.multi
+    def assert_balanced(self):
+        print ("##### _assert_balanced [START] #####")
+        
+        if not self.ids:
+            return True
+            print('True')
+                
+        prec = self.env['decimal.precision'].precision_get('Account')
+        print(prec)
+
+        self._cr.execute("""\
+            SELECT      move_id
+            FROM        account_move_line
+            WHERE       move_id in %s
+            GROUP BY    move_id
+            HAVING      abs(sum(debit) - sum(credit)) > %s
+            """, (tuple(self.ids), 10 ** (-max(5, prec))))
+        
+        print(tuple(self.ids))
+        print(10 ** (-max(5, prec)))
+        print(self._cr.fetchall())
+        
+        if len(self._cr.fetchall()) != 0:
+            raise UserError(_("Cannot create unbalanced journal entry."))
+        return True
+        
