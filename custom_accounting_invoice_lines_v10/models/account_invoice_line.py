@@ -8,7 +8,7 @@ class customInvoiceEletronic(models.Model):
     
     @api.multi
     def create(self, vals):
-        #print ("##### create [START] #####")
+        #print ("##### create [IE START] #####")
         
         new_invoice_eletronic = super(customInvoiceEletronic, self).create(vals)
         
@@ -20,7 +20,7 @@ class customInvoiceEletronic(models.Model):
         
         aml._update_values()
         
-        #print ("##### create [END] #####")
+        #print ("##### create [IE END] #####")
         
         return new_invoice_eletronic
 
@@ -36,7 +36,7 @@ class customAccountInvoice(models.Model):
     
     modelNF = fields.Char('Model NF')
     
-    #on_install = fields.Char('On Install', compute='_compute_inicial_fields', store=True)
+    on_install = fields.Char('On Install', compute='_compute_inicial_fields', store=True)
     
     @api.one
     def _compute_inicial_fields(self):
@@ -107,7 +107,9 @@ class customAccountInvoice(models.Model):
         ail2 = self.env['account.invoice.line'].search([('id','!=', False)])
         
         #Atualizar apenas os S/NF e null
-        ail = self.env['account.invoice.line'].search(['|',('numberNF','=', False), ('numberNF','=', 'S/NF')])
+        #ail = self.env['account.invoice.line'].search(['|',('numberNF','=', False), ('numberNF','=', 'S/NF')])
+        ail = self.env['account.invoice.line'].search(['|',('numberNF','=', False), ('id','=', self.id)])
+        #ail = self.env['account.invoice.line'].search([('numberNF','=', False)])
         
         #print(len(ail2))
         
@@ -129,7 +131,7 @@ class customAccountMove(models.Model):
     
     numberNF = fields.Char('Number NF')
     
-    #on_install = fields.Char('On Install', compute='_compute_inicial_fields', store=True)
+    on_install = fields.Char('On Install', compute='_compute_inicial_fields', store=True)
     
     @api.one
     def _compute_inicial_fields(self):
@@ -191,7 +193,9 @@ class customAccountMove(models.Model):
         #aml2 = self.env['account.move.line'].search([('id','!=', self.id)])
         
         #Atualizar apenas os S/NF e null
-        aml = self.env['account.move.line'].search(['|',('numberNF','=', False), ('numberNF','=', 'S/NF')])
+        #aml = self.env['account.move.line'].search(['|',('numberNF','=', False), ('numberNF','=', 'S/NF')])
+        aml = self.env['account.move.line'].search(['|',('numberNF','=', False), ('id','=', self.id)])
+        #aml = self.env['account.move.line'].search([('numberNF','=', False)])
         
         #print(len(aml2))
         
