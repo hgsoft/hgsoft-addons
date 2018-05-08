@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api
+from odoo.exceptions import UserError
+from odoo import api, fields, models, _
 
 class customInvoiceEletronic(models.Model):
     _inherit = 'invoice.eletronic'
@@ -35,7 +36,7 @@ class customAccountInvoice(models.Model):
     
     modelNF = fields.Char('Model NF')
     
-    on_install = fields.Char('On Install', compute='_compute_inicial_fields', store=True)
+    #on_install = fields.Char('On Install', compute='_compute_inicial_fields', store=True)
     
     @api.one
     def _compute_inicial_fields(self):
@@ -102,7 +103,13 @@ class customAccountInvoice(models.Model):
     def _update_values(self):
         #print ("##### _update_values [AI START] #####")
                
-        ail = self.env['account.invoice.line'].search([('id','!=', False)])
+        #Atualizar todos
+        ail2 = self.env['account.invoice.line'].search([('id','!=', False)])
+        
+        #Atualizar apenas os S/NF e null
+        ail = self.env['account.invoice.line'].search(['|',('numberNF','=', False), ('numberNF','=', 'S/NF')])
+        
+        #print(len(ail2))
         
         #print(len(ail))
         
@@ -122,7 +129,7 @@ class customAccountMove(models.Model):
     
     numberNF = fields.Char('Number NF')
     
-    on_install = fields.Char('On Install', compute='_compute_inicial_fields', store=True)
+    #on_install = fields.Char('On Install', compute='_compute_inicial_fields', store=True)
     
     @api.one
     def _compute_inicial_fields(self):
@@ -179,8 +186,14 @@ class customAccountMove(models.Model):
     @api.one
     def _update_values(self):
         #print ("##### _update_values [AM START] #####")
-               
-        aml = self.env['account.move.line'].search([('id','!=', self.id)])
+         
+        #Atualizar todos
+        #aml2 = self.env['account.move.line'].search([('id','!=', self.id)])
+        
+        #Atualizar apenas os S/NF e null
+        aml = self.env['account.move.line'].search(['|',('numberNF','=', False), ('numberNF','=', 'S/NF')])
+        
+        #print(len(aml2))
         
         #print(len(aml))
         
@@ -193,14 +206,16 @@ class customAccountMove(models.Model):
                
         #print ("##### _update_values [AM END] #####")
 
-'''
+
 class customAccountMoveB(models.Model):
     
     _inherit = 'account.move'
 
     @api.multi
     def assert_balanced(self):
-        print ("##### assert_balanced [START] #####")
+        #print ("###################################")
+        #print ("##### assert_balanced [START] #####")
+        #print ("###################################")
         
         if not self.ids:
             return True
@@ -214,6 +229,9 @@ class customAccountMoveB(models.Model):
             HAVING      abs(sum(debit) - sum(credit)) > %s
             """, (tuple(self.ids), 10 ** (-max(5, prec))))
         if len(self._cr.fetchall()) != 0:
-            raise UserError(_("Cannot create unbalanced journal entry."))
+            #print('#######')
+            am = self.env['account.move'].search([('id','=', self.id)])
+            if am.state != 'posted':
+                raise UserError(_("Cannot create unbalanced journal entry."))
+            #print('#######')
         return True
-'''
