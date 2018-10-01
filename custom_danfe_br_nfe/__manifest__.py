@@ -19,7 +19,7 @@
 ###############################################################################
     
 {
-    'name': "custom_danfe_br_nfe",
+    'name': "Custom Danfe Br NFe",
 
     'summary': """Modifying the layout of the DANFE. Added prefix to NFE items (Origin/Item). 
         Based on Trustcode br_nfe and PyTrustNFe3""",
