@@ -29,7 +29,7 @@ class CustomIrActionsReport(models.Model):
 
     def render_qweb_pdf(self, res_ids, data=None):
         if self.report_name != 'br_nfe.main_template_br_nfe_danfe':
-            return super(IrActionsReport, self).render_qweb_pdf(
+            return super(CustomIrActionsReport, self).render_qweb_pdf(
                 res_ids, data=data)
 
         nfe = self.env['invoice.eletronic'].search([('id', 'in', res_ids)])
