@@ -19,23 +19,22 @@
 ###############################################################################
     
 {
-    'name': "module_name",
+    'name': "Custom Invoice PDF Report",
 
-    'summary': """module_summary""",
+    'summary': """Adds all due dates in the PDF report.""",
 
     'author': "HGSoft - Soluções Criativas e Inteligentes",
     
     'website': "http://www.hgsoft.com.br/",
 
-    'category': 'module_category',
+    'category': 'Reports',
     
     'version': '11.0.0',
 
-    'depends': ['base'],
+    'depends': ['base', 'account'],
 
     'data': [
-        'views/views.xml',
-        'views/templates.xml',
+        'views/custom_report_invoice.xml',
     ],
     
 }

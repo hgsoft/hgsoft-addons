@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>    
+    <data>
+        <template id="report_invoice_document_custom" inherit_id="account.report_invoice_document">
+            <xpath expr="//div/div[2]/div[3]" position="replace">
+                <div class="col-xs-2" t-if="o.date_due and o.type == 'out_invoice' and (o.state == 'open' or o.state == 'paid')">
+                    <strong>Due Date:</strong>
+                    <tr t-foreach="o.move_id.line_ids.sorted(key=lambda s: s.date_maturity)" t-as="r">
+                    <span t-if="r.account_id.user_type_id.type == 'receivable'">
+                        <p><span t-field="r.name"/> - <span t-field="r.date_maturity"/></p><br/>
+                    </span>
+                    </tr>                 
+                </div>            
+            </xpath>
+        </template>
+    </data>
+</odoo>
