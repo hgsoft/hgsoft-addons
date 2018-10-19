@@ -7,7 +7,7 @@
                     <strong>Due Date:</strong>
                     <tr t-foreach="o.move_id.line_ids.sorted(key=lambda s: s.date_maturity)" t-as="r">
                     <span t-if="r.account_id.user_type_id.type == 'receivable'">
-                        <p><span t-field="r.name"/> - <span t-field="r.date_maturity"/></p><br/>
+                        <p><span t-field="r.name"/> - <span t-field="r.date_maturity"/></p>
                     </span>
                     </tr>                 
                 </div>            
