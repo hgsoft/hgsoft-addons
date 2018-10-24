@@ -1,0 +1,127 @@
+<odoo>
+    <data>
+
+        <!---->
+        <record id="custom_sped_base_eletronic_doc_tree" model="ir.ui.view">
+            <field name="name">custom.sped.eletronic.doc.form</field>
+            <field name="model">invoice.eletronic</field>
+            <field name="inherit_id" ref="br_account_einvoice.sped_base_eletronic_doc_tree" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[1]" position="after">
+                    <field name="cfop_code" string="CFOP"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="custom_sped_base_eletronic_doc_search" model="ir.ui.view">
+            <field name="name">sped.eletronic.doc.search</field>
+            <field name="model">invoice.eletronic</field>
+            <field name="inherit_id" ref="br_account_einvoice.sped_base_eletronic_doc_search" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[1]" position="after">
+                    <group expand="0" string="Group By">
+                        <filter string="CFOP" context="{'group_by':'cfop_code'}"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+        <!---->
+        <!--
+        <record id="custom_view_payments_tree_a_receber" model="ir.ui.view">
+            <field name="name">custom.account.move.line.tree</field>
+            <field name="model">account.move.line</field>
+            <field name="inherit_id" ref="br_account_payment.view_payments_tree_a_receber" />
+            <field name="arch" type="xml">
+                <xpath expr="//tree/field[1]" position="before">
+                    <field name="numberNF" string="Number NF"/>
+                </xpath>
+            </field>
+        </record>
+        
+        <record id="custom_view_payments_tree_a_receber_filter" model="ir.ui.view">
+            <field name="name">custom.account.move.line.select</field>
+            <field name="model">account.move.line</field>
+            <field name="inherit_id" ref="br_account_payment.view_payments_filter" />
+            <field name="arch" type="xml">
+                <xpath expr="//search/group" position="inside">
+                    <filter string="Number NF" context="{'group_by':'numberNF'}"/>
+                </xpath>
+            </field>
+        </record>
+        
+        <record id="custom_view_account_invoice_tree" model="ir.ui.view">
+            <field name="name">custom.account.invoice.tree</field>
+            <field name="model">account.invoice.line</field>
+            <field name="inherit_id" ref="account.view_invoice_line_tree" />
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="create">false</attribute>
+                </xpath>
+                <xpath expr="//tree/field[1]" position="before">
+                    <field name="numberNF" string="Number NF"/>
+                    <field name="modelNF" string="Model"/>
+                    <field name="partner_id" string="Partner"/>
+                    <field name="origin" string="Origin"/>
+                    <field name="invoice_id" string="Invoice"/>
+                    <field name="state" string="State"/>
+                    <field name="fiscal_position" string="Fiscal Position"/>
+                </xpath>
+            </field>
+        </record>
+        
+        <record id="custom_view_account_invoice_filter" model="ir.ui.view">
+            <field name="name">custom.account.invoice.select</field>
+            <field name="model">account.invoice.line</field>
+            <field name="arch" type="xml">
+                <search string="Search Invoice">
+                    <filter name="pending" string="Pending" domain="[('state','=','pendente')]"/>
+                    <filter name="transmitted" string="Transmitted" domain="[('state','=','transmitido')]"/>
+                    <separator/>
+                    <filter name="invoices" string="Invoices" domain="['&amp;', ('invoice_id.state','in',['draft','open','paid']),('invoice_id.type','in',('out_invoice','in_invoice'))]"/>
+                    <filter name="refunds" string="Credit Notes" domain="['&amp;', ('invoice_id.state','in',['draft','open','paid']),('invoice_id.type','in',('out_refund','in_refund'))]"/>
+                    <separator/>
+                    <filter name="unpaid" string="Not Paid" domain="[('invoice_id.state','=','open')]"/>
+                    <filter name="late" string="Overdue" domain="['&amp;', ('invoice_id.date_due', '&lt;', time.strftime('%%Y-%%m-%%d')), ('invoice_id.state', '=', 'open')]" help="Overdue invoices, maturity date passed"/>
+                    <separator/>
+                    <field name="partner_id" operator="child_of"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Number NF" context="{'group_by':'numberNF'}"/>
+                        <filter string="Model NF" context="{'group_by':'modelNF'}"/>
+                        <filter name="group_by_partner_id" string="Partner" context="{'group_by':'partner_id'}"/>
+                        <filter string="CFOP" context="{'group_by':'code'}"/>
+                        <filter string="Fiscal Position" context="{'group_by':'fiscal_position'}"/>
+                        <filter name="status" string="Status" context="{'group_by':'state'}"/>
+                    </group>
+               </search>
+            </field>
+        </record>
+        
+        <record id="custom_action_invoice_tree1" model="ir.actions.act_window">
+            <field name="name">Detalhes da Fatura</field>
+            <field name="res_model">account.invoice.line</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field eval="False" name="view_id"/>
+            <field name="search_view_id" ref="custom_view_account_invoice_filter"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to create a customer invoice.
+              </p><p>
+                Odoo's electronic invoicing allows to ease and fasten the
+                collection of customer payments. Your customer receives the
+                invoice by email and he can pay online and/or import it
+                in his own system.
+              </p><p>
+                The discussions with your customer are automatically displayed at
+                the bottom of each invoice.
+              </p>
+            </field>
+        </record>
+        
+        <menuitem id="Detalhes da Fatura"
+        name="Detalhes da Fatura"
+        action="custom_action_invoice_tree1"
+        parent="account.menu_finance_receivables_documents"
+        sequence="30"/>
+        -->
+    </data>
+</odoo>
