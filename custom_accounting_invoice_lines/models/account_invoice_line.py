@@ -8,20 +8,32 @@ class customInvoiceEletronic(models.Model):
     
     cfop_code = fields.Char('cfop_code', compute='_compute_cfop_code', store=True)    
     
-    @api.multi
+    @api.one
+    #@api.multi
     @api.depends('fiscal_position_id')
     def _compute_cfop_code(self):
         #print ("##### _compute_cfop_code [START] #####")
-                    
-        icms_rules = self.fiscal_position_id.icms_tax_rule_ids
-                    
+
+        icms_rules = self.fiscal_position_id.icms_tax_rule_ids                        
         if len(icms_rules) > 1:
             rules_cfop = []
             for rule in icms_rules:
-                rules_cfop.append(rule.cfop_id.code)            
-            self.cfop_code = str(rules_cfop).replace('[', '').replace(']', '').replace('\'', '')            
+                rules_cfop.append(rule.cfop_id.code)
+            self.cfop_code = str(rules_cfop).replace('[', '').replace(']', '').replace('\'', '')
         else:
             self.cfop_code = icms_rules.cfop_id.code            
+
+        '''        
+        for s in self:
+            icms_rules = s.fiscal_position_id.icms_tax_rule_ids
+            if len(icms_rules) > 1:
+                rules_cfop = []
+                for rule in icms_rules:
+                    rules_cfop.append(rule.cfop_id.code)
+                s.cfop_code = str(rules_cfop).replace('[', '').replace(']', '').replace('\'', '')
+            else:
+                s.cfop_code = icms_rules.cfop_id.code
+        '''
         
         #print ("##### _compute_cfop_code [END] #####")
 
