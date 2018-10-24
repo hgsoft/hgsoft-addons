@@ -13,7 +13,15 @@ class customInvoiceEletronic(models.Model):
     def _compute_cfop_code(self):
         #print ("##### _compute_cfop_code [START] #####")
                     
-        self.cfop_code = self.fiscal_position_id.icms_tax_rule_ids.cfop_id.code
+        icms_rules = self.fiscal_position_id.icms_tax_rule_ids
+                    
+        if len(icms_rules) > 1:
+            rules_cfop = []
+            for rule in icms_rules:
+                rules_cfop.append(rule.cfop_id.code)            
+            self.cfop_code = str(rules_cfop).replace('[', '').replace(']', '').replace('\'', '')            
+        else:
+            self.cfop_code = icms_rules.cfop_id.code            
         
         #print ("##### _compute_cfop_code [END] #####")
 
@@ -23,8 +31,16 @@ class customInvoiceEletronic(models.Model):
         
         fiscal_position = self.env['account.fiscal.position'].search([('id','=', vals['fiscal_position_id'])])                
                 
-        vals['cfop_code'] = fiscal_position.icms_tax_rule_ids.cfop_id.code
+        icms_rules = fiscal_position.icms_tax_rule_ids
         
+        if len(icms_rules) > 1:
+            rules_cfop = []
+            for rule in icms_rules:
+                rules_cfop.append(rule.cfop_id.code)
+            vals['cfop_code'] = str(rules_cfop).replace('[', '').replace(']', '').replace('\'', '')
+        else:
+            vals['cfop_code'] = icms_rules.cfop_id.code
+                                
         new_invoice_eletronic = super(customInvoiceEletronic, self).create(vals)                
         
         #print ("##### create [END] #####")    
