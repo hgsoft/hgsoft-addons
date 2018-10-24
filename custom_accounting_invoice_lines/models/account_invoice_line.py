@@ -24,25 +24,25 @@ class customInvoiceEletronic(models.Model):
         else:
             self.cfop_code = icms_rules.cfop_id.code            
         '''        
-        for record in self:
-            if record.fiscal_position_id.icms_tax_rule_ids: 
-                
-                rules_cfop = []
-                    
-                for rule in record.fiscal_position_id.icms_tax_rule_ids:
-                    rules_cfop.append(rule.cfop_id.code)
-                
-                record.cfop_code = str(rules_cfop).replace('[', '').replace(']', '').replace('\'', '')
-                
-                #icms_rules = record.fiscal_position_id.icms_tax_rule_ids
-                
-                #if len(icms_rules) > 1:
-                    #rules_cfop = []
-                    #for rule in icms_rules:
-                        #rules_cfop.append(rule.cfop_id.code)
-                    #record.cfop_code = str(rules_cfop).replace('[', '').replace(']', '').replace('\'', '')
-                #else:
-                    #record.cfop_code = icms_rules.cfop_id.code
+        print('==')
+        for record in self.fiscal_position_id.icms_tax_rule_ids:
+            rules_cfop = []
+            print(record)
+            for rule in record:
+                print(rule)
+                rules_cfop.append(rule.cfop_id.code)
+            
+            self.cfop_code = str(rules_cfop).replace('[', '').replace(']', '').replace('\'', '')
+            
+            #icms_rules = record.fiscal_position_id.icms_tax_rule_ids
+            
+            #if len(icms_rules) > 1:
+                #rules_cfop = []
+                #for rule in icms_rules:
+                    #rules_cfop.append(rule.cfop_id.code)
+                #record.cfop_code = str(rules_cfop).replace('[', '').replace(']', '').replace('\'', '')
+            #else:
+                #record.cfop_code = icms_rules.cfop_id.code
         
         
         #print ("##### _compute_cfop_code [END] #####")
