@@ -8,7 +8,7 @@ class customInvoiceEletronic(models.Model):
     
     cfop_code = fields.Char('cfop_code', compute='_compute_cfop_code', store=True)    
     
-    @api.one
+    @api.multi
     @api.depends('fiscal_position_id')
     def _compute_cfop_code(self):
         #print ("##### _compute_cfop_code [START] #####")
