@@ -19,11 +19,11 @@
 ###############################################################################
 
 {
-    'name': "Custom Accounting Invoice Lines",
+    'name': "Custom Invoice Eletronic Report",
 
-    'summary': """Accounting Invoice Lines custom view.""",
+    'summary': """Invoice Eletronic custom field in view.""",
 
-    'description': """Accounting Invoice Lines custom view, with new filters and group by.""",
+    'description': """Invoice Eletronic custom view, with new filters and group by.""",
 
     'author': "HGSoft - Soluções Criativas e Inteligentes",
     
