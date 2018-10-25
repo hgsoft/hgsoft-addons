@@ -6,15 +6,17 @@ from odoo import models, fields, api
 class customInvoiceEletronic(models.Model):
     _inherit = 'invoice.eletronic'
     
+    cfop_code = fields.Char('cfop_code')    
+    '''
     cfop_code = fields.Char('cfop_code', compute='_compute_cfop_code', store=True)    
     
     @api.one
     #@api.multi
-    @api.depends('fiscal_position_id')
+    #@api.depends('fiscal_position_id')
     def _compute_cfop_code(self):
         #print ("##### _compute_cfop_code [START] #####")
         
-        '''
+        #
         icms_rules = self.fiscal_position_id.icms_tax_rule_ids                        
         if len(icms_rules) > 1:
             rules_cfop = []
@@ -23,7 +25,7 @@ class customInvoiceEletronic(models.Model):
             self.cfop_code = str(rules_cfop).replace('[', '').replace(']', '').replace('\'', '')
         else:
             self.cfop_code = icms_rules.cfop_id.code            
-        '''        
+        #
         print('==')
         for record in self.fiscal_position_id.icms_tax_rule_ids:
             rules_cfop = []
@@ -46,10 +48,15 @@ class customInvoiceEletronic(models.Model):
         
         
         #print ("##### _compute_cfop_code [END] #####")
-
+    '''
+    ###################################################################################################################
+    ###################################################################################################################
     @api.multi
     def create(self, vals):
-        #print ("##### create [START] #####")
+    
+        print ("###########################")
+        print ("###### create [START] #####")
+        print ("###########################")
         
         fiscal_position = self.env['account.fiscal.position'].search([('id','=', vals['fiscal_position_id'])])                
                 
@@ -65,10 +72,14 @@ class customInvoiceEletronic(models.Model):
                                 
         new_invoice_eletronic = super(customInvoiceEletronic, self).create(vals)                
         
-        #print ("##### create [END] #####")    
+        print ("###########################")
+        print ("####### create [END] ######")    
+        print ("###########################")
         
         return new_invoice_eletronic
-            
+    
+        ###############################################################################################################
+        ###############################################################################################################
 '''            
     @api.multi
     def create(self, vals):
