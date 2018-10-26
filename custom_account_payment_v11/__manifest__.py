@@ -19,25 +19,24 @@
 ###############################################################################
 
 {
-    'name': "Custom Accounting Invoice Lines",
+    'name': "Custom Account Payment",
 
-    'summary': """Accounting Invoice Lines custom view.""",
+    'summary': """Account Payment custom field in view, and logic.""",
 
-    'description': """Accounting Invoice Lines custom view, with new filters and group by.""",
+    'description': """Custom view of account payment, with new logic when registering payment.""",
 
     'author': "HGSoft - Soluções Criativas e Inteligentes",
     
     'website': "http://www.hgsoft.com.br/",
 
-    'category': 'General',
+    'category': 'Account',
     
-    'version': '1.0',
+    'version': '11.0.0',
 
-    'depends': ['br_account_payment', 'br_account_einvoice', 'br_nfe'],
+    'depends': ['account'],
 
     'data': [
-        # 'security/ir.model.access.csv',
-        'views/account_invoice_line_view.xml',
+        'views/account_payment_view.xml',
     ],
     
 }

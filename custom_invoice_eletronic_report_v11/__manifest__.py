@@ -19,25 +19,24 @@
 ###############################################################################
 
 {
-    'name': "Custom Invoice Eletronic Report",
+    'name': "Custom Invoice Eletronic",
 
     'summary': """Invoice Eletronic custom field in view.""",
 
-    'description': """Invoice Eletronic custom view, with new filters and group by.""",
+    'description': """Invoice Eletronic custom view and group by.""",
 
     'author': "HGSoft - Soluções Criativas e Inteligentes",
     
     'website': "http://www.hgsoft.com.br/",
 
-    'category': 'General',
+    'category': 'Invoice Eletronic',
     
-    'version': '1.0',
+    'version': '11.0.0',
 
     'depends': ['br_account_payment', 'br_account_einvoice', 'br_nfe'],
 
     'data': [
-        # 'security/ir.model.access.csv',
-        'views/account_invoice_line_view.xml',
+        'views/invoice_eletronic.xml',
     ],
     
 }
