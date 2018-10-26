@@ -988,13 +988,13 @@ obsCont[@xCampo='NomeVendedor']")
         data_correcao = data_correcao[0] + "  " + data_correcao[1]
         self.string(82, 36, data_correcao)
         cce_id = elem_infNFe.values()[0]
-        self.string(82, 42, cce_id)
-
+        self.string(82, 42, cce_id)                
+        
         correcao = tagtext(oNode=elem_infNFe, cTag='xCorrecao')
 
         w, h, paragraph = self._paragraph(
             correcao, 'NimbusSanL-Regu', 10, 190 * mm, 20 * mm)
-        #paragraph.drawOn(self.canvas, 10 * mm, (297 - 52) * mm - h)
+        paragraph.drawOn(self.canvas, 10 * mm, (297 - 52) * mm - h)
 
         self.hline(9, 54 + (h / mm), 200)
         self.stringcenter(105, 58 + (h / mm), u"CONDIÇÃO DE USO")
