@@ -29,7 +29,8 @@ try:
     from pytrustnfe.certificado import Certificado
     from pytrustnfe.utils import ChaveNFe, gerar_chave, gerar_nfeproc, \
         gerar_nfeproc_cancel
-    from pytrustnfe.nfe.danfe import danfe
+    from odoo.addons.custom_danfe_br_nfe.models.danfe import danfe
+    #from pytrustnfe.nfe.danfe import danfe
     from pytrustnfe.xml.validate import valida_nfe
 except ImportError:
     _logger.info('Cannot import pytrustnfe', exc_info=True)
@@ -39,6 +40,52 @@ STATE = {'edit': [('readonly', False)]}
 
 class CustomInvoiceEletronic(models.Model):
     _inherit = 'invoice.eletronic'
+    
+    def _find_attachment_ids_email(self):
+        
+        #Update Module - Start
+        #atts = super(CustomInvoiceEletronic, self)._find_attachment_ids_email()
+        atts = []
+        #Update Module - End
+        
+        if self.model not in ('55'):
+            return atts
+
+        attachment_obj = self.env['ir.attachment']
+        nfe_xml = base64.decodestring(self.nfe_processada)
+        logo = base64.decodestring(self.invoice_id.company_id.logo)
+
+        tmpLogo = io.BytesIO()
+        tmpLogo.write(logo)
+        tmpLogo.seek(0)
+
+        xml_element = etree.fromstring(nfe_xml)
+        oDanfe = danfe(list_xml=[xml_element], logo=tmpLogo)
+
+        tmpDanfe = io.BytesIO()
+        oDanfe.writeto_pdf(tmpDanfe)
+
+        if danfe:
+            danfe_id = attachment_obj.create(dict(
+                name="Danfe-%08d.pdf" % self.numero,
+                datas_fname="Danfe-%08d.pdf" % self.numero,
+                datas=base64.b64encode(tmpDanfe.getvalue()),
+                mimetype='application/pdf',
+                res_model='account.invoice',
+                res_id=self.invoice_id.id,
+            ))
+            atts.append(danfe_id.id)        
+        if nfe_xml:
+            xml_id = attachment_obj.create(dict(
+                name=self.nfe_processada_name,
+                datas_fname=self.nfe_processada_name,
+                datas=base64.encodestring(nfe_xml),
+                mimetype='application/xml',
+                res_model='account.invoice',
+                res_id=self.invoice_id.id,
+            ))
+            atts.append(xml_id.id)        
+        return atts
 
 
     @api.multi        
