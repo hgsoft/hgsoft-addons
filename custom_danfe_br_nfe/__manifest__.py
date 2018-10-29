@@ -30,7 +30,7 @@
 
     'category': 'NFe',
     
-    'version': '11.0.0',
+    'version': '11.0.1',
 
     'depends': ['br_nfe'],
 
