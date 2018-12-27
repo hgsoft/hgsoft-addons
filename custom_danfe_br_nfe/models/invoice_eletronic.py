@@ -12,7 +12,7 @@ import base64
 import logging
 import pytz
 from lxml import etree
-from datetime import datetime
+from datetime import datetime, timezone
 from odoo import api, fields, models
 from odoo.exceptions import UserError
 from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT as DTFT
@@ -540,3 +540,100 @@ class CustomInvoiceEletronic(models.Model):
                 'vICMSUFRemet': "%.02f" % item.icms_uf_remet, }
         return {'prod': prod, 'imposto': imposto,
                 'infAdProd': item.informacao_adicional}
+    
+    @api.multi
+    def action_cancel_document(self, context=None, justificativa=None):
+        if self.model not in ('55', '65'):
+            return super(CustomInvoiceEletronic, self).action_cancel_document(
+                justificativa=justificativa)
+
+        if not justificativa:
+            return {
+                'name': 'Cancelamento NFe',
+                'type': 'ir.actions.act_window',
+                'res_model': 'wizard.cancel.nfe',
+                'view_type': 'form',
+                'view_mode': 'form',
+                'target': 'new',
+                'context': {
+                    'default_edoc_id': self.id
+                }
+            }
+
+        cert = self.company_id.with_context({'bin_size': False}).nfe_a1_file
+        cert_pfx = base64.decodestring(cert)
+        certificado = Certificado(cert_pfx, self.company_id.nfe_a1_password)
+
+        id_canc = "ID110111%s%02d" % (
+            self.chave_nfe, self.sequencial_evento)
+
+        tz = pytz.timezone(self.env.user.partner_id.tz) or pytz.utc
+        dt_evento = datetime.utcnow()
+        dt_evento = pytz.utc.localize(dt_evento).astimezone(tz)
+
+        # Pega timezone do dt_evento.
+        dt_tz = dt_evento.strftime('%z')
+
+        # Formata de +0000 para +00:00
+        dt_tzf = '{}:{}'.format(dt_tz[0:3], dt_tz[3:5])
+
+        cancelamento = {
+            'idLote': self.id,
+            'estado': self.company_id.state_id.ibge_code,
+            'ambiente': 2 if self.ambiente == 'homologacao' else 1,
+            'eventos': [{
+                'Id': id_canc,
+                'cOrgao': self.company_id.state_id.ibge_code,
+                'tpAmb': 2 if self.ambiente == 'homologacao' else 1,
+                'CNPJ': re.sub('[^0-9]', '', self.company_id.cnpj_cpf),
+                'chNFe': self.chave_nfe,
+                #Update Module - Start
+                # 'dhEvento': dt_evento.strftime('%Y-%m-%dT%H:%M:%S-03:00'),
+                'dhEvento': dt_evento.strftime('%Y-%m-%dT%H:%M:%S{}'.format(dt_tzf)),                
+                #Update Module - End
+                'nSeqEvento': self.sequencial_evento,
+                'nProt': self.protocolo_nfe,
+                'xJust': justificativa,
+                'tpEvento': '110111',
+                'descEvento': 'Cancelamento',
+            }],
+            'modelo': self.model,
+        }
+        print('='*20)
+        print(cancelamento)
+        print('='*20)
+        resp = recepcao_evento_cancelamento(certificado, **cancelamento)
+        resposta = resp['object'].getchildren()[0]
+        if resposta.cStat == 128 and \
+                resposta.retEvento.infEvento.cStat in (135, 136, 155):
+            self.state = 'cancel'
+            self.codigo_retorno = resposta.retEvento.infEvento.cStat
+            self.mensagem_retorno = resposta.retEvento.infEvento.xMotivo
+            self.sequencial_evento += 1
+        else:
+            code, motive = None, None
+            if resposta.cStat == 128:
+                code = resposta.retEvento.infEvento.cStat
+                motive = resposta.retEvento.infEvento.xMotivo
+            else:
+                code = resposta.cStat
+                motive = resposta.xMotivo
+            if code == 573:  # Duplicidade, já cancelado
+                return self.action_get_status()
+
+            return self._create_response_cancel(
+                code, motive, resp, justificativa)
+
+        self.env['invoice.eletronic.event'].create({
+            'code': self.codigo_retorno,
+            'name': self.mensagem_retorno,
+            'invoice_eletronic_id': self.id,
+        })
+        self._create_attachment('canc', self, resp['sent_xml'])
+        self._create_attachment('canc-ret', self, resp['received_xml'])
+        nfe_processada = base64.decodestring(self.nfe_processada)
+
+        nfe_proc_cancel = gerar_nfeproc_cancel(
+            nfe_processada, resp['received_xml'].encode())
+        if nfe_proc_cancel:
+            self.nfe_processada = base64.encodestring(nfe_proc_cancel)
