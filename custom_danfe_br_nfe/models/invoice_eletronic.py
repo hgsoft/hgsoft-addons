@@ -599,9 +599,7 @@ class CustomInvoiceEletronic(models.Model):
             }],
             'modelo': self.model,
         }
-        print('='*20)
-        print(cancelamento)
-        print('='*20)
+            
         resp = recepcao_evento_cancelamento(certificado, **cancelamento)
         resposta = resp['object'].getchildren()[0]
         if resposta.cStat == 128 and \
