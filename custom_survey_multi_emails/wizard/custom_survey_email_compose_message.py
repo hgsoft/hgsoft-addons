@@ -9,16 +9,31 @@ class CustomSurveyMailComposeMessage(models.TransientModel):
     def _default_multi_email(self):
         partner_list = self.env['res.partner'].search([('send_survey','=', True)])
         
-        if len(partner_list) > 0:
+        user_list = self.env['res.users'].search([('send_survey','=', True)])
+        
+        if (len(partner_list) + len(user_list)) > 0:
             
-            partner_email_list = []
+            survey_email_list = []
                                     
             for partner in partner_list:
                 if partner.email:
-                    partner_email_list.append(partner.email)
+                    survey_email_list.append(partner.email)
+                    
+            for user in user_list:
+                email = None
+                
+                if '@' in user.login:
+                    email = user.login
+                else:
+                    if user.partner_id:
+                         if '@' in user.partner_id.email:
+                            email = user.partner_id.email
+
+                if email:
+                    survey_email_list.append(email)                    
         
-            if len(partner_email_list) > 0:                
-                return re.sub(r"(\[|\]|\'|\")", '', str(partner_email_list))
+            if len(survey_email_list) > 0:               
+                return re.sub(r"(\[|\]|\'|\")", '', str(list(set(survey_email_list))))
                         
         return ''
     

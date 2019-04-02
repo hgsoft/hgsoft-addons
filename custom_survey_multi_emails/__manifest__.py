@@ -34,7 +34,8 @@
     'depends': ['base', 'survey'],
     
     'data': [
-        'views/custom_partner.xml'
+        'views/custom_partner.xml',
+        'views/custom_user.xml'        
     ],
     
 }
