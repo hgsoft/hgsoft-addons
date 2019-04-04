@@ -19,9 +19,9 @@
 ###############################################################################
     
 {
-    'name': "custom_survey_multi_emails",
+    'name': "Custom Survey Multi Emails and Portal",
 
-    'summary': """Custom Survey Multi Emails""",
+    'summary': """Custom Survey Multi Emails and Portal""",
 
     'author': "HGSoft - Soluções Criativas e Inteligentes",
     
@@ -31,11 +31,12 @@
     
     'version': '11.0.0',
 
-    'depends': ['base', 'survey'],
+    'depends': ['base', 'survey', 'portal'],
     
     'data': [
         'views/custom_partner.xml',
-        'views/custom_user.xml'        
+        'views/custom_user.xml',
+        'views/surveys_portal_template.xml'
     ],
     
 }

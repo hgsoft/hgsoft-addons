@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="portal_my_home_menu_surveys" name="Portal layout : surveys menu entries" inherit_id="portal.portal_layout" priority="30">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'survey'" class="active">
+                <a t-if="survey" t-attf-href="/my/surveys?{{ keep_query() }}">Surveys</a>
+                <t t-else="">Surveys</t>
+            </li>
+            <li t-if="survey">
+                <t t-esc="survey.title"/>
+            </li>
+        </xpath>
+    </template>
+    <template id="portal_my_home_surveys" name="Portal My Home : surveys" inherit_id="portal.portal_my_home" priority="30">
+        <xpath expr="//ul[hasclass('o_portal_docs')]" position="inside">
+            <li t-if="surveys_count" class="list-group-item">
+                <span class="badge" t-esc="surveys_count"/>
+                <a href="/my/surveys">Surveys</a>
+            </li>            
+        </xpath>
+    </template>
+    <template id="portal_my_surveys" name="My Surveys">
+        <t t-call="portal.portal_layout">
+            <h3>Surveys
+                <t t-call="portal.portal_searchbar"/>
+            </h3>
+            <t t-if="not surveys">
+                <p>There are currently no surveys for your account.</p>
+            </t>        
+            <div t-if="surveys" class="panel panel-default">
+                <div class="table-responsive">
+                    <table class="table table-hover o_portal_my_doc_table">
+                        <thead>
+                            <tr class="active">
+                                <th>Survey #</th>
+                                <th>Stage</th>
+                                <th>Create Date</th>
+                            </tr>
+                        </thead>
+                        <t t-foreach="surveys" t-as="survey">
+                            <tr>
+                                <td>
+                                    <a t-attf-href="#{survey.public_url}" t-att-title="survey.title"><t t-esc="survey.title"/></a>                        
+                                </td>
+                        
+                                <td>
+                                    <t t-esc="survey.stage_id.name"/>
+                                </td>                        
+                                <td>
+                                    <span t-field="survey.create_date"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </table>
+                </div>
+                <div t-if="pager" class="o_portal_pager text-center">
+                    <t t-call="portal.pager"/>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

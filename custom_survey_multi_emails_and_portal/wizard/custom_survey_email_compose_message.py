@@ -26,8 +26,9 @@ class CustomSurveyMailComposeMessage(models.TransientModel):
                     email = user.login
                 else:
                     if user.partner_id:
-                         if '@' in user.partner_id.email:
-                            email = user.partner_id.email
+                        if user.partner_id.email:
+                            if '@' in user.partner_id.email:
+                                email = user.partner_id.email
 
                 if email:
                     survey_email_list.append(email)                    
