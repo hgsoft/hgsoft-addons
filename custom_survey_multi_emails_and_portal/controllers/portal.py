@@ -5,7 +5,7 @@ from odoo import http, _
 from odoo.http import request
 from odoo.addons.portal.controllers.portal import CustomerPortal, pager as portal_pager
 
-SURVEYS_DEFAULT_DOMAIN = [('stage_id.name','in', ['Em Progresso', 'Permanente'])]
+SURVEYS_DEFAULT_DOMAIN = [('stage_id.name','in', ['Em Progresso', 'Permanente', 'In progress', 'Permanent'])]
 
 class PortalSurveys(CustomerPortal):
 
