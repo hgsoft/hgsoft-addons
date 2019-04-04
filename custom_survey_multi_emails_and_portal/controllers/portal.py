@@ -4,6 +4,9 @@
 from odoo import http, _
 from odoo.http import request
 from odoo.addons.portal.controllers.portal import CustomerPortal, pager as portal_pager
+import logging
+
+_logger = logging.getLogger(__name__)
 
 SURVEYS_DEFAULT_DOMAIN = [('stage_id.name','in', ['Em Progresso', 'Permanente', 'In progress', 'Permanent'])]
 
@@ -14,6 +17,12 @@ class PortalSurveys(CustomerPortal):
         values = super(PortalSurveys, self)._prepare_portal_layout_values()
         
         values['surveys_count'] = request.env['survey.survey'].search_count(SURVEYS_DEFAULT_DOMAIN)
+        
+        _logger.info('=' * 30)
+        _logger.info('')
+        _logger.info('COUNT: {}'.format(values['surveys_count']))
+        _logger.info('')
+        _logger.info('=' * 30)
         
         return values
 
@@ -43,6 +52,12 @@ class PortalSurveys(CustomerPortal):
         )
         
         surveys = request.env['survey.survey'].search(SURVEYS_DEFAULT_DOMAIN, order=order, limit=self._items_per_page, offset=pager['offset'])                
+        
+        _logger.info('=' * 30)
+        _logger.info('')
+        _logger.info('SURVEYS: {}'.format(surveys))
+        _logger.info('')
+        _logger.info('=' * 30)
         
         values = {
             'surveys': surveys,
