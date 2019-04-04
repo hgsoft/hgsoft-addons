@@ -23,7 +23,6 @@ class PortalSurveys(CustomerPortal):
     
         values = self._prepare_portal_layout_values()
                     
-        # Verificar se é possível ordenar pelo nome do stage_id
         searchbar_sortings = {
             'name': {'label': _('Pesquisa'), 'order': 'title'},
             'stage': {'label': _('Estágio'), 'order': 'stage_id'},
