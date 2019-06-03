@@ -8,15 +8,9 @@ import re
 try:
     from pytrustnfe.nfe import autorizar_nfe
     from pytrustnfe.nfe import xml_autorizar_nfe
-    from pytrustnfe.nfe import retorno_autorizar_nfe
-    from pytrustnfe.nfe import recepcao_evento_cancelamento
-    from pytrustnfe.nfe import consultar_protocolo_nfe
     from pytrustnfe.certificado import Certificado
-    from pytrustnfe.utils import ChaveNFe, gerar_chave, gerar_nfeproc, \
-        gerar_nfeproc_cancel
-    from pytrustnfe.nfe.danfe import danfe
+    from pytrustnfe.utils import ChaveNFe, gerar_chave
     from pytrustnfe.xml.validate import valida_nfe
-    from pytrustnfe.urls import url_qrcode, url_qrcode_exibicao
 except ImportError:
     _logger.error('Cannot import pytrustnfe', exc_info=True)
 
