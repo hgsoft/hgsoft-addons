@@ -1,0 +1,22 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* custom_invoice_eletronic_tax_v11
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 11.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-06-03 16:50+0000\n"
+"PO-Revision-Date: 2019-06-03 16:50+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: custom_invoice_eletronic_tax_v11
+#: model:ir.model,name:custom_invoice_eletronic_tax_v11.model_invoice_eletronic
+msgid "invoice.eletronic"
+msgstr "invoice.eletronic"
+
