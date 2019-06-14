@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+    <!--  Form  -->
+    <record id="custom_view_order_form" model="ir.ui.view">
+        <field name="name">custom.sale.order.form</field>        
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">         
+            <!--  Fields  -->            
+            <xpath expr="//field[@name='confirmation_date']" position="attributes">
+                <attribute name="readonly">0</attribute>
+            </xpath>
+        </field>
+    </record>
+  </data>
+</odoo>
