@@ -24,7 +24,6 @@ class customInvoiceEletronic(models.Model):
         for invoice_eletronic_item in invoice_eletronic_item_list:
             if invoice_eletronic_item.cfop == False:
                 item_error_list.append(invoice_eletronic_item.product_id.name)
-                item_error_list.append(invoice_eletronic_item.product_id.name)
             else:
                 item_cfop_list.append(invoice_eletronic_item.cfop)
         if len(item_error_list) > 0:
