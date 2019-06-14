@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from odoo.exceptions import UserError
 from odoo import models, fields, api
 import logging
 
@@ -19,8 +20,16 @@ class customInvoiceEletronic(models.Model):
     @staticmethod
     def format_cfop_list(invoice_eletronic_item_list:list):
         item_cfop_list = []
+        item_error_list = []
         for invoice_eletronic_item in invoice_eletronic_item_list:
-            item_cfop_list.append(invoice_eletronic_item.cfop)
+            if invoice_eletronic_item.cfop == False:
+                item_error_list.append(invoice_eletronic_item.product_id.name)
+                item_error_list.append(invoice_eletronic_item.product_id.name)
+            else:
+                item_cfop_list.append(invoice_eletronic_item.cfop)
+        if len(item_error_list) > 0:
+            error_message = "Os itens a seguir não possuem CFOP cadastrada: {}".format(str(sorted(set(item_error_list))).replace('[', '').replace(']', '').replace('\'', ''))
+            raise UserError(error_message)
         return {'cfop_code': str(sorted(set(item_cfop_list))).replace('[', '').replace(']', '').replace('\'', '')}
     
     @api.model
