@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record model="ir.ui.view" id="custom_survey_user_input_tree">
+        <field name="name">custom_survey_user_input_tre</field>
+        <field name="model">survey.user_input</field>
+        <field name="inherit_id" ref="survey.survey_user_input_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[1]" position="before">
+                <field name="id"/>
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="replace">
+            </xpath>
+            <xpath expr="//field[@name='email']" position="replace">
+            </xpath>
+        </field>
+    </record>
+    
+    <!---->
+    
+    <record model="ir.ui.view" id="custom_survey_user_input_form">
+        <field name="name">custom_survey_user_input_form</field>
+        <field name="model">survey.user_input</field>
+        <field name="inherit_id" ref="survey.survey_user_input_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/header/button[@name='action_survey_results']" position="after">
+                <button name="evaluate" string="Evaluate Results" type="object" />
+            </xpath>
+        </field>
+    </record>
+    
+    
+    
+    <!--
+    <record model="ir.actions.act_window_close" id="wizard_form_view">            
+    -->
+    <record model="ir.ui.view" id="wizard_form_view">
+        <field name="name">wizard.form</field>
+        <field name="model">survey.evaluation</field>        
+        <field name="arch" type="xml">
+            <form string="Evaluate Idea">
+                <group>
+                    <field name="project_type"/>
+                    <field name="project_category"/>
+                    <field name="project_innovation"/>
+                    <field name="project_complexity"/>
+                    <field name="project_investment"/>
+                    <field name="project_impact"/>
+                </group>                
+            </form>            
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="wizard_form_view_cancel">
+        <field name="name">wizard.form.cancel</field>
+        <field name="model">survey.evaluation</field>
+        <field name="inherit_id" ref="surveys_to_evaluate_ideas.wizard_form_view"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//form/group" position="after">
+                <footer>
+                    <button name="write" type="object" string="Save"/>
+                    <button name="cancel" string="Cancel" special="cancel" class="oe_link"/>
+                </footer>
+            </xpath>
+            
+        </field>
+    </record>
+    
+    
+    <!--
+    <field name="user_input_line_ids" mode="tree" attrs="{'readonly': False}">
+    -->
+    
+    <!--
+    <act_window id="launch_evaluate_wizard"
+                name="Evaluate Ideas"
+                src_model="survey.user_input"
+                res_model="survey.user_input.wizard"
+                view_mode="form"
+                target="new"
+                key2="client_action_multi"/>
+    
+    -->
+    
+</odoo>
