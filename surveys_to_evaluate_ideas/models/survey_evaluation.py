@@ -15,6 +15,8 @@ class SurveyUserInput(models.Model):
         
         evaluation = self.env['survey.evaluation'].search([('user_input_id','=', self.id), ('create_uid','=', local_context['uid'])])        
         
+        action = self.env.ref('surveys_to_evaluate_ideas.action_survey_evaluation_evaluate').read()[0]
+        
         print('=' * 30)
         print('')
         print('USER_ID')
@@ -24,9 +26,16 @@ class SurveyUserInput(models.Model):
         print('EVALUATION_ID')
         print(evaluation.id)
         print(local_context)
+        print('ACTION')
+        print(action)        
         print('')
         print('=' * 30)
         
+        action['res_id'] = evaluation.id if evaluation else None
+        
+        
+        return action
+
 
         return {
             'type': 'ir.actions.act_window',

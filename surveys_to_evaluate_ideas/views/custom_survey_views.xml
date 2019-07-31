@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
+    
+    <!-- REMOVE ANSWER FIELDS -->
+    
     <record model="ir.ui.view" id="custom_survey_user_input_tree">
         <field name="name">custom_survey_user_input_tre</field>
         <field name="model">survey.user_input</field>
@@ -15,7 +18,7 @@
         </field>
     </record>
     
-    <!---->
+    <!-- ADD ANSWER BUTTON -->
     
     <record model="ir.ui.view" id="custom_survey_user_input_form">
         <field name="name">custom_survey_user_input_form</field>
@@ -28,14 +31,12 @@
         </field>
     </record>
     
+    <!-- ANSWER BUTTON FORM -->
     
-    
-    <!--
-    <record model="ir.actions.act_window_close" id="wizard_form_view">            
-    -->
-    <record model="ir.ui.view" id="wizard_form_view">
+    <record model="ir.ui.view" id="survey_evaluation_evaluate_form">
         <field name="name">wizard.form</field>
-        <field name="model">survey.evaluation</field>        
+        <field name="model">survey.evaluation</field>
+        <field name="priority" eval="1"/>
         <field name="arch" type="xml">
             <form string="Evaluate Idea">
                 <group>
@@ -45,41 +46,131 @@
                     <field name="project_complexity"/>
                     <field name="project_investment"/>
                     <field name="project_impact"/>
-                </group>                
-            </form>            
-        </field>
-    </record>
-
-    <record model="ir.ui.view" id="wizard_form_view_cancel">
-        <field name="name">wizard.form.cancel</field>
-        <field name="model">survey.evaluation</field>
-        <field name="inherit_id" ref="surveys_to_evaluate_ideas.wizard_form_view"/>
-        <field name="arch" type="xml">
-
-            <xpath expr="//form/group" position="after">
+                </group> 
                 <footer>
                     <button name="write" type="object" string="Save"/>
                     <button name="cancel" string="Cancel" special="cancel" class="oe_link"/>
                 </footer>
-            </xpath>
-            
+            </form>            
         </field>
     </record>
     
+    <!-- WINDOW ACTION TREE -->
     
-    <!--
-    <field name="user_input_line_ids" mode="tree" attrs="{'readonly': False}">
-    -->
+    <record id="survey_evaluation_tree" model="ir.ui.view">
+        <field name="name">survey_evaluation_tree</field>
+        <field name="model">survey.evaluation</field>
+        <field name="arch" type="xml">
+            <tree string="Survey Evaluation">
+                <field name="id" />
+                <field name="user_input_id" />
+                <field name="project_type" />
+                <field name="project_category" />
+                <field name="project_innovation" />
+                <field name="project_complexity" />
+                <field name="project_investment" />                
+                <field name="project_impact" />
+                <field name="create_uid" />
+                <field name="create_date" />
+                <field name="write_uid" />
+                <field name="write_date" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- WINDOW ACTION FORM -->
     
-    <!--
-    <act_window id="launch_evaluate_wizard"
-                name="Evaluate Ideas"
-                src_model="survey.user_input"
-                res_model="survey.user_input.wizard"
-                view_mode="form"
-                target="new"
-                key2="client_action_multi"/>
+    <record id="survey_evaluation_form" model="ir.ui.view">
+        <field name="name">survey_evaluation_form</field>
+        <field name="model">survey.evaluation</field>
+        <field name="priority" eval="2"/>
+        <field name="arch" type="xml">
+            <form string="Survey Evaluation">
+                <group>
+                    <field name="user_input_id" readonly="1"/>
+                    <field name="project_type" />
+                    <field name="project_category" />
+                    <field name="project_innovation" />
+                    <field name="project_complexity" />
+                    <field name="project_investment" />                
+                    <field name="project_impact" />
+                </group>
+                <!--
+                <footer>
+                    <button name="write" type="object" string="Save"/>
+                    <button name="cancel" string="Cancel" special="cancel" class="oe_link"/>
+                </footer>
+                -->
+            </form>            
+        </field>
+    </record>    
     
-    -->
+    <!-- ADD WINDOW ACTION -->
+
+    <record id="action_survey_evaluation_evaluate" model="ir.actions.act_window">
+        <field name="name">Survey Evaluation</field>    
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">survey.evaluation</field>
+        <field name="view_mode">form</field>
+        <field name="view_type">form</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="survey_evaluation_evaluate_form"/>
+        <!--<field name="search_view_id" ref="survey_evaluation_search"/>-->
+    </record>    
+
+    <record id="action_survey_evaluation_view" model="ir.actions.act_window">
+        <field name="name">Survey Evaluation View</field>    
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">survey.evaluation</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_type">form</field>
+        <field name="view_id" ref="survey_evaluation_tree"/>
+        <!--<field name="search_view_id" ref="survey_evaluation_search"/>-->
+        <!--
+        <field name="context">{'search_default_group_by_user_input': True}</field>
+        <field name="context">{'search_default_group_by_survey': True, 'search_default_group_by_user_input': True}</field>
+        -->
+    </record>
+            
+    <!-- ADD WINDOW ACTION VIEW -->
+    
+    <record model="ir.actions.act_window.view" id="action_survey_evaluation_view_tree">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="survey_evaluation_tree"/>
+        <field name="act_window_id" ref="action_survey_evaluation_view"/>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="action_survey_evaluation_view_form">
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="survey_evaluation_form"/>
+        <field name="act_window_id" ref="action_survey_evaluation_view"/>
+    </record>    
+    
+    <!-- ADD WINDOW ACTION SEARCH -->
+    
+    <record id="survey_evaluation_search" model="ir.ui.view">
+        <field name="name">survey_evaluation_search</field>
+        <field name="model">survey.evaluation</field>
+        <field name="arch" type="xml">
+            <search string="Search Evaluation">                
+                <field name="user_input_id"/>
+                <!--
+                <field name="survey_id"/>
+                -->
+                <group expand="1" string="Group By">
+                <!--
+                    <filter name="group_by_survey" string="Survey" domain="[]"  context="{'group_by':'survey_id'}"/>                
+                -->                
+                    <filter name="group_by_user_input" string="User Input" domain="[]"  context="{'group_by':'user_input_id'}"/>
+                </group>                
+            </search>
+        </field>
+    </record>
+        
+    <!-- ADD MENU ITEM -->
+    
+    <menuitem name="Evaluations" id="menu_survey_evaluation" action="action_survey_evaluation_view" parent="survey.menu_surveys" sequence="1"/>
     
 </odoo>
