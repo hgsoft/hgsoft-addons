@@ -4,6 +4,29 @@ from odoo import fields, models, api
 class SurveyUserInput(models.Model):
     _inherit = 'survey.user_input'
     
+    evaluation_amount = fields.Integer(compute='_compute_evaluation_amount')
+
+    evaluation_stage = fields.Selection([('pending', 'Pending'), ('refused', 'Refused'), ('approved', 'Approved')], 
+                                        string='Evaluation Stage', default='pending', required=True)
+        
+    can_evaluate = fields.Boolean(default=False)
+    
+    #active = fields.Boolean(default=True)
+
+        
+    @api.one
+    def _compute_evaluation_amount(self):
+        evaluations = self.env['survey.evaluation'].search([('user_input_id','=', self.id)])        
+        self.evaluation_amount = len(evaluations)
+        if evaluations:
+            self.can_evaluate = True
+        else:
+            self.can_evaluate = False
+        print('=========')
+        print(self)
+        print(self.can_evaluate)
+        print('=========')
+    
     def evaluate(self):
         
         local_context = dict(

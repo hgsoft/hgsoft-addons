@@ -59,8 +59,12 @@
     
     <record id="survey_evaluation_tree" model="ir.ui.view">
         <field name="name">survey_evaluation_tree</field>
+        <!--
         <field name="model">survey.evaluation</field>
+        -->
+        <field name="model">survey.user_input</field>
         <field name="arch" type="xml">
+            <!--
             <tree string="Survey Evaluation">
                 <field name="id" />
                 <field name="user_input_id" />
@@ -75,11 +79,26 @@
                 <field name="write_uid" />
                 <field name="write_date" />
             </tree>
+            -->
+            <tree string="Survey User inputs" create="false">
+                <field name="survey_id"/>
+                <field name="date_create"/>
+                <field name="deadline"/>
+                <field name="partner_id"/>
+                <field name="email"/>
+                <field name="type"/>
+                <field name="state"/>
+                
+                <field name="evaluation_stage"/>
+                <field name="can_evaluate"/>
+                <field name="evaluation_amount"/>
+                
+            </tree>
         </field>
     </record>
 
     <!-- WINDOW ACTION FORM -->
-    
+    <!--
     <record id="survey_evaluation_form" model="ir.ui.view">
         <field name="name">survey_evaluation_form</field>
         <field name="model">survey.evaluation</field>
@@ -95,15 +114,10 @@
                     <field name="project_investment" />                
                     <field name="project_impact" />
                 </group>
-                <!--
-                <footer>
-                    <button name="write" type="object" string="Save"/>
-                    <button name="cancel" string="Cancel" special="cancel" class="oe_link"/>
-                </footer>
-                -->
             </form>            
         </field>
-    </record>    
+    </record>
+    -->
     
     <!-- ADD WINDOW ACTION -->
 
@@ -121,11 +135,16 @@
     <record id="action_survey_evaluation_view" model="ir.actions.act_window">
         <field name="name">Survey Evaluation View</field>    
         <field name="type">ir.actions.act_window</field>
+        <!--
         <field name="res_model">survey.evaluation</field>
+        -->
+        <field name="res_model">survey.user_input</field>
         <field name="view_mode">tree,form</field>
         <field name="view_type">form</field>
         <field name="view_id" ref="survey_evaluation_tree"/>
-        <!--<field name="search_view_id" ref="survey_evaluation_search"/>-->
+        <field name="search_view_id" ref="survey_evaluation_search"/>
+        
+        <field name="context">{'search_default_group_by_can_evaluate': True}</field>
         <!--
         <field name="context">{'search_default_group_by_user_input': True}</field>
         <field name="context">{'search_default_group_by_survey': True, 'search_default_group_by_user_input': True}</field>
@@ -141,29 +160,34 @@
         <field name="act_window_id" ref="action_survey_evaluation_view"/>
     </record>
 
+    <!--
     <record model="ir.actions.act_window.view" id="action_survey_evaluation_view_form">
         <field name="sequence" eval="2"/>
         <field name="view_mode">form</field>
         <field name="view_id" ref="survey_evaluation_form"/>
         <field name="act_window_id" ref="action_survey_evaluation_view"/>
     </record>    
+    -->
     
     <!-- ADD WINDOW ACTION SEARCH -->
     
     <record id="survey_evaluation_search" model="ir.ui.view">
         <field name="name">survey_evaluation_search</field>
-        <field name="model">survey.evaluation</field>
+        <field name="model">survey.user_input</field>
         <field name="arch" type="xml">
             <search string="Search Evaluation">                
-                <field name="user_input_id"/>
+                <field name="can_evaluate"/>
                 <!--
+                <field name="user_input_id"/>
                 <field name="survey_id"/>
                 -->
                 <group expand="1" string="Group By">
                 <!--
                     <filter name="group_by_survey" string="Survey" domain="[]"  context="{'group_by':'survey_id'}"/>                
-                -->                
-                    <filter name="group_by_user_input" string="User Input" domain="[]"  context="{'group_by':'user_input_id'}"/>
+                -->
+                    <!--<field name="group_by_can_evaluate" string="Can Evaluate?" filter_domain="[('self.name','ilike',self)]"/>-->
+                    
+                    <filter name="group_by_can_evaluate" string="Can Evaluate?" domain="[('can_evaluate', '=', True)]"  context="{'group_by':'can_evaluate'}"/>                    
                 </group>                
             </search>
         </field>
