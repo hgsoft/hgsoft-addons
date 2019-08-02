@@ -17,10 +17,9 @@
     <record id="survey_evaluation_manager" model="res.groups">
         <field name="name">Approval Manager</field>
         <field name="category_id" ref="survey_evaluation_category"/>
-        <!--<field name="implied_ids" eval="[(4, ref('surveys_to_evaluate_ideas.survey_evaluation_committee'))]"/>-->
     </record>        
     
-    <!-- REMOVE ANSWER FIELDS -->
+    <!-- ADD / REMOVE ANSWER FIELDS -->
     
     <record model="ir.ui.view" id="custom_survey_user_input_tree">
         <field name="name">custom_survey_user_input_tre</field>
@@ -34,6 +33,9 @@
             </xpath>
             <xpath expr="//field[@name='email']" position="replace">
             </xpath>
+            <xpath expr="//tree" position="inside">
+                <field name="evaluation_stage"/>
+            </xpath>
         </field>
     </record>
     
@@ -46,18 +48,19 @@
         <field name="inherit_id" ref="survey.survey_user_input_form"/>
         <field name="arch" type="xml">
             <xpath expr="//form/header/button[@name='action_survey_results']" position="after">
-                <button name="evaluate" string="Evaluate Results" type="object" groups="surveys_to_evaluate_ideas.survey_evaluation_committee" />
-            </xpath>                        
-            <xpath expr="//form/sheet/field" position="replace">                
-                <notebook>                    
-                    <page string="Evaluations" attrs="{'invisible': [('survey_type', '!=', 'ideas')]}">
+                <button name="evaluate" string="Evaluate Results" type="object" groups="surveys_to_evaluate_ideas.survey_evaluation_committee" attrs="{'invisible': [('evaluation_stage', '!=', 'pending')]}"/>
+                <field name="evaluation_stage" invisible="1"/>
+            </xpath>
+            <xpath expr="//form/sheet/field" position="replace">
+                <notebook>
+                    <page string="Evaluations" attrs="{'invisible': [('survey_type', '!=', 'ideas')]}" groups="surveys_to_evaluate_ideas.survey_evaluation_manager">
                         <group col="2">
-                            <group string="Evaluation" name="evaluation_fields" groups="surveys_to_evaluate_ideas.survey_evaluation_manager">                                
-                                <field name="survey_type" invisible="1"/>                                
+                            <group string="Evaluation" name="evaluation_fields">
+                                <field name="survey_type" invisible="1"/>
                                 <field name="evaluation_stage"/>
                                 <field name="evaluation_amount" readonly="1"/>
                             </group>
-                        </group>                        
+                        </group>
                         <field name="evaluation_ids" mode="tree" view_mode="tree" readonly="1" style="pointer-events:none;">
                             <tree create="false" edit="false" editable="bottom" >
                                 <field name="user_input_id"/>
@@ -67,10 +70,18 @@
                                 <field name="project_innovation"/>
                                 <field name="project_complexity"/>
                                 <field name="project_investment"/>
-                                <field name="project_impact"/>                        
+                                <field name="project_impact"/>
                             </tree>
-                        </field>                        
+                        </field>
                     </page>
+                    <page string="Cost Information" attrs="{'invisible': [('survey_type', '!=', 'ideas')]}" groups="surveys_to_evaluate_ideas.survey_evaluation_manager">
+                        <group string="Evaluation" name="evaluation_fields">
+                            <field name="survey_type" invisible="1"/>
+                            <field name="cost_information"/>
+                            <field name="sgq_documentation_file" filename="sgq_documentation_name"/>
+                            <field name="sgq_documentation_name" invisible="1"/>
+                        </group>
+                    </page>                                        
                     <page string="Answers">
                         <field name="user_input_line_ids" mode="tree" readonly="1" >
                             <tree>
@@ -112,69 +123,6 @@
         </field>
     </record>
     
-    <!-- WINDOW ACTION TREE -->
-    
-    <record id="survey_evaluation_tree" model="ir.ui.view">
-        <field name="name">survey_evaluation_tree</field>
-        <!--
-        <field name="model">survey.evaluation</field>
-        -->
-        <field name="model">survey.user_input</field>
-        <field name="arch" type="xml">
-            <!--
-            <tree string="Survey Evaluation">
-                <field name="id" />
-                <field name="user_input_id" />
-                <field name="project_type" />
-                <field name="project_category" />
-                <field name="project_innovation" />
-                <field name="project_complexity" />
-                <field name="project_investment" />                
-                <field name="project_impact" />
-                <field name="create_uid" />
-                <field name="create_date" />
-                <field name="write_uid" />
-                <field name="write_date" />
-            </tree>
-            -->
-            <tree string="Survey User inputs" create="false">
-                <field name="survey_id"/>
-                <field name="date_create"/>
-                <field name="deadline"/>
-                <field name="partner_id"/>
-                <field name="email"/>
-                <field name="type"/>
-                <field name="state"/>
-                
-                <field name="evaluation_stage"/>
-                
-                <field name="evaluation_amount"/>
-                
-            </tree>
-        </field>
-    </record>
-
-    <!-- WINDOW ACTION FORM -->
-    
-    <!--
-    <record id="survey_evaluation_form" model="ir.ui.view">
-        ...
-    
-            <field name="user_input_line_ids" mode="tree" attrs="{'readonly': False}">
-                <tree>
-                    <field name="page_id"/>
-                    <field name="question_id"/>
-                    <field name="answer_type"/>
-                    <field name="skipped"/>
-                    <field name="date_create"/>
-                    <field name="quizz_mark" groups="base.group_no_one"/>                            
-                </tree>
-            </field>
-    
-    </record>
-    -->
-    
-    
     <!-- ADD WINDOW ACTION -->
 
     <record id="action_survey_evaluation_evaluate" model="ir.actions.act_window">
@@ -185,26 +133,7 @@
         <field name="view_type">form</field>
         <field name="target">new</field>
         <field name="view_id" ref="survey_evaluation_evaluate_form"/>
-        <!--<field name="search_view_id" ref="survey_evaluation_search"/>-->
     </record>    
-
-    <record id="action_survey_evaluation_view" model="ir.actions.act_window">
-        <field name="name">Survey Evaluation View</field>    
-        <field name="type">ir.actions.act_window</field>
-        <!--
-        <field name="res_model">survey.evaluation</field>
-        -->
-        <field name="res_model">survey.user_input</field>
-        <field name="view_mode">tree,form</field>
-        <field name="view_type">form</field>
-        <field name="view_id" ref="survey_evaluation_tree"/>
-        <!--<field name="search_view_id" ref="survey_evaluation_search"/>-->
-        
-        <!--
-        <field name="context">{'search_default_group_by_user_input': True}</field>
-        <field name="context">{'search_default_group_by_survey': True, 'search_default_group_by_user_input': True}</field>
-        -->
-    </record>
             
     <!-- ADD WINDOW ACTION VIEW -->
     
@@ -215,40 +144,36 @@
         <field name="act_window_id" ref="action_survey_evaluation_evaluate"/>
     </record>
     
-    <record model="ir.actions.act_window.view" id="action_survey_evaluation_view_tree">
-        <field name="sequence" eval="1"/>
-        <field name="view_mode">tree</field>
-        <field name="view_id" ref="survey_evaluation_tree"/>
-        <field name="act_window_id" ref="action_survey_evaluation_view"/>
-    </record>
-
-    <!--
-    <record model="ir.actions.act_window.view" id="action_survey_evaluation_view_form">
-        <field name="sequence" eval="2"/>
-        <field name="view_mode">form</field>
-        <field name="view_id" ref="survey_evaluation_form"/>
-        <field name="act_window_id" ref="action_survey_evaluation_view"/>
-    </record>
-    -->
+    <!-- OVERRIDE WINDOW ACTION -->
     
-    <!-- ADD WINDOW ACTION SEARCH -->
-    
-    <record id="survey_evaluation_search" model="ir.ui.view">
-        <field name="name">survey_evaluation_search</field>
-        <field name="model">survey.user_input</field>
-        <field name="arch" type="xml">
-            <search string="Search Evaluation">                
-                <group expand="1" string="Group By">
-                <!--
-                    <filter name="group_by_survey" string="Survey" domain="[]"  context="{'group_by':'survey_id'}"/>                
-                -->
-                </group>                
-            </search>
+    <record model="ir.actions.act_window" id="survey.action_survey_user_input">
+        <field name="name">Answers</field>
+        <field name="res_model">survey.user_input</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="view_id" ref="survey.survey_user_input_tree"></field>
+        <field name="search_view_id" ref="survey.survey_user_input_search"/>
+        <field name="context">{'search_default_group_by_survey': False, 'search_default_group_by_evaluation_stage': True}</field>
+        <field name="help" type="html">
+            <p>Nobody has replied to your surveys yet.</p>
         </field>
     </record>
+    
+    <!-- ADD SEARCH -->
+    
+    <record model="ir.ui.view" id="custom_survey_user_input_search">
+        <field name="name">custom_survey_user_input_search</field>
+        <field name="model">survey.user_input</field>
+        <field name="inherit_id" ref="survey.survey_user_input_search"/>        
+        <field name="arch" type="xml">
+            <xpath expr="//search/filter[4]" position="after">
+                <filter name="approved" string="Approved" domain="[('evaluation_stage', '=', 'approved')]"/>
+                <filter name="pending" string="Pending" domain="[('evaluation_stage', '=', 'pending')]"/>
+                <filter name="refused" string="Refused" domain="[('evaluation_stage', '=', 'refused')]"/>
+            </xpath>            
+            <xpath expr="//search/group/filter[1]" position="before">
+                <filter name="group_by_evaluation_stage" string="Evaluation Stage" domain="[]" context="{'group_by': 'evaluation_stage'}"/>
+            </xpath>
+        </field>
+    </record>    
         
-    <!-- ADD MENU ITEM -->
-    
-    <menuitem name="Evaluations" id="menu_survey_evaluation" action="action_survey_evaluation_view" parent="survey.menu_surveys" sequence="1"/>
-    
 </odoo>

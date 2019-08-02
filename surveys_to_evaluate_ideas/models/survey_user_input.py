@@ -13,7 +13,12 @@ class SurveyUserInput(models.Model):
     survey_type = fields.Selection(string='Survey Type', related='survey_id.survey_type')
             
     evaluation_ids = fields.One2many('survey.evaluation', 'user_input_id', string='Survey Input Evaluation')
-        
+    
+    cost_information = fields.Text('Cost Information')
+    
+    sgq_documentation_file = fields.Binary("SGQ Documentation", attachment=True)
+    sgq_documentation_name = fields.Char("File Name")
+    
     def _compute_evaluation_amount(self):
         for rec in self:
             evaluations = self.env['survey.evaluation'].search([('user_input_id','=', rec.id)])        
