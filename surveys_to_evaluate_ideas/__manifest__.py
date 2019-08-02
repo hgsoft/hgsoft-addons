@@ -35,6 +35,7 @@
 
     'data': [
         'views/custom_survey_views.xml',
+        'views/survey.xml',
     ],
     
 }

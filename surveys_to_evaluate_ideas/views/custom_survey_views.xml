@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     
+    <!-- ADD PERMISSION GROUPS -->
+    
+    <record model="ir.module.category" id="survey_evaluation_category">
+        <field name="name">Ideas Evaluation Group</field>
+        <field name="description">Ideas Evaluation Group.</field>
+        <field name="sequence">10</field>
+    </record>
+
+    <record id="survey_evaluation_committee" model="res.groups">
+        <field name="name">Evaluating Committee</field>
+        <field name="category_id" ref="survey_evaluation_category"/>
+    </record>
+    
+    <record id="survey_evaluation_manager" model="res.groups">
+        <field name="name">Approval Manager</field>
+        <field name="category_id" ref="survey_evaluation_category"/>
+        <!--<field name="implied_ids" eval="[(4, ref('surveys_to_evaluate_ideas.survey_evaluation_committee'))]"/>-->
+    </record>        
+    
     <!-- REMOVE ANSWER FIELDS -->
     
     <record model="ir.ui.view" id="custom_survey_user_input_tree">
@@ -18,15 +37,53 @@
         </field>
     </record>
     
-    <!-- ADD ANSWER BUTTON -->
+    <!-- ADD ANSWER BUTTON / EVALUATION VIEW -->
     
     <record model="ir.ui.view" id="custom_survey_user_input_form">
         <field name="name">custom_survey_user_input_form</field>
         <field name="model">survey.user_input</field>
+        <field name="priority" eval="1"/>
         <field name="inherit_id" ref="survey.survey_user_input_form"/>
         <field name="arch" type="xml">
             <xpath expr="//form/header/button[@name='action_survey_results']" position="after">
-                <button name="evaluate" string="Evaluate Results" type="object" />
+                <button name="evaluate" string="Evaluate Results" type="object" groups="surveys_to_evaluate_ideas.survey_evaluation_committee" />
+            </xpath>                        
+            <xpath expr="//form/sheet/field" position="replace">                
+                <notebook>                    
+                    <page string="Evaluations" attrs="{'invisible': [('survey_type', '!=', 'ideas')]}">
+                        <group col="2">
+                            <group string="Evaluation" name="evaluation_fields" groups="surveys_to_evaluate_ideas.survey_evaluation_manager">                                
+                                <field name="survey_type" invisible="1"/>                                
+                                <field name="evaluation_stage"/>
+                                <field name="evaluation_amount" readonly="1"/>
+                            </group>
+                        </group>                        
+                        <field name="evaluation_ids" mode="tree" view_mode="tree" readonly="1" style="pointer-events:none;">
+                            <tree create="false" edit="false" editable="bottom" >
+                                <field name="user_input_id"/>
+                                <field name="write_uid" />
+                                <field name="project_type"/>
+                                <field name="project_category"/>
+                                <field name="project_innovation"/>
+                                <field name="project_complexity"/>
+                                <field name="project_investment"/>
+                                <field name="project_impact"/>                        
+                            </tree>
+                        </field>                        
+                    </page>
+                    <page string="Answers">
+                        <field name="user_input_line_ids" mode="tree" readonly="1" >
+                            <tree>
+                                <field name="page_id"/>
+                                <field name="question_id"/>
+                                <field name="answer_type"/>
+                                <field name="skipped"/>
+                                <field name="date_create"/>
+                                <field name="quizz_mark" groups="base.group_no_one"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
             </xpath>
         </field>
     </record>
@@ -36,7 +93,7 @@
     <record model="ir.ui.view" id="survey_evaluation_evaluate_form">
         <field name="name">wizard.form</field>
         <field name="model">survey.evaluation</field>
-        <field name="priority" eval="1"/>
+        <field name="priority" eval="2"/>
         <field name="arch" type="xml">
             <form string="Evaluate Idea">
                 <group>
@@ -90,7 +147,7 @@
                 <field name="state"/>
                 
                 <field name="evaluation_stage"/>
-                <field name="can_evaluate"/>
+                
                 <field name="evaluation_amount"/>
                 
             </tree>
@@ -98,26 +155,25 @@
     </record>
 
     <!-- WINDOW ACTION FORM -->
+    
     <!--
     <record id="survey_evaluation_form" model="ir.ui.view">
-        <field name="name">survey_evaluation_form</field>
-        <field name="model">survey.evaluation</field>
-        <field name="priority" eval="2"/>
-        <field name="arch" type="xml">
-            <form string="Survey Evaluation">
-                <group>
-                    <field name="user_input_id" readonly="1"/>
-                    <field name="project_type" />
-                    <field name="project_category" />
-                    <field name="project_innovation" />
-                    <field name="project_complexity" />
-                    <field name="project_investment" />                
-                    <field name="project_impact" />
-                </group>
-            </form>            
-        </field>
+        ...
+    
+            <field name="user_input_line_ids" mode="tree" attrs="{'readonly': False}">
+                <tree>
+                    <field name="page_id"/>
+                    <field name="question_id"/>
+                    <field name="answer_type"/>
+                    <field name="skipped"/>
+                    <field name="date_create"/>
+                    <field name="quizz_mark" groups="base.group_no_one"/>                            
+                </tree>
+            </field>
+    
     </record>
     -->
+    
     
     <!-- ADD WINDOW ACTION -->
 
@@ -142,9 +198,8 @@
         <field name="view_mode">tree,form</field>
         <field name="view_type">form</field>
         <field name="view_id" ref="survey_evaluation_tree"/>
-        <field name="search_view_id" ref="survey_evaluation_search"/>
+        <!--<field name="search_view_id" ref="survey_evaluation_search"/>-->
         
-        <field name="context">{'search_default_group_by_can_evaluate': True}</field>
         <!--
         <field name="context">{'search_default_group_by_user_input': True}</field>
         <field name="context">{'search_default_group_by_survey': True, 'search_default_group_by_user_input': True}</field>
@@ -152,6 +207,13 @@
     </record>
             
     <!-- ADD WINDOW ACTION VIEW -->
+    
+    <record model="ir.actions.act_window.view" id="action_survey_evaluate_view_form">
+        <field name="sequence" eval="3"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="survey_evaluation_evaluate_form"/>
+        <field name="act_window_id" ref="action_survey_evaluation_evaluate"/>
+    </record>
     
     <record model="ir.actions.act_window.view" id="action_survey_evaluation_view_tree">
         <field name="sequence" eval="1"/>
@@ -166,7 +228,7 @@
         <field name="view_mode">form</field>
         <field name="view_id" ref="survey_evaluation_form"/>
         <field name="act_window_id" ref="action_survey_evaluation_view"/>
-    </record>    
+    </record>
     -->
     
     <!-- ADD WINDOW ACTION SEARCH -->
@@ -176,18 +238,10 @@
         <field name="model">survey.user_input</field>
         <field name="arch" type="xml">
             <search string="Search Evaluation">                
-                <field name="can_evaluate"/>
-                <!--
-                <field name="user_input_id"/>
-                <field name="survey_id"/>
-                -->
                 <group expand="1" string="Group By">
                 <!--
                     <filter name="group_by_survey" string="Survey" domain="[]"  context="{'group_by':'survey_id'}"/>                
                 -->
-                    <!--<field name="group_by_can_evaluate" string="Can Evaluate?" filter_domain="[('self.name','ilike',self)]"/>-->
-                    
-                    <filter name="group_by_can_evaluate" string="Can Evaluate?" domain="[('can_evaluate', '=', True)]"  context="{'group_by':'can_evaluate'}"/>                    
                 </group>                
             </search>
         </field>
