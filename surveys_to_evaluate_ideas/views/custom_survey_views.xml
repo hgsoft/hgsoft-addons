@@ -12,12 +12,14 @@
     <record id="survey_evaluation_committee" model="res.groups">
         <field name="name">Evaluating Committee</field>
         <field name="category_id" ref="survey_evaluation_category"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
     </record>
     
     <record id="survey_evaluation_manager" model="res.groups">
         <field name="name">Approval Manager</field>
         <field name="category_id" ref="survey_evaluation_category"/>
-    </record>        
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
     
     <!-- ADD / REMOVE ANSWER FIELDS -->
     
@@ -50,6 +52,10 @@
             <xpath expr="//form/header/button[@name='action_survey_results']" position="after">
                 <button name="evaluate" string="Evaluate Results" type="object" groups="surveys_to_evaluate_ideas.survey_evaluation_committee" attrs="{'invisible': [('evaluation_stage', '!=', 'pending')]}"/>
                 <field name="evaluation_stage" invisible="1"/>
+            </xpath>            
+            <xpath expr="//form/sheet/group/group[2]/field[@name='partner_id']" position="replace">            
+            </xpath>
+            <xpath expr="//form/sheet/group/group[2]/field[@name='email']" position="replace">            
             </xpath>
             <xpath expr="//form/sheet/field" position="replace">
                 <notebook>

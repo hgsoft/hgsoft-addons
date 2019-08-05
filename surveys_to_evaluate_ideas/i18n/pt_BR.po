@@ -1,0 +1,455 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* surveys_to_evaluate_ideas
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 11.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-08-05 12:28+0000\n"
+"PO-Revision-Date: 2019-08-05 12:28+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: surveys_to_evaluate_ideas
+#: model:survey.label,value:surveys_to_evaluate_ideas.survey_idea_question_4_choice_1
+msgid "(BD Cigam) Setor 01"
+msgstr "(BD Cigam) Setor 01"
+
+#. module: surveys_to_evaluate_ideas
+#: model:survey.label,value:surveys_to_evaluate_ideas.survey_idea_question_4_choice_2
+msgid "(BD Cigam) Setor 02"
+msgstr "(BD Cigam) Setor 02"
+
+#. module: surveys_to_evaluate_ideas
+#: model:survey.label,value:surveys_to_evaluate_ideas.survey_idea_question_4_choice_3
+msgid "(BD Cigam) Setor 03"
+msgstr "(BD Cigam) Setor 03"
+
+#. module: surveys_to_evaluate_ideas
+#: model:survey.question,validation_error_msg:surveys_to_evaluate_ideas.survey_idea_question_1
+#: model:survey.question,validation_error_msg:surveys_to_evaluate_ideas.survey_idea_question_2
+#: model:survey.question,validation_error_msg:surveys_to_evaluate_ideas.survey_idea_question_3
+#: model:survey.question,validation_error_msg:surveys_to_evaluate_ideas.survey_idea_question_4
+#: model:survey.question,validation_error_msg:surveys_to_evaluate_ideas.survey_idea_question_5
+msgid "A resposta que você inseriu tem um formato inválido."
+msgstr "A resposta que você inseriu tem um formato inválido."
+
+#. module: surveys_to_evaluate_ideas
+#: model:ir.ui.view,arch_db:surveys_to_evaluate_ideas.custom_survey_user_input_form
+msgid "Answers"
+msgstr "Respostas"
+
+#. module: surveys_to_evaluate_ideas
+#: model:res.groups,name:surveys_to_evaluate_ideas.survey_evaluation_manager
+msgid "Approval Manager"
+msgstr "Gerente de Aprovação"
+
+#. module: surveys_to_evaluate_ideas
+#: model:ir.ui.view,arch_db:surveys_to_evaluate_ideas.custom_survey_user_input_search
+#: selection:survey.user_input,evaluation_stage:0
+msgid "Approved"
+msgstr "Aprovado"
+
+#. module: surveys_to_evaluate_ideas
+#: model:ir.model.fields,field_description:surveys_to_evaluate_ideas.field_survey_evaluation_project_complexity
+msgid "Assessing the degree of difficulty / complexity in the implementation"
+msgstr "Avaliando o grau de dificuldade / complexidade na implementação"
+
+#. module: surveys_to_evaluate_ideas
+#: model:ir.ui.view,arch_db:surveys_to_evaluate_ideas.survey_evaluation_evaluate_form
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. module: surveys_to_evaluate_ideas
+#: selection:survey.survey,survey_type:0
+msgid "Common"
+msgstr "Comum"
+
+#. module: surveys_to_evaluate_ideas
+#: model:ir.model.fields,field_description:surveys_to_evaluate_ideas.field_survey_evaluation_project_innovation
+msgid "Considering the project description, he suggests being"
+msgstr "Considerando a descrição do projeto, ele sugere ser"
+
+#. module: surveys_to_evaluate_ideas
+#: model:ir.model.fields,field_description:surveys_to_evaluate_ideas.field_survey_evaluation_project_category
+msgid "Considering the project description, it generally refers more to"
+msgstr "Considerando a descrição do projeto, geralmente se refere mais a"
+
+#. module: surveys_to_evaluate_ideas
+#: model:ir.model.fields,field_description:surveys_to_evaluate_ideas.field_survey_user_input_cost_information
+#: model:ir.ui.view,arch_db:surveys_to_evaluate_ideas.custom_survey_user_input_form
+msgid "Cost Information"
+msgstr "Informação de Custo"
+
+#. module: surveys_to_evaluate_ideas
+#: selection:survey.evaluation,project_category:0
+msgid "Costs"
+msgstr "Custos"
+
+#. module: surveys_to_evaluate_ideas
+#: model:ir.model.fields,field_description:surveys_to_evaluate_ideas.field_survey_evaluation_create_uid
+msgid "Created by"
+msgstr "Criado por"
+
+#. module: surveys_to_evaluate_ideas
+#: model:ir.model.fields,field_description:surveys_to_evaluate_ideas.field_survey_evaluation_create_date
+msgid "Created on"
+msgstr "Criado em"
+
+#. module: surveys_to_evaluate_ideas
+#: selection:survey.evaluation,project_innovation:0
+msgid "Creative"
+msgstr "Criativo"
+
+#. module: surveys_to_evaluate_ideas
+#: model:survey.label,value:surveys_to_evaluate_ideas.survey_idea_question_2_choice_1
+msgid "Custos"
+msgstr "Custos"
+
+#. module: surveys_to_evaluate_ideas
+#: model:survey.question,question:surveys_to_evaluate_ideas.survey_idea_question_5
+msgid "Descrição da Ideia"
+msgstr "Descrição da Ideia"
+
+#. module: surveys_to_evaluate_ideas
+#: model:survey.question,question:surveys_to_evaluate_ideas.survey_idea_question_1
+msgid "Descrição da Situação Atual"
+msgstr "Descrição da situação atual"
+
+#. module: surveys_to_evaluate_ideas
+#: selection:survey.evaluation,project_complexity:0
+msgid "Difficult"
+msgstr "Difícil"
+
+#. module: surveys_to_evaluate_ideas
+#: model:ir.model.fields,field_description:surveys_to_evaluate_ideas.field_survey_evaluation_display_name
+msgid "Display Name"
+msgstr "Nome exibido"
+
+#. module: surveys_to_evaluate_ideas
+#: selection:survey.evaluation,project_category:0
+msgid "Environment"
+msgstr "Meio Ambiente"
+
+#. module: surveys_to_evaluate_ideas
+#: model:survey.question,constr_error_msg:surveys_to_evaluate_ideas.survey_idea_question_1
+#: model:survey.question,constr_error_msg:surveys_to_evaluate_ideas.survey_idea_question_2
+#: model:survey.question,constr_error_msg:surveys_to_evaluate_ideas.survey_idea_question_3
+#: model:survey.question,constr_error_msg:surveys_to_evaluate_ideas.survey_idea_question_4
+#: model:survey.question,constr_error_msg:surveys_to_evaluate_ideas.survey_idea_question_5
+msgid "Esta pergunta requer uma resposta."
+msgstr "Esta pergunta requer uma resposta."
+
+#. module: surveys_to_evaluate_ideas
+#: selection:survey.evaluation,project_investment:0
+msgid "Estimate"
+msgstr "Estimativa"
+
+#. module: surveys_to_evaluate_ideas
+#: model:ir.ui.view,arch_db:surveys_to_evaluate_ideas.survey_evaluation_evaluate_form
+msgid "Evaluate Idea"
+msgstr "Avalie a Ideia"
+
+#. module: surveys_to_evaluate_ideas
+#: model:ir.ui.view,arch_db:surveys_to_evaluate_ideas.custom_survey_user_input_form
+msgid "Evaluate Results"
+msgstr "Avaliar Resultados"
+
+#. module: surveys_to_evaluate_ideas
+#: model:res.groups,name:surveys_to_evaluate_ideas.survey_evaluation_committee
+msgid "Evaluating Committee"
+msgstr "Comitê Avaliador"
+
+#. module: surveys_to_evaluate_ideas
+#: model:ir.ui.view,arch_db:surveys_to_evaluate_ideas.custom_survey_user_input_form
+msgid "Evaluation"
+msgstr "Avaliação"
+
+#. module: surveys_to_evaluate_ideas
+#: model:ir.model.fields,field_description:surveys_to_evaluate_ideas.field_survey_user_input_evaluation_amount
+msgid "Evaluation Amount"
+msgstr "Quantidade de Avaliações"
+
+#. module: surveys_to_evaluate_ideas
+#: model:ir.model.fields,field_description:surveys_to_evaluate_ideas.field_survey_user_input_evaluation_stage
+#: model:ir.ui.view,arch_db:surveys_to_evaluate_ideas.custom_survey_user_input_search
+msgid "Evaluation Stage"
+msgstr "Estágio de Avaliação"
+
+#. module: surveys_to_evaluate_ideas
+#: model:ir.ui.view,arch_db:surveys_to_evaluate_ideas.custom_survey_user_input_form
+msgid "Evaluations"
+msgstr "Avaliações"
+
+#. module: surveys_to_evaluate_ideas
+#: model:ir.model.fields,field_description:surveys_to_evaluate_ideas.field_survey_user_input_sgq_documentation_name
+msgid "File Name"
+msgstr "Nome do Arquivo"
+
+#. module: surveys_to_evaluate_ideas
+#: model:survey.survey,description:surveys_to_evaluate_ideas.survey_idea_form
+msgid "Formulário para envio de ideias."
+msgstr "Formulário para envio de ideias."
+
+#. module: surveys_to_evaluate_ideas
+#: selection:survey.evaluation,project_innovation:0
+msgid "Groundbreaking"
+msgstr "Inovador"
+
+#. module: surveys_to_evaluate_ideas
+#: model:ir.model.fields,field_description:surveys_to_evaluate_ideas.field_survey_evaluation_id
+msgid "ID"
+msgstr "ID"
+
+#. module: surveys_to_evaluate_ideas
+#: selection:survey.survey,survey_type:0
+msgid "Ideas"
+msgstr "Ideias"
+
+#. module: surveys_to_evaluate_ideas
+#: model:ir.module.category,name:surveys_to_evaluate_ideas.survey_evaluation_category
+msgid "Ideas Evaluation Group"
+msgstr "Grupo de Avaliação de Ideias"
+
+#. module: surveys_to_evaluate_ideas
+#: model:ir.module.category,description:surveys_to_evaluate_ideas.survey_evaluation_category
+msgid "Ideas Evaluation Group."
+msgstr "Grupo de Avaliação de Ideias."
+
+#. module: surveys_to_evaluate_ideas
+#: model:survey.survey,title:surveys_to_evaluate_ideas.survey_idea_form
+msgid "Ideias"
+msgstr "Ideias"
+
+#. module: surveys_to_evaluate_ideas
+#: selection:survey.evaluation,project_type:0
+msgid "Improvement"
+msgstr "Melhoria"
+
+#. module: surveys_to_evaluate_ideas
+#: model:ir.model.fields,field_description:surveys_to_evaluate_ideas.field_survey_evaluation_project_investment
+msgid "Investment"
+msgstr "Investimento"
+
+#. module: surveys_to_evaluate_ideas
+#: model:ir.model.fields,field_description:surveys_to_evaluate_ideas.field_survey_evaluation___last_update
+msgid "Last Modified on"
+msgstr "Última modificação em"
+
+#. module: surveys_to_evaluate_ideas
+#: model:ir.model.fields,field_description:surveys_to_evaluate_ideas.field_survey_evaluation_write_uid
+msgid "Last Updated by"
+msgstr "Última atualização por"
+
+#. module: surveys_to_evaluate_ideas
+#: model:ir.model.fields,field_description:surveys_to_evaluate_ideas.field_survey_evaluation_write_date
+msgid "Last Updated on"
+msgstr "Última atualização em"
+
+#. module: surveys_to_evaluate_ideas
+#: model:survey.label,value:surveys_to_evaluate_ideas.survey_idea_question_2_choice_4
+msgid "Meio Ambiente"
+msgstr "Meio Ambiente"
+
+#. module: surveys_to_evaluate_ideas
+#: selection:survey.evaluation,project_complexity:0
+msgid "Middle Level"
+msgstr "Nível Médio"
+
+#. module: surveys_to_evaluate_ideas
+#: selection:survey.evaluation,project_type:0
+msgid "New Project"
+msgstr "Projeto Novo"
+
+#. module: surveys_to_evaluate_ideas
+#: selection:survey.evaluation,project_impact:0
+msgid "Not"
+msgstr "Não"
+
+#. module: surveys_to_evaluate_ideas
+#: selection:survey.evaluation,project_impact:0
+msgid "Not Relevant"
+msgstr "Não Relevante"
+
+#. module: surveys_to_evaluate_ideas
+#: model:survey.label,value:surveys_to_evaluate_ideas.survey_idea_question_3_choice_2
+msgid "Não"
+msgstr "Não"
+
+#. module: surveys_to_evaluate_ideas
+#: selection:survey.evaluation,project_category:0
+msgid "Organization"
+msgstr "Organização"
+
+#. module: surveys_to_evaluate_ideas
+#: model:survey.label,value:surveys_to_evaluate_ideas.survey_idea_question_2_choice_5
+msgid "Organização"
+msgstr "Organização"
+
+#. module: surveys_to_evaluate_ideas
+#: selection:survey.evaluation,project_investment:0
+msgid "PayBack"
+msgstr "PayBack"
+
+#. module: surveys_to_evaluate_ideas
+#: model:ir.ui.view,arch_db:surveys_to_evaluate_ideas.custom_survey_user_input_search
+#: selection:survey.user_input,evaluation_stage:0
+msgid "Pending"
+msgstr "Pendente"
+
+#. module: surveys_to_evaluate_ideas
+#: selection:survey.evaluation,project_category:0
+msgid "Productivity"
+msgstr "Produtividade"
+
+#. module: surveys_to_evaluate_ideas
+#: model:survey.label,value:surveys_to_evaluate_ideas.survey_idea_question_2_choice_2
+msgid "Produtividade"
+msgstr "Produtividade"
+
+#. module: surveys_to_evaluate_ideas
+#: model:survey.page,title:surveys_to_evaluate_ideas.survey_idea_page_1
+msgid "Programa de Ideias"
+msgstr "Programa de Ideias"
+
+#. module: surveys_to_evaluate_ideas
+#: model:ir.model.fields,field_description:surveys_to_evaluate_ideas.field_survey_evaluation_project_type
+msgid "Project type"
+msgstr "Tipo de Projeto"
+
+#. module: surveys_to_evaluate_ideas
+#: model:survey.label,value:surveys_to_evaluate_ideas.survey_idea_question_2_choice_6
+msgid "Qualidade / Processo / Produto ou Qualidade de Vida"
+msgstr "Qualidade / Processo / Produto ou Qualidade de Vida"
+
+#. module: surveys_to_evaluate_ideas
+#: selection:survey.evaluation,project_category:0
+msgid "Quality / Process / Product or Quality of life"
+msgstr "Qualidade / Processo / Produto ou Qualidade de Vida"
+
+#. module: surveys_to_evaluate_ideas
+#: model:ir.ui.view,arch_db:surveys_to_evaluate_ideas.custom_survey_user_input_search
+#: selection:survey.user_input,evaluation_stage:0
+msgid "Refused"
+msgstr "Recusado"
+
+#. module: surveys_to_evaluate_ideas
+#: selection:survey.evaluation,project_impact:0
+msgid "Relevant"
+msgstr "Relevante"
+
+#. module: surveys_to_evaluate_ideas
+#: selection:survey.evaluation,project_innovation:0
+msgid "Relevant Improvement"
+msgstr "Melhoria Relevante"
+
+#. module: surveys_to_evaluate_ideas
+#: model:ir.model.fields,field_description:surveys_to_evaluate_ideas.field_survey_user_input_sgq_documentation_file
+msgid "SGQ Documentation"
+msgstr "Documentação SGQ"
+
+#. module: surveys_to_evaluate_ideas
+#: selection:survey.evaluation,project_category:0
+msgid "Safety"
+msgstr "Segurança"
+
+#. module: surveys_to_evaluate_ideas
+#: model:ir.ui.view,arch_db:surveys_to_evaluate_ideas.survey_evaluation_evaluate_form
+msgid "Save"
+msgstr "Salvar"
+
+#. module: surveys_to_evaluate_ideas
+#: model:survey.question,comments_message:surveys_to_evaluate_ideas.survey_idea_question_1
+#: model:survey.question,comments_message:surveys_to_evaluate_ideas.survey_idea_question_2
+#: model:survey.question,comments_message:surveys_to_evaluate_ideas.survey_idea_question_3
+#: model:survey.question,comments_message:surveys_to_evaluate_ideas.survey_idea_question_4
+#: model:survey.question,comments_message:surveys_to_evaluate_ideas.survey_idea_question_5
+msgid "Se outro, por favor especifique:"
+msgstr "Se outro, por favor especifique:"
+
+#. module: surveys_to_evaluate_ideas
+#: model:survey.label,value:surveys_to_evaluate_ideas.survey_idea_question_2_choice_3
+msgid "Segurança"
+msgstr "Segurança"
+
+#. module: surveys_to_evaluate_ideas
+#: model:survey.question,question:surveys_to_evaluate_ideas.survey_idea_question_4
+msgid "Setor á que se aplica"
+msgstr "Setor á que se aplica"
+
+#. module: surveys_to_evaluate_ideas
+#: model:survey.label,value:surveys_to_evaluate_ideas.survey_idea_question_3_choice_1
+msgid "Sim"
+msgstr "Sim"
+
+#. module: surveys_to_evaluate_ideas
+#: selection:survey.evaluation,project_complexity:0
+msgid "Simple"
+msgstr "Simples"
+
+#. module: surveys_to_evaluate_ideas
+#: selection:survey.evaluation,project_innovation:0
+msgid "Simple Improvement"
+msgstr "Melhoria Simples"
+
+#. module: surveys_to_evaluate_ideas
+#: model:ir.model,name:surveys_to_evaluate_ideas.model_survey_survey
+msgid "Survey"
+msgstr "Pesquisa"
+
+#. module: surveys_to_evaluate_ideas
+#: model:ir.actions.act_window,name:surveys_to_evaluate_ideas.action_survey_evaluation_evaluate
+msgid "Survey Evaluation"
+msgstr "Avaliação de Pesquisa"
+
+#. module: surveys_to_evaluate_ideas
+#: model:ir.model.fields,field_description:surveys_to_evaluate_ideas.field_survey_user_input_evaluation_ids
+msgid "Survey Input Evaluation"
+msgstr "Avaliação de Entrada de Pesquisa"
+
+#. module: surveys_to_evaluate_ideas
+#: model:ir.model.fields,field_description:surveys_to_evaluate_ideas.field_survey_user_input_survey_type
+msgid "Survey Type"
+msgstr "Tipo de Pesquisa"
+
+#. module: surveys_to_evaluate_ideas
+#: model:ir.model,name:surveys_to_evaluate_ideas.model_survey_user_input
+#: model:ir.model.fields,field_description:surveys_to_evaluate_ideas.field_survey_evaluation_user_input_id
+msgid "Survey User Input"
+msgstr "Entrada de Usuário da Pesquisa"
+
+#. module: surveys_to_evaluate_ideas
+#: model:ir.model.fields,field_description:surveys_to_evaluate_ideas.field_survey_survey_survey_type
+msgid "Survey type"
+msgstr "Tipo de Pesquisa"
+
+#. module: surveys_to_evaluate_ideas
+#: model:survey.question,question:surveys_to_evaluate_ideas.survey_idea_question_2
+msgid "Tipo de Melhoria"
+msgstr "Tipo de Melhoria"
+
+#. module: surveys_to_evaluate_ideas
+#: selection:survey.evaluation,project_complexity:0
+msgid "Very Complex"
+msgstr "Muito Complexo"
+
+#. module: surveys_to_evaluate_ideas
+#: model:ir.model.fields,field_description:surveys_to_evaluate_ideas.field_survey_evaluation_project_impact
+msgid "impact on other sectors"
+msgstr "Impacto em outros setores"
+
+#. module: surveys_to_evaluate_ideas
+#: model:ir.model,name:surveys_to_evaluate_ideas.model_survey_evaluation
+msgid "survey.evaluation"
+msgstr "survey.evaluation"
+
+#. module: surveys_to_evaluate_ideas
+#: model:survey.question,question:surveys_to_evaluate_ideas.survey_idea_question_3
+msgid "É necessário investir"
+msgstr "Necessário Investimento"
+

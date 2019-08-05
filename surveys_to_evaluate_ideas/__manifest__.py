@@ -37,6 +37,7 @@
         'views/custom_survey_views.xml',
         'views/survey.xml',
         'data/survey_idea.xml',
+        'security/ir.model.access.csv',
     ],
     
 }
