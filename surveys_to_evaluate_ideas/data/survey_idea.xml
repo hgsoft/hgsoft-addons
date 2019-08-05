@@ -5,19 +5,19 @@
         <!-- Survey Idea -->
 
         <record model="survey.survey" id="survey_idea_form">
-            <field name="title">Ideias</field>
+            <field name="title">Programa de Ideias</field>
             <field name="stage_id" ref="survey.stage_in_progress" />
             <field name="auth_required" eval="True" />
             <field name="users_can_go_back" eval="True" />
             <field name="survey_type">ideas</field>
-            <field name="description">&lt;p&gt;Formulário para envio de ideias.&lt;/p&gt;</field>
+            <field name="description">&lt;p&gt;Envie sua ideia!&lt;/p&gt;</field>
             <field name="thank_you_message">&lt;p&gt;&lt;/p&gt;</field>
         </record>
                 
             <!-- Page 1 -->
             
             <record model="survey.page" id="survey_idea_page_1">
-                <field name="title">Programa de Ideias</field>
+                <field name="title">Formulário para envio de ideias.</field>
                 <field name="survey_id" ref="survey_idea_form" />
                 <field name="sequence">1</field>
                 <field name="description">&lt;p&gt;&lt;/p&gt;</field>
