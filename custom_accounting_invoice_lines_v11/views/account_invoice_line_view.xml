@@ -1,0 +1,103 @@
+<odoo>
+    <data>
+        
+        <record id="custom_br_account_product_invoice_line_tree" model="ir.ui.view">
+            <field name="name">custom.br_account_product.invoice.line.tree</field>
+            <field name="model">account.invoice.line</field>
+            <field name="inherit_id" ref="br_account.br_account_product_invoice_line_tree" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='cfop_id']" position="replace">
+                    <field name="cfop_code" string="CFOP"/>
+                </xpath>
+            </field>
+        </record>
+        
+        <record id="custom_view_account_invoice_tree" model="ir.ui.view">
+            <field name="name">custom.account.invoice.tree</field>
+            <field name="model">account.invoice.line</field>
+            <field name="inherit_id" ref="account.view_invoice_line_tree" />
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="create">false</attribute>
+                </xpath>
+                <xpath expr="//tree/field[1]" position="before">
+                    <field name="date_invoice" string="Date Invoice"/>
+                    <field name="fiscal_position" string="Fiscal Position"/>
+                    <!--<field name="cfop_code" string="CFOP"/>-->
+                    <field name="number_nf" string="Number NF"/>
+                    <field name="model_nf" string="Model"/>
+                    <field name="partner_id" string="Partner"/>
+                    <field name="origin" string="Origin"/>
+                    <field name="invoice_id" string="Invoice"/>
+                </xpath>
+            </field>
+        </record>
+        
+        <record id="custom_view_account_invoice_filter" model="ir.ui.view">
+            <field name="name">custom.account.invoice.select</field>
+            <field name="model">account.invoice.line</field>
+            <field name="arch" type="xml">
+                <search string="Search Invoice">
+                    
+                    <field name="cfop_code" string="CFOP"/>
+                    
+                    <filter name="invoices" string="Invoices" domain="['&amp;', ('invoice_id.state','in',['draft','open','paid']),('invoice_id.type','in',('out_invoice','in_invoice'))]"/>
+                    <filter name="refunds" string="Credit Notes" domain="['&amp;', ('invoice_id.state','in',['draft','open','paid']),('invoice_id.type','in',('out_refund','in_refund'))]"/>
+                    <filter name="filter_by_have_nf" string="Have NF" domain="[('number_nf', '!=', '0')]"/>
+
+                    <!--
+                    <filter name="have_number" string="Have Number" domain="[('number_nf', '!=', '0')]"/>
+                    <filter name="have_model" string="Have Model" domain="[('model_nf', '!=', '')]"/>
+                    <filter name="have_cfop" string="Have CFOP" domain="[('cfop_code', '!=', '')]"/>
+                    <filter name="have_fiscal_position" string="Have Fiscal Position" domain="[('fiscal_position', '!=', '')]"/>
+                    -->
+                    
+                    <separator/>
+                    <filter name="unpaid" string="Not Paid" domain="[('invoice_id.state','=','open')]"/>
+                    <filter name="late" string="Overdue" domain="['&amp;', ('invoice_id.date_due', '&lt;', time.strftime('%%Y-%%m-%%d')), ('invoice_id.state', '=', 'open')]" help="Overdue invoices, maturity date passed"/>                                                            
+                    <separator/>
+                    <field name="partner_id" operator="child_of"/>
+                    <group expand="0" string="Group By">
+                        <filter name="group_by_partner_id" string="Partner" context="{'group_by':'partner_id'}"/>
+                        <filter name="group_by_date_invoice" string="Date Invoice" context="{'group_by':'date_invoice'}"/>
+                        <filter name="group_by_fiscal_position" string="Fiscal Position" context="{'group_by':'fiscal_position'}"/>
+                        <filter name="group_by_number_nf" string="Number NF" context="{'group_by':'number_nf'}"/>
+                        <filter name="group_by_cfop" string="CFOP" context="{'group_by':'cfop_code'}"/>
+                        <filter name="group_by_model_nf" string="Model NF" context="{'group_by':'model_nf'}"/>
+                    </group>
+               </search>
+            </field>
+        </record>
+        
+        <record id="custom_action_invoice_tree1" model="ir.actions.act_window">
+            <field name="name">Detalhes da Fatura</field>
+            <field name="res_model">account.invoice.line</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field eval="False" name="view_id"/>
+            <!-- mes/ano # posicaoFiscal # CFOP #  NFe -->
+            <field name="context">{'search_default_group_by_date_invoice': True, 'search_default_group_by_fiscal_position': True, 'search_default_group_by_number_nf': True, 'search_default_group_by_cfop': True, 'search_default_filter_by_have_nf': True}</field>            
+            <field name="search_view_id" ref="custom_view_account_invoice_filter"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to create a customer invoice.
+              </p><p>
+                Odoo's electronic invoicing allows to ease and fasten the
+                collection of customer payments. Your customer receives the
+                invoice by email and he can pay online and/or import it
+                in his own system.
+              </p><p>
+                The discussions with your customer are automatically displayed at
+                the bottom of each invoice.
+              </p>
+            </field>
+        </record>
+        
+        <menuitem id="Detalhes da Fatura"
+        name="Detalhes da Fatura"
+        action="custom_action_invoice_tree1"
+        parent="account.menu_finance_receivables"
+        sequence="30"/>
+            
+    </data>
+</odoo>
