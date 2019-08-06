@@ -72,6 +72,7 @@
                         <field name="evaluation_ids" mode="tree" view_mode="tree" readonly="1" style="pointer-events:none;">
                             <tree create="false" edit="false" editable="bottom" >                                
                                 <field name="write_uid" />
+                                <field name="write_date" />
                                 <field name="project_type"/>
                                 <field name="project_category"/>
                                 <field name="project_innovation"/>
