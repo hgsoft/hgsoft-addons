@@ -5,7 +5,7 @@
         <!-- Survey Idea -->
 
         <record model="survey.survey" id="survey_idea_form">
-            <field name="title">Programa de Ideias</field>
+            <field name="title">Gestão de Ideias</field>
             <field name="stage_id" ref="survey.stage_in_progress" />
             <field name="auth_required" eval="True" />
             <field name="users_can_go_back" eval="True" />

@@ -314,8 +314,8 @@ msgstr "Produtividade"
 
 #. module: surveys_to_evaluate_ideas
 #: model:survey.survey,title:surveys_to_evaluate_ideas.survey_idea_form
-msgid "Programa de Ideias"
-msgstr "Programa de Ideias"
+msgid "Gestão de Ideias"
+msgstr "Gestão de Ideias"
 
 #. module: surveys_to_evaluate_ideas
 #: model:ir.model.fields,field_description:surveys_to_evaluate_ideas.field_survey_evaluation_project_type
