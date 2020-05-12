@@ -1,0 +1,6 @@
+.config_step {
+    display: none !important;
+}
+.active {
+    display: block !important;
+}
