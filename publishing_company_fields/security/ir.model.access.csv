@@ -1,3 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_royalties_report,access_royalties_report,model_royalties_report,,1,0,0,0
-access_royalties_invoice_report,access_royalties_invoice_report,model_royalties_invoice_report,,1,0,0,0

@@ -1,3 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_survey_evaluation_committee,access_survey_evaluation_committee,model_survey_evaluation,surveys_to_evaluate_ideas.survey_evaluation_committee,1,1,1,0
-access_survey_evaluation_manager,access_survey_evaluation_manager,model_survey_evaluation,surveys_to_evaluate_ideas.survey_evaluation_manager,1,1,1,0

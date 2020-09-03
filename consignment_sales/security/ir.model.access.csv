@@ -1,6 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_import_wizard_product_adj,access_import_wizard_product_adj,model_import_wizard_product_adj,,1,0,0,0
-access_consignment_order,access_consignment_order,model_consignment_order,,1,0,0,0
-access_consignment_order_line,access_consignment_order_line,model_consignment_order_line,,1,0,0,0
-access_consignment_sale,access_consignment_sale,model_consignment_sale,,1,0,0,0
-access_consignment_sale_line,access_consignment_sale_line,model_consignment_sale_line,,1,0,0,0

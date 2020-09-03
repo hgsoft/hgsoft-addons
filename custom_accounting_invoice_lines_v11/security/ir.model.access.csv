@@ -1,2 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_accounting_custom_filter_accounting_custom_filter,accounting_custom_filter.accounting_custom_filter,model_accounting_custom_filter_accounting_custom_filter,,1,0,0,0

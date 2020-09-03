@@ -1,0 +1,395 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* bovine_management
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 13.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-09-03 18:00+0000\n"
+"PO-Revision-Date: 2020-09-03 18:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: bovine_management
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management_line__percent_ms
+msgid "% MS"
+msgstr "% MS"
+
+#. module: bovine_management
+#: model_terms:ir.ui.view,arch_db:bovine_management.view_confinment_form
+msgid "<span> <b> Subtotals </b> </span>"
+msgstr "<span> <b> Subtotais </b> </span>"
+
+#. module: bovine_management
+#: model:ir.model.fields,help:bovine_management.field_product_product__type
+#: model:ir.model.fields,help:bovine_management.field_product_template__type
+msgid ""
+"A storable product is a product for which you manage stock. The Inventory app has to be installed.\n"
+"A consumable product is a product for which stock is not managed.\n"
+"A service is a non-material product you provide."
+msgstr ""
+"Um produto armazenável é um produto no qual você pode gerenciar o estoque. O aplicativo Inventário deve ser instalado.\n"
+"Um produto consumível é um produto para o qual o estoque não é gerenciado.\n"
+"Um serviço é um produto não material que você fornece."
+
+#. module: bovine_management
+#: model:ir.model.fields.selection,name:bovine_management.selection__confinment_management__confinment_stage__adaptation
+msgid "Adaptation"
+msgstr "Adaptação"
+
+#. module: bovine_management
+#: model_terms:ir.ui.view,arch_db:bovine_management.view_confinment_form
+msgid "Add a product"
+msgstr "Adicionar"
+
+#. module: bovine_management
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management_line__basal_diet
+msgid "Basal Diet (Dry Matter)"
+msgstr "Dieta Basal (Matéria Seca)"
+
+#. module: bovine_management
+#: model:ir.ui.menu,name:bovine_management.bovine_management_menu
+#: model:ir.ui.menu,name:bovine_management.main_bovine_management_menu
+msgid "Bovine Management"
+msgstr "Gerenciamento Bovino"
+
+#. module: bovine_management
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management__carcass_yield
+msgid "Carcass Yield"
+msgstr "Rendimento de Carcaça"
+
+#. module: bovine_management
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management__carcass_gain
+msgid "Carcass gain"
+msgstr "Ganho de Carcaça"
+
+#. module: bovine_management
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management__confinement_days
+msgid "Confinement days"
+msgstr "Dias de Confinamento"
+
+#. module: bovine_management
+#: model:ir.ui.menu,name:bovine_management.confinment_menu
+#: model_terms:ir.ui.view,arch_db:bovine_management.view_confinment_tree
+msgid "Confinment"
+msgstr "Confinamento"
+
+#. module: bovine_management
+#: model_terms:ir.ui.view,arch_db:bovine_management.view_confinment_form
+msgid "Confinment Ingredients"
+msgstr "Ingredientes do Confinamento"
+
+#. module: bovine_management
+#: model_terms:ir.ui.view,arch_db:bovine_management.view_confinment_form
+msgid "Confinment Ingredients Line"
+msgstr "Linha de Ingrediente de Confinamento"
+
+#. module: bovine_management
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management__stock_location_id
+#: model:ir.model.fields,field_description:bovine_management.field_stock_location__confinment_management_ids
+msgid "Confinment Location"
+msgstr "Local de Confinamento"
+
+#. module: bovine_management
+#: model_terms:ir.ui.view,arch_db:bovine_management.view_confinment_form
+msgid "Confinment Management"
+msgstr "Gerenciamento de Confinamento"
+
+#. module: bovine_management
+#: model:ir.actions.act_window,name:bovine_management.confinment_management_action
+msgid "Confinment Management Form"
+msgstr "Formulário de Gerenciamento de Confinamento"
+
+#. module: bovine_management
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management__confinment_management_line
+msgid "Confinment Management Lines"
+msgstr "Linhas de Gerenciamento de Confinamento"
+
+#. module: bovine_management
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management_line__confinment_management_id
+msgid "Confinment Management Reference"
+msgstr "Referência de Gerenciamento de Confinamento"
+
+#. module: bovine_management
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management__confinment_product_id
+#: model:ir.model.fields,field_description:bovine_management.field_product_product__confinment_product_ids
+#: model:ir.model.fields,field_description:bovine_management.field_product_template__confinment_product_ids
+#: model_terms:ir.ui.view,arch_db:bovine_management.view_confinment_tree
+msgid "Confinment Product"
+msgstr "Produto de Confinamento"
+
+#. module: bovine_management
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management__confinment_stage
+#: model_terms:ir.ui.view,arch_db:bovine_management.view_confinment_tree
+msgid "Confinment Stage"
+msgstr "Estágio de Confinamento"
+
+#. module: bovine_management
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management_line__consumption
+msgid "Consumption (total / day)"
+msgstr "Consumo (Total / Dia)"
+
+#. module: bovine_management
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management__total_cost_in_the_period
+msgid "Cost in the Period"
+msgstr "Custo no Período"
+
+#. module: bovine_management
+#: model_terms:ir.actions.act_window,help:bovine_management.confinment_management_action
+msgid "Create a new confinment!"
+msgstr "Criar um novo confinamento"
+
+#. module: bovine_management
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management__create_uid
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management_line__create_uid
+msgid "Created by"
+msgstr "Criado Por"
+
+#. module: bovine_management
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management__create_date
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management_line__create_date
+msgid "Created on"
+msgstr "Criado em"
+
+#. module: bovine_management
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management_line__daily_cost
+msgid "Daily Cost"
+msgstr "Custo Diário"
+
+#. module: bovine_management
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management__daily_cost_head
+msgid "Daily Cost (management / treatment) / head"
+msgstr "Custo Diário (maneio / trato) Cabeça"
+
+#. module: bovine_management
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management_line__day_consumption
+msgid "Day Consumption (kg MN)"
+msgstr "Consumo Diário (kg MN)"
+
+#. module: bovine_management
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management__display_name
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management_line__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: bovine_management
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management_line__estimated_consumption_in_the_containment_period
+msgid "Estimated consumption in the containment period"
+msgstr "Consumo Estimado no período do Confinamento"
+
+#. module: bovine_management
+#: model:ir.model.fields.selection,name:bovine_management.selection__confinment_management__confinment_stage__final
+msgid "Final"
+msgstr "Final"
+
+#. module: bovine_management
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management__freight_charge_per_head
+msgid "Freight charge per head"
+msgstr "Valor de Frete por Cabeça"
+
+#. module: bovine_management
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management__funrual
+msgid "FunRual"
+msgstr "FunRural"
+
+#. module: bovine_management
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management__gmd
+msgid "GMD"
+msgstr "GMD"
+
+#. module: bovine_management
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management__gain_in_at_sign
+msgid "Gain in @"
+msgstr "Ganho em @"
+
+#. module: bovine_management
+#: model:ir.model.fields.selection,name:bovine_management.selection__confinment_management__confinment_stage__growth
+msgid "Growth"
+msgstr "Crescimento"
+
+#. module: bovine_management
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management__id
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management_line__id
+msgid "ID"
+msgstr "ID"
+
+#. module: bovine_management
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management__indea
+msgid "INDEA"
+msgstr "INDEA"
+
+#. module: bovine_management
+#: model:ir.model.fields.selection,name:bovine_management.selection__product_template__type__ingredient
+msgid "Ingredient"
+msgstr "Ingrediente"
+
+#. module: bovine_management
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management__input_weight
+msgid "Input Weight"
+msgstr "Peso Entrada"
+
+#. module: bovine_management
+#: model:ir.model,name:bovine_management.model_stock_location
+msgid "Inventory Locations"
+msgstr "Locais de Inventário"
+
+#. module: bovine_management
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management__kg_head_supplied_day
+msgid "Kg / head supplied / day (MS)"
+msgstr "Kg / cabeça fornecidos/dia (MS)"
+
+#. module: bovine_management
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management____last_update
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management_line____last_update
+msgid "Last Modified on"
+msgstr "Última Modificação em"
+
+#. module: bovine_management
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management__write_uid
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management_line__write_uid
+msgid "Last Updated by"
+msgstr "Última Atualização por"
+
+#. module: bovine_management
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management__write_date
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management_line__write_date
+msgid "Last Updated on"
+msgstr "Última Atualização em"
+
+#. module: bovine_management
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management__others
+msgid "Medication - Vaccine - Earring, ETC"
+msgstr "Medicação - Vacina - Brinco, ETC"
+
+#. module: bovine_management
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management__net_profit_head
+msgid "Net Profit / head"
+msgstr "Lucro Líquido / cabeça"
+
+#. module: bovine_management
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management__number_of_animals
+msgid "Number of animals"
+msgstr "Número de Animais"
+
+#. module: bovine_management
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management__number_of_treatments_or_wagons_per_day
+msgid "Number of treatments or wagons per day"
+msgstr "Número de tratamento ou vagões por dia"
+
+#. module: bovine_management
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management__output_weight
+msgid "Output Weight"
+msgstr "Peso Saída"
+
+#. module: bovine_management
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management__price_at_sign_sale
+msgid "Price @ Sale"
+msgstr "Preço @ Venda"
+
+#. module: bovine_management
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management_line__product_id
+#: model_terms:ir.ui.view,arch_db:bovine_management.view_confinment_form
+msgid "Product"
+msgstr "Produto"
+
+#. module: bovine_management
+#: model:ir.model,name:bovine_management.model_product_template
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management_line__product_template_id
+msgid "Product Template"
+msgstr "Modelo de Produto"
+
+#. module: bovine_management
+#: model:ir.model.fields,field_description:bovine_management.field_product_product__type
+#: model:ir.model.fields,field_description:bovine_management.field_product_template__type
+msgid "Product Type"
+msgstr "Tipo de Produto"
+
+#. module: bovine_management
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management__purchase_value_per_animal
+msgid "Purchase value per animal"
+msgstr "Preço de compra por Animal"
+
+#. module: bovine_management
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management_line__value_kg_mn
+msgid "R$ / kg MN"
+msgstr "R$ / kg MN"
+
+#. module: bovine_management
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management__sale_at_sign_produced_revenue
+msgid "Sale @ produced revenue"
+msgstr "Receita Venda @ produzida"
+
+#. module: bovine_management
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management_line__sequence
+msgid "Sequence"
+msgstr "Sequência"
+
+#. module: bovine_management
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management__slaughter_weight
+msgid "Slaughter Weight"
+msgstr "Peso Abate"
+
+#. module: bovine_management
+#: model_terms:ir.ui.view,arch_db:bovine_management.view_confinment_tree
+msgid "Stock Location"
+msgstr "Local Estoque"
+
+#. module: bovine_management
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management__total_basal_diet
+msgid "Total Basal Diet (Dry Matter)"
+msgstr "Total Dieta Basal (Matéria Seca)"
+
+#. module: bovine_management
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management__total_consumption
+msgid "Total Consumption (total / day)"
+msgstr "Total Consumo (total  /dia)"
+
+#. module: bovine_management
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management__total_costs
+msgid "Total Costs"
+msgstr "Total Custos"
+
+#. module: bovine_management
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management__total_daily_cost
+msgid "Total Daily Cost"
+msgstr "Total Custo Diário"
+
+#. module: bovine_management
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management__total_day_consumption
+msgid "Total Day Consumption (kg MN)"
+msgstr "Total Consumo Diário (kg MN)"
+
+#. module: bovine_management
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management__total_estimated_consumption_in_the_containment_period
+msgid "Total Estimated consumption in the containment period"
+msgstr "Total Consumo estimado no período de confinamento"
+
+#. module: bovine_management
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management__total_weighing_by_tract
+msgid "Total Weighing by tract"
+msgstr "Total Peso por trato"
+
+#. module: bovine_management
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management__total_revenue
+msgid "Total revenue"
+msgstr "Total revenda"
+
+#. module: bovine_management
+#: model:ir.model.fields,field_description:bovine_management.field_confinment_management_line__weighing_by_tract
+msgid "Weighing by tract"
+msgstr "Peso por Trato"
+
+#. module: bovine_management
+#: model:ir.model,name:bovine_management.model_confinment_management
+msgid "confinment.management"
+msgstr "Gerenciamento de Confinamento"
+
+#. module: bovine_management
+#: model:ir.model,name:bovine_management.model_confinment_management_line
+msgid "confinment.management.line"
+msgstr "Linha de Gerenciamento de Confinamento"
