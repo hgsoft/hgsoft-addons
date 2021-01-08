@@ -1,0 +1,63 @@
+<odoo>
+    <data>
+        <record id="custom_hr_equipment_view_form_inherit" model="ir.ui.view">
+            <field name="name">equipment.form.inherit</field>
+            <field name="model">maintenance.equipment</field>
+            <field name="inherit_id" ref="maintenance.hr_equipment_view_form"/>
+            <field name="priority">50</field>
+            <field name="arch" type="xml">
+                <xpath expr="//form/sheet/div[@class='oe_title']" position="replace">
+                    <div class="oe_title pr-0" style="max-width: initial;">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1 class="d-flex flex-row justify-content-between">
+                            <field name="name" class="o_task_name text-truncate" style="max-width: 688px; margin-right: auto;" string="Name" placeholder="Equipment Name"/>
+                            <field name="kanban_state" widget="state_selection" class="ml-auto" modifiers="{'required':true}"/>
+                        </h1>
+                    </div>
+                    <!--
+                    <h1 class="d-flex flex-row justify-content-between" modifiers="{}">
+                        <field name="name" string="Name" placeholder="Equipment Name"/>
+                        <field name="kanban_state" widget="state_selection" class="ml-auto" modifiers="{'required':true}"/>
+                    </h1>
+                    -->
+                </xpath>
+                <xpath expr="//form/sheet/group/group/field[@name='owner_user_id']" position="replace">
+                    <field name="product_id"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="custom_hr_equipment_view_kanban" model="ir.ui.view">
+            <field name="name">equipment.kanban.inherit</field>
+            <field name="model">maintenance.equipment</field>
+            <field name="inherit_id" ref="maintenance.hr_equipment_view_kanban"/>
+            <field name="arch" type="xml">
+                
+                <xpath expr="//kanban/templates/t[2]/div/div[@class='o_dropdown_kanban dropdown']/div[@class='dropdown-menu']" position="replace">
+                    <div class="dropdown-menu" role="menu">
+                        <t t-if="widget.editable"><a role="menuitem" type="edit" class="dropdown-item">Edit...</a></t>
+                        <t t-if="widget.deletable"><a role="menuitem" type="delete" class="dropdown-item">Delete</a></t>
+                        <!--
+                        <div role="separator" class="dropdown-divider"></div>
+                        <div role="separator" class="dropdown-header">Record Colour</div>
+                        <ul class="oe_kanban_colorpicker" data-field="color"/>
+                        -->
+                    </div>
+                </xpath>                
+                <xpath expr="//kanban/templates/t[2]/div/div[@class='oe_kanban_content']/div[@class='o_kanban_record_top']/b" position="replace">
+                    <div class="oe_kanban_top_left" style="display: flex; align-items: center; min-height: 20px; flex: 1 1 auto;">
+                        <b class="o_kanban_record_title"><field name="name"/><small><span t-if="record.model.raw_value"> (<field name="model"/>)</span></small></b>
+                    </div>
+                    <div class="oe_kanban_top_right" style="display: flex; align-items: center; min-height: 20px; flex: 0 1 auto;">
+                        <field name="image_128" invisible="1"/>
+                        <field name='image_128' widget="image" class="o_kanban_inline_block" options="{'preview_image': 'image_128'}" attrs="{'invisible':[('image_128', '=', False)]}"/>
+                    </div>
+                </xpath>
+                <xpath expr="//kanban/templates/t[2]/div/div[@class='oe_kanban_content']/div[@class='o_kanban_record_bottom']/div[@class='oe_kanban_bottom_right']/img" position="replace">
+                    <div>
+                        <field name="kanban_state" widget="state_selection" invisible="context.get('fsm_mode', False)" modifiers="{'required':true}"/>
+                    </div>                    
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

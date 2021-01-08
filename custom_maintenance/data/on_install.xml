@@ -1,0 +1,5 @@
+<odoo>
+    <data noupdate="0">
+        <function model="maintenance.equipment" name="sync_colors"/>
+    </data>
+</odoo>
