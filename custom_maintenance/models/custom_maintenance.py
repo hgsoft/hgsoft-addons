@@ -16,19 +16,6 @@ class CustomMaintenance(models.Model):
         ('done', 'Machine on Goal'),
         ('blocked', 'Machine Stopped')], string='Kanban State',
         copy=False, default='normal', required=True)
-
-    '''
-    [17:51, 07/01/2021] Alex Haag: Máquina Parada em vermelho
-    Machine Stopped
-
-
-    [17:51, 07/01/2021] Alex Haag: Máquina na Meta em verde
-    Machine on Goal
-
-
-    [17:51, 07/01/2021] Alex Haag: e Máquina fora da Meta em cinza/amarelo
-    Machine out of Goal
-    '''
     
     @api.onchange('color', 'kanban_state')
     def _compute_color_and_kanban_state(self):

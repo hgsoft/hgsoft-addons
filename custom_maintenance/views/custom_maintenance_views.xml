@@ -14,12 +14,6 @@
                             <field name="kanban_state" widget="state_selection" class="ml-auto" modifiers="{'required':true}"/>
                         </h1>
                     </div>
-                    <!--
-                    <h1 class="d-flex flex-row justify-content-between" modifiers="{}">
-                        <field name="name" string="Name" placeholder="Equipment Name"/>
-                        <field name="kanban_state" widget="state_selection" class="ml-auto" modifiers="{'required':true}"/>
-                    </h1>
-                    -->
                 </xpath>
                 <xpath expr="//form/sheet/group/group/field[@name='owner_user_id']" position="replace">
                     <field name="product_id"/>
