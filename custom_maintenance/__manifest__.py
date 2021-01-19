@@ -35,6 +35,7 @@
 
     'data': [
         'views/custom_maintenance_views.xml',
+        'views/custom_maintenance_templates.xml',
         'data/on_install.xml',
     ],
     

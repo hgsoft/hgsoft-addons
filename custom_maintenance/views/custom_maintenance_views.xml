@@ -9,14 +9,21 @@
                 <xpath expr="//form/sheet/div[@class='oe_title']" position="replace">
                     <div class="oe_title pr-0" style="max-width: initial;">
                         <label for="name" class="oe_edit_only"/>
-                        <h1 class="d-flex flex-row justify-content-between">
+                        <h1 class="d-flex flex-row justify-content-between custom_kanban_state_h1">
                             <field name="name" class="o_task_name text-truncate" style="max-width: 688px; margin-right: auto;" string="Name" placeholder="Equipment Name"/>
+                            <!--
+                            <field name="kanban_state" widget="label_selection" class="ml-auto" options="{'classes': {'0': 'cm-dark-orange', '1': 'cm-yellow', '2': 'cm-dark-green'}}"/>
+                            -->
+                            <!--
                             <field name="kanban_state" widget="state_selection" class="ml-auto" modifiers="{'required':true}"/>
+                            -->
                         </h1>
+                        <script type="text/javascript" src="/custom_maintenance/static/src/js/script.js"></script>
                     </div>
                 </xpath>
                 <xpath expr="//form/sheet/group/group/field[@name='owner_user_id']" position="replace">
                     <field name="product_id"/>
+                    <field name="kanban_state" class="ml-auto" modifiers="{'required':true}"/>
                 </xpath>
             </field>
         </record>
@@ -47,9 +54,15 @@
                     </div>
                 </xpath>
                 <xpath expr="//kanban/templates/t[2]/div/div[@class='oe_kanban_content']/div[@class='o_kanban_record_bottom']/div[@class='oe_kanban_bottom_right']/img" position="replace">
-                    <div>
+                    <div class="custom_kanban_state_div">
+                        <!--
                         <field name="kanban_state" widget="state_selection" invisible="context.get('fsm_mode', False)" modifiers="{'required':true}"/>
-                    </div>                    
+                        -->
+                        <field name="kanban_state" widget="label_selection" invisible="context.get('fsm_mode', False)" modifiers="{'required':true}" options="{'classes': {'0': 'cm-transparent', '1': 'cm-red', '2': 'cm-dark-orange', '3': 'cm-orange', '4': 'cm-light-orange', '5': 'cm-yellow', '6': 'cm-dark-blue', '7': 'cm-blue', '8': 'cm-light-blue', '9': 'cm-dark-green', '10': 'cm-light-green'}}"/>
+                    </div>
+                    <!--
+                    <script type="text/javascript" src="/custom_maintenance/static/src/js/script.js"></script>
+                    -->
                 </xpath>
             </field>
         </record>

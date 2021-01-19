@@ -12,22 +12,49 @@ class CustomMaintenance(models.Model):
     image_128 = fields.Binary('Image 128', related='product_id.image_128')
     
     kanban_state = fields.Selection([
-        ('normal', 'Machine Out of Goal'),
-        ('done', 'Machine on Goal'),
-        ('blocked', 'Machine Stopped')], string='Kanban State',
-        copy=False, default='normal', required=True)
+        ('0', 'máquina desligada, sem energia'),
+        ('1', 'máquina energizada mas parada'),
+        ('2', 'preparação 1'),
+        ('3', 'preparação 2'),
+        ('4', 'preparação 3'),
+        ('5', 'máquina pronta'),
+        ('6', 'máquina sendo operada manualmente'),
+        ('7', 'máquina trabalhando sem repetibilidade'),
+        ('8', 'máquina trabalhando com repetibilidade'),
+        ('9', 'máquina produzindo com repetibilidade'),
+        ('10', 'máquina produzindo com repetibilidade e qualidade')
+    ], string='Kanban State', copy=False, default='0', required=True)
+    
+    '''
+    máquina desligada, sem energia
+    máquina energizada mas parada
+    preparação 1
+    preparação 2
+    preparação 3
+    máquina pronta
+    máquina sendo operada manualmente
+    máquina trabalhando sem repetibilidade
+    máquina trabalhando com repetibilidade
+    máquina produzindo com repetibilidade
+    máquina produzindo com repetibilidade e qualidade
+    '''
     
     @api.onchange('color', 'kanban_state')
     def _compute_color_and_kanban_state(self):
+        pass
+        '''
         if self.kanban_state == 'done':
             self.color = 10
         elif self.kanban_state == 'blocked':
             self.color = 1
         else:
             self.color = 0
+        '''
             
     @api.model
     def sync_colors(self):
+        pass
+        '''
         for equipment in self.search([]):
             if equipment.color == 10:
                 equipment.kanban_state = 'done'
@@ -35,3 +62,4 @@ class CustomMaintenance(models.Model):
                 equipment.kanban_state = 'blocked'
             else:
                 equipment.kanban_state = 'normal'
+        '''
