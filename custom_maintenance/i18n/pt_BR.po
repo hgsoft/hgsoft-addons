@@ -18,7 +18,7 @@ msgstr ""
 #. module: custom_maintenance
 #: model_terms:ir.ui.view,arch_db:custom_maintenance.custom_hr_equipment_view_kanban
 msgid "<b>Kanban State:</b>"
-msgstr "Situação:"
+msgstr "<b>Situação:</b>"
 
 #. module: custom_maintenance
 #: model:ir.model.fields,help:custom_maintenance.field_product_product__type
