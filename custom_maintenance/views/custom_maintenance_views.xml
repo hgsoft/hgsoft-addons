@@ -11,14 +11,7 @@
                         <label for="name" class="oe_edit_only"/>
                         <h1 class="d-flex flex-row justify-content-between custom_kanban_state_h1">
                             <field name="name" class="o_task_name text-truncate" style="max-width: 688px; margin-right: auto;" string="Name" placeholder="Equipment Name"/>
-                            <!--
-                            <field name="kanban_state" widget="label_selection" class="ml-auto" options="{'classes': {'0': 'cm-dark-orange', '1': 'cm-yellow', '2': 'cm-dark-green'}}"/>
-                            -->
-                            <!--
-                            <field name="kanban_state" widget="state_selection" class="ml-auto" modifiers="{'required':true}"/>
-                            -->
                         </h1>
-                        <script type="text/javascript" src="/custom_maintenance/static/src/js/script.js"></script>
                     </div>
                 </xpath>
                 <xpath expr="//form/sheet/group/group/field[@name='owner_user_id']" position="replace">
@@ -37,11 +30,6 @@
                     <div class="dropdown-menu" role="menu">
                         <t t-if="widget.editable"><a role="menuitem" type="edit" class="dropdown-item">Edit...</a></t>
                         <t t-if="widget.deletable"><a role="menuitem" type="delete" class="dropdown-item">Delete</a></t>
-                        <!--
-                        <div role="separator" class="dropdown-divider"></div>
-                        <div role="separator" class="dropdown-header">Record Colour</div>
-                        <ul class="oe_kanban_colorpicker" data-field="color"/>
-                        -->
                     </div>
                 </xpath>                
                 <xpath expr="//kanban/templates/t[2]/div/div[@class='oe_kanban_content']/div[@class='o_kanban_record_top']/b" position="replace">
@@ -55,14 +43,14 @@
                 </xpath>
                 <xpath expr="//kanban/templates/t[2]/div/div[@class='oe_kanban_content']/div[@class='o_kanban_record_bottom']/div[@class='oe_kanban_bottom_right']/img" position="replace">
                     <div class="custom_kanban_state_div">
-                        <!--
-                        <field name="kanban_state" widget="state_selection" invisible="context.get('fsm_mode', False)" modifiers="{'required':true}"/>
-                        -->
-                        <field name="kanban_state" widget="label_selection" invisible="context.get('fsm_mode', False)" modifiers="{'required':true}" options="{'classes': {'0': 'cm-transparent', '1': 'cm-red', '2': 'cm-dark-orange', '3': 'cm-orange', '4': 'cm-light-orange', '5': 'cm-yellow', '6': 'cm-dark-blue', '7': 'cm-blue', '8': 'cm-light-blue', '9': 'cm-dark-green', '10': 'cm-light-green'}}"/>
+                        <field name="kanban_state" widget="label_selection" invisible="context.get('fsm_mode', False)" modifiers="{'required':true}" options="{'classes': {'0': 'cm-0 ct-black', '1': 'cm-1 ct-black', '2': 'cm-2 ct-black', '3': 'cm-3 ct-black', '4': 'cm-4 ct-black', '5': 'cm-5 ct-black', '6': 'cm-6 ct-white', '7': 'cm-7 ct-white', '8': 'cm-8 ct-black', '9': 'cm-9 ct-white', '10': 'cm-10 ct-black'}}"/>
                     </div>
-                    <!--
-                    <script type="text/javascript" src="/custom_maintenance/static/src/js/script.js"></script>
-                    -->
+                </xpath>
+                <xpath expr="//kanban/templates/t[2]/div" position="attributes">
+                    <attribute name="t-attf-class">{{'border-cm-' + kanban_getcolor(record.color.raw_value)}} {{!selection_mode ? 'oe_kanban_color_' + kanban_getcolor(record.color.raw_value) : ''}} oe_kanban_card oe_kanban_global_click</attribute>
+                </xpath>
+                <xpath expr="//kanban/templates/t[1]/ul" position="inside">
+                    <li t-if="record.kanban_state.raw_value"><b>Kanban State:</b> <t t-esc="record.kanban_state.value"/></li>
                 </xpath>
             </field>
         </record>

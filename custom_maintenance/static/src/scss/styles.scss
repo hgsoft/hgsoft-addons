@@ -1,33 +1,79 @@
-.badge-cm-red {
+.badge {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100px;
+    margin-top: 6px;
+}
+.ct-black {
+    color: black;
+}
+.ct-white {
+    color: white;
+}
+.badge-cm-1 {
     background-color: #FF0000 !important;
 }
-.badge-cm-dark-orange {
+.badge-cm-2 {
     background-color: #FF8C00 !important;
 }
-.badge-cm-orange {
+.badge-cm-3 {
     background-color: #FFA500 !important;
 }
-.badge-cm-light-orange {
+.badge-cm-4 {
     background-color: #FFD700 !important;
 }
-.badge-cm-yellow {
+.badge-cm-5 {
     background-color: #FFFF00 !important;
 }
-.badge-cm-dark-blue {
+.badge-cm-6 {
     background-color: #00008B !important;
 }
-.badge-cm-blue {
+.badge-cm-7 {
     background-color: #0000FF !important;
 }
-.badge-cm-light-blue {
+.badge-cm-8 {
     background-color: #ADD8E6 !important;
 }
-.badge-cm-dark-green {
+.badge-cm-9 {
     background-color: #006400 !important;
 }
-.badge-cm-light-green {
+.badge-cm-10 {
     background-color: #90EE90 !important;
 }
-.badge-cm-transparent {
+.badge-cm-0 {
+    background-color: #d7cfcf !important;
+}
+.border-cm-1::after {
+    background-color: #FF0000 !important;
+}
+.border-cm-2::after {
+    background-color: #FF8C00 !important;
+}
+.border-cm-3::after {
+    background-color: #FFA500 !important;
+}
+.border-cm-4::after {
+    background-color: #FFD700 !important;
+}
+.border-cm-5::after {
+    background-color: #FFFF00 !important;
+}
+.border-cm-6::after {
+    background-color: #00008B !important;
+}
+.border-cm-7::after {
+    background-color: #0000FF !important;
+}
+.border-cm-8::after {
+    background-color: #ADD8E6 !important;
+}
+.border-cm-9::after {
+    background-color: #006400 !important;
+}
+.border-cm-10::after {
+    background-color: #90EE90 !important;
+}
+.border-cm-0::after {
     background-color: #d7cfcf !important;
 }
