@@ -35,10 +35,21 @@ class CustomMaintenance(models.Model):
             equipment.kanban_state = str(equipment.color)
 
     @api.model
-    def my_function(self):
+    def get_setting(self):
+        print('[LOG GET_SETTING] - [Iniciando a função get_setting()]')
+        
         setting = self.env['res.config.settings'].search([], order='id desc', limit=1)
         
+        print('[LOG GET_SETTING] - [setting]')
+        print(setting)
+        
         refresh_time_seconds = setting.refresh_time_seconds
+        
+        print('[LOG GET_SETTING] - [refresh_time_seconds]')
+        
+        print(refresh_time_seconds)
+        
+        print('[LOG GET_SETTING] - [Finalizando a função get_setting()]')
         
         return {'refresh_time_seconds': refresh_time_seconds}
 
