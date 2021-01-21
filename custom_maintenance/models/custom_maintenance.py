@@ -40,7 +40,7 @@ class CustomMaintenance(models.Model):
 
         refresh_time_seconds = setting.refresh_time_seconds
                 
-        refresh_time_seconds = refresh_time_seconds if refresh_time_seconds > 0 else 30
+        refresh_time_seconds = refresh_time_seconds if refresh_time_seconds > 0 else 0
         
         return {'refresh_time_seconds': refresh_time_seconds}
 

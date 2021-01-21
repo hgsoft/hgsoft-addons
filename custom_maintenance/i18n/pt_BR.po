@@ -6,14 +6,20 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 13.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-21 11:36+0000\n"
-"PO-Revision-Date: 2021-01-21 11:36+0000\n"
+"POT-Creation-Date: 2021-01-21 19:59+0000\n"
+"PO-Revision-Date: 2021-01-21 19:59+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: custom_maintenance
+#: code:addons/custom_maintenance/models/res_config_settings.py:0
+#, python-format
+msgid "Refresh time must be 0 or greater than or equal to 10"
+msgstr "O tempo de atualização deve ser 0 ou maior ou igual a 10"
 
 #. module: custom_maintenance
 #: model_terms:ir.ui.view,arch_db:custom_maintenance.custom_hr_equipment_view_kanban
