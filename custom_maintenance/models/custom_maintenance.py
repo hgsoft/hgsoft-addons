@@ -37,6 +37,10 @@ class CustomMaintenance(models.Model):
     @api.model
     def get_setting(self):
         setting = self.env['res.config.settings'].search([], order='id desc', limit=1)
-        refresh_time_seconds = setting.refresh_time_seconds if setting.refresh_time_seconds > 0 else 30
+
+        refresh_time_seconds = setting.refresh_time_seconds
+                
+        refresh_time_seconds = refresh_time_seconds if refresh_time_seconds > 0 else 30
+        
         return {'refresh_time_seconds': refresh_time_seconds}
 
