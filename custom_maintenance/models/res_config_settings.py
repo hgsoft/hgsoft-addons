@@ -9,7 +9,7 @@ from odoo.exceptions import ValidationError
 class ResConfigSettings(models.TransientModel):
     _inherit = 'res.config.settings'
 
-    refresh_time_seconds = fields.Integer("Refresh Time")
+    refresh_time_seconds = fields.Integer("Refresh Time", default=30)
     
     @api.constrains('refresh_time_seconds')
     def check_value(self):
