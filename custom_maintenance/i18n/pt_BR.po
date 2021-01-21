@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 13.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-19 19:06+0000\n"
-"PO-Revision-Date: 2021-01-19 19:06+0000\n"
+"POT-Creation-Date: 2021-01-21 11:36+0000\n"
+"PO-Revision-Date: 2021-01-21 11:36+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -33,6 +33,11 @@ msgstr ""
 "Um serviço é um produto não material que você fornece."
 
 #. module: custom_maintenance
+#: model:ir.model,name:custom_maintenance.model_res_config_settings
+msgid "Config Settings"
+msgstr "Ajuste de configurações"
+
+#. module: custom_maintenance
 #: model_terms:ir.ui.view,arch_db:custom_maintenance.custom_hr_equipment_view_kanban
 msgid "Delete"
 msgstr "Excluir"
@@ -53,6 +58,11 @@ msgid "Equipment Name"
 msgstr "Descrição do Equipamento"
 
 #. module: custom_maintenance
+#: model_terms:ir.ui.view,arch_db:custom_maintenance.res_config_settings_view_form
+msgid "Equipments"
+msgstr "Equipamentos"
+
+#. module: custom_maintenance
 #: model:ir.model.fields,field_description:custom_maintenance.field_maintenance_equipment__image_128
 msgid "Image 128"
 msgstr "Imagem 128"
@@ -66,6 +76,11 @@ msgstr "Imagem 1920"
 #: model:ir.model.fields,field_description:custom_maintenance.field_maintenance_equipment__kanban_state
 msgid "Kanban State"
 msgstr "Situação"
+
+#. module: custom_maintenance
+#: model_terms:ir.ui.view,arch_db:custom_maintenance.res_config_settings_view_form
+msgid "Maintenance"
+msgstr "Manutenção"
 
 #. module: custom_maintenance
 #: model:ir.model,name:custom_maintenance.model_maintenance_equipment
@@ -92,6 +107,16 @@ msgstr "Modelo de Produto"
 #: model:ir.model.fields,field_description:custom_maintenance.field_product_template__type
 msgid "Product Type"
 msgstr "Tipo de Produto"
+
+#. module: custom_maintenance
+#: model:ir.model.fields,field_description:custom_maintenance.field_res_config_settings__refresh_time_seconds
+msgid "Refresh Time"
+msgstr "Tempo de Atualização"
+
+#. module: custom_maintenance
+#: model_terms:ir.ui.view,arch_db:custom_maintenance.res_config_settings_view_form
+msgid "Update time of equipment kanbans in seconds"
+msgstr "Tempo de atualização (segundos) do kanban dos equipamentos"
 
 #. module: custom_maintenance
 #: model:ir.model.fields.selection,name:custom_maintenance.selection__maintenance_equipment__kanban_state__6

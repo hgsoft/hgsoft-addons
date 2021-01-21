@@ -3,6 +3,7 @@
     <template id="assets_backend" name="maintenance assets" inherit_id="web.assets_backend">
         <xpath expr="." position="inside">
             <link rel="stylesheet" type="text/scss" href="/custom_maintenance/static/src/scss/styles.scss"/>
+            <script type="text/javascript" src="/custom_maintenance/static/src/js/script.js"></script>
         </xpath>
     </template>
 </odoo>

@@ -1,5 +1,26 @@
 <odoo>
     <data>
+        <!--
+        
+        <menuitem name="Maintenance"
+            id="menu_main_pm"
+            web_icon="custom_maintenance,static/description/icon.png"
+            sequence="50"/>
+        
+        <menuitem id="menu_project_config" name="Configuration" parent="menu_main_pm"
+            sequence="100"/>
+        -->
+        <!--
+        <menuitem name="Maintenance"
+            id="menu_main_pm"
+            groups="group_maintenance_user"
+            web_icon="custom_maintenance,static/description/icon.png"
+            sequence="50"/>
+        
+        <menuitem id="menu_project_config" name="Configuration" parent="menu_main_pm"
+            sequence="100" groups="maintenance.group_maintenance_user"/>
+        -->
+        
         <record id="custom_hr_equipment_view_form_inherit" model="ir.ui.view">
             <field name="name">equipment.form.inherit</field>
             <field name="model">maintenance.equipment</field>

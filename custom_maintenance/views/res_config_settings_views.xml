@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.custom.maintenance</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="50"/>
+        <field name="inherit_id" ref="base.res_config_settings_view_form" />
+        <field name="arch" type="xml">
+        <xpath expr="//div[hasclass('settings')]" position="inside">
+            <div class="app_settings_block" data-string="Maintenance" string="Maintenance" data-key="maintenance">
+                    <h2>Equipments</h2>
+                    <div class="row mt16 o_settings_container">                            
+                        <div class="col-12 col-lg-6 o_setting_box" name="maintenance_refresh_time">
+                            <div class="o_setting_left_pane">
+                                <field name="refresh_time_seconds"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label for="refresh_time_seconds"/>
+                                <div class="text-muted" name="refresh_time_msg">
+                                    Update time of equipment kanbans in seconds
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

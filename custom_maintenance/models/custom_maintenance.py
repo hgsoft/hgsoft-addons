@@ -33,3 +33,12 @@ class CustomMaintenance(models.Model):
     def sync_colors(self):
         for equipment in self.search([]):
             equipment.kanban_state = str(equipment.color)
+
+    @api.model
+    def my_function(self):
+        setting = self.env['res.config.settings'].search([], order='id desc', limit=1)
+        
+        refresh_time_seconds = setting.refresh_time_seconds
+        
+        return {'refresh_time_seconds': refresh_time_seconds}
+
