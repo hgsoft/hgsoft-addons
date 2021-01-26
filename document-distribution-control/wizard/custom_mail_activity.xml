@@ -1,0 +1,17 @@
+<odoo>
+  <data>
+    <record id="custom_mail_activity_view_form_popup" model="ir.ui.view">
+        <field name="name">custom.mail.activity.view.form.popup</field>
+        <field name="model">mail.activity</field>
+        <field name="inherit_id" ref="mail.mail_activity_view_form_popup"/>
+        <field name="priority">50</field>
+        <field name="arch" type="xml">
+            <xpath expr="//form/sheet/group[3]/group[2]/field[@name='user_id']" position="after">
+                <field name="show_user_ids" invisible="1"/>
+                <field name="user_ids" widget="many2many_tags_email" placeholder="Add existing users..." 
+                       attrs="{'invisible':[('show_user_ids','=',False)]}"/>
+            </xpath>
+        </field>
+    </record>
+  </data>
+</odoo>
