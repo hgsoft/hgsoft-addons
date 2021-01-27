@@ -31,7 +31,7 @@
     
     'version': '13.0.0',
 
-    'depends': ['base', 'mail'],
+    'depends': ['base', 'mail', 'document_page'],
 
     'data': [
         'wizard/custom_mail_activity.xml',
