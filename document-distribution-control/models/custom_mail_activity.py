@@ -23,10 +23,36 @@ class CustomMailActivity(models.Model):
     revision_write_date = fields.Datetime(string='Revision Write Date')
     
     revision_state = fields.Selection([ ('in_progress', 'In progress'),('done', 'Done'),],'Revision State', default='in_progress')
-        
+    
+    document_display_name = fields.Text(string="Document Display Name", compute='_get_document_display_name', store=True)
+    
+    #employee_id = fields.Many2one(related='user_id.employee_id', string="Revision Department Name")
+    
+    #revision_department_name = fields.Char(related='user_id.employee_id.department_id.name', string="Revision Department Name")
+    
+    #revision_department_name = fields.Char(compute='_get_employee_id', string="Revision Department Name")
+    
+    user_department_id = fields.Many2one(related='user_id.department_id', string="User Department", store=True)
+    
+    #revision_department_name = fields.Char(compute='_get_dept', string="Revision Department Name")
+    
+    '''
+    @api.depends('user_id')
+    def _get_department(self):
+        print('=' * 30)
+        print('')
+        print('GET DEPARTMENT')
+        print('')
+        print('=' * 30)
+    '''
+    
+    @api.depends('res_name', 'revision_name')
+    def _get_document_display_name(self):
+        for record in self:
+            record.document_display_name = "{} [{}]".format(record.res_name, record.revision_name)
+
     @api.model
     def create(self, vals):
-        
         model = self.env.context['default_res_model']
         
         if model == 'document.page':
@@ -154,49 +180,13 @@ class CustomMailActivity(models.Model):
             # Edição
             return {'domain': {'user_ids': [('user_ids', '=', None)]}}
 
+class CustomHrEmployeeBase(models.AbstractModel):
+    _inherit = "hr.employee.base"
 
-    '''
-    Usar: default_res_model, default_res_id
+    @api.constrains('department_id')
+    def _update_activity_department(self):
+        mail_activity_obj = self.env['mail.activity'].search([['user_id', '=', self.user_id.id]])
+        if mail_activity_obj:
+            mail_activity_obj.write({'user_department_id': self.department_id.id})
     
-    Valida se default_res_model = document.page
-    
-    Busca self.env... pelo default_res_id
-    
-    Seta os dados que forem necessários (ex.: revisão) na activity com base no objeto retornado
-    
-    ==============================
 
-    [CREATE][START]
-
-    {'res_model_id': 222, 'res_id': 2, 'date_deadline': '2021-01-27', 'user_id': 2, 'show_user_ids': True, 'recommended_activity_type_id': False, 'activity_type_id': 6, 'summary': False, 'user_ids': [[6, False, []]], 'note': '<p><br></p>'}
-    
-    {
-        'cr': <odoo.sql_db.Cursor object at 0x7f57ee72ab38>, 
-        'uid': 2, 
-        'context': 
-            {
-                'lang': 'pt_BR', 
-                'tz': 'Europe/Brussels', 
-                'uid': 2, 
-                'allowed_company_ids': [1], 
-                'default_res_id': 2, 
-                'default_res_model': 'document.page'
-            }, 
-        'su': False, 
-        'args': 
-            (
-                <odoo.sql_db.Cursor object at 0x7f57ee72ab38>, 
-                2, 
-                {'lang': 'pt_BR', 'tz': 'Europe/Brussels', 'uid': 2, 'allowed_company_ids': [1], 'default_res_id': 2, 'default_res_model': 'document.page'}, 
-                False
-            ), 
-        'registry': <odoo.modules.registry.Registry object at 0x7f57ef0615f8>, 
-        'cache': <odoo.api.Cache object at 0x7f57ef5a02b0>,
-        '_protected': <odoo.tools.misc.StackMap object at 0x7f57ee2dedf8>, 
-        'all': <odoo.api.Environments object at 0x7f57ef5a05f8>
-    }
-
-    [CREATE][END]
-
-    ==============================
-    '''

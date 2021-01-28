@@ -31,11 +31,11 @@
     
     'version': '13.0.0',
 
-    'depends': ['base', 'mail', 'document_page'],
+    'depends': ['base', 'mail', 'document_page', 'hr'],
 
     'data': [
         'wizard/custom_mail_activity.xml',
-        #'views/templates.xml',
+        'views/views.xml',
     ],
     
 }
