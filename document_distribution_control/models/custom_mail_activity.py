@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from collections import defaultdict
 
 class CustomMailActivity(models.Model):
@@ -9,9 +9,7 @@ class CustomMailActivity(models.Model):
     show_user_ids = fields.Boolean(default=True)
     
     user_ids = fields.Many2many('res.users', 'mail_activities_user_ids', 'activity_id', 'user_id', string='Recipients', index=True)
-    
-    # document_page_revision_id = fields.Many2one('document.page.history')
-    
+        
     revision_id = fields.Text(string='Revision Id')
     
     revision_name = fields.Text(string='Revision Name')
@@ -25,26 +23,8 @@ class CustomMailActivity(models.Model):
     revision_state = fields.Selection([ ('in_progress', 'In progress'),('done', 'Done'),],'Revision State', default='in_progress')
     
     document_display_name = fields.Text(string="Document Display Name", compute='_get_document_display_name', store=True)
-    
-    #employee_id = fields.Many2one(related='user_id.employee_id', string="Revision Department Name")
-    
-    #revision_department_name = fields.Char(related='user_id.employee_id.department_id.name', string="Revision Department Name")
-    
-    #revision_department_name = fields.Char(compute='_get_employee_id', string="Revision Department Name")
-    
+        
     user_department_id = fields.Many2one(related='user_id.department_id', string="User Department", store=True)
-    
-    #revision_department_name = fields.Char(compute='_get_dept', string="Revision Department Name")
-    
-    '''
-    @api.depends('user_id')
-    def _get_department(self):
-        print('=' * 30)
-        print('')
-        print('GET DEPARTMENT')
-        print('')
-        print('=' * 30)
-    '''
     
     @api.depends('res_name', 'revision_name')
     def _get_document_display_name(self):
@@ -56,13 +36,8 @@ class CustomMailActivity(models.Model):
         model = self.env.context['default_res_model']
         
         if model == 'document.page':
-        
             object_id = self.env.context['default_res_id']
-            
             document_page = self.env[model].search([['id', '=', object_id]])
-            
-            # vals['document_page_revision_id'] =  document_page.history_ids[0].id
-            
             vals['revision_id'] = document_page.history_ids[0].id
             vals['revision_name'] = document_page.history_ids[0].name
             vals['revision_summary'] = document_page.history_ids[0].summary
@@ -77,6 +52,7 @@ class CustomMailActivity(models.Model):
         for user_id in user_ids:
             vals['user_id'] = user_id
             rec = super(CustomMailActivity, self).create(vals)
+            
         return rec
     
     def _action_done(self, feedback=False, attachment_ids=None):        
@@ -164,6 +140,7 @@ class CustomMailActivity(models.Model):
     @api.onchange('user_id')
     def _user_id_onchange(self):
         self.user_ids = None
+
         if self._ids[0].origin == False:
             # Criação
             return {'domain': {'user_ids': [('user_ids', '!=', self.user_id.id)]}}
@@ -180,6 +157,12 @@ class CustomMailActivity(models.Model):
             # Edição
             return {'domain': {'user_ids': [('user_ids', '=', None)]}}
 
+class CustomMailActivityType(models.Model):
+    _inherit = 'mail.activity.type'
+    
+    display_in_master_list = fields.Boolean("Display in Master List ?", default=False)
+
+
 class CustomHrEmployeeBase(models.AbstractModel):
     _inherit = "hr.employee.base"
 
@@ -189,4 +172,18 @@ class CustomHrEmployeeBase(models.AbstractModel):
         if mail_activity_obj:
             mail_activity_obj.write({'user_department_id': self.department_id.id})
     
+class CustomDocumentPage(models.Model):
+    _inherit = "document.page"
+    
+    @api.depends("history_ids")
+    def _compute_history_head(self):
+        for rec in self:
+            if rec.history_ids:
+                rec.history_head = rec.history_ids[0]
+            else:
+                default_draft_name = _("Review 00")
+                default_draft_summary = _("Initial review")
+                rec.history_head = False
+                rec.draft_name = default_draft_name
+                rec.draft_summary = default_draft_summary
 

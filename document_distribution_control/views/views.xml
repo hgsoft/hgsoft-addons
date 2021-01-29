@@ -1,19 +1,25 @@
 <odoo>
     <data>
 
+        <record id="custom_mail_activity_type_view_form" model="ir.ui.view">
+        <field name="name">custom.mail.activity.type</field>
+        <field name="model">mail.activity.type</field>
+        <field name="inherit_id" ref="mail.mail_activity_type_view_form"/>
+        <field name="priority">50</field>
+            <field name="arch" type="xml">
+                <xpath expr="//form/sheet/group/group[@name='activity_planning']/field[@name='force_next']" position="before">
+                    <field name="display_in_master_list"/>
+                </xpath>
+            </field>
+        </record>
+        
         <record id="custom_view_mail_activity_pivot" model="ir.ui.view">
             <field name="name">custom.mail.activity.pivot</field>
             <field name="model">mail.activity</field>
             <field name="arch" type="xml">
                 <pivot string="Mail Activities">
-                    <!--
-                        <field name="user_id" type="col"/>
-                    -->
                     <field name="user_department_id" type="col"/>
                     <field name="document_display_name" type="row"/>
-                    <!--
-                        <field name="document_display_name" type="row"/>
-                    -->
                 </pivot>
             </field>
         </record>
@@ -32,9 +38,7 @@
         <record id="action_master_list" model="ir.actions.act_window">
             <field name="name">Master List</field>
             <field name="res_model">mail.activity</field>
-            <!--
-                <field name="domain">[('type','=','content')]</field>
-            -->
+            <field name="domain">[('activity_type_id.display_in_master_list','=',True)]</field>
             <field name="context" eval="{'search_default_revision_state_done': 1}"/>
             <field name="view_mode">pivot</field>
             <field name="view_id" ref="custom_view_mail_activity_pivot"/>
