@@ -35,7 +35,9 @@
                         </h1>
                     </div>
                 </xpath>
-                <xpath expr="//form/sheet/group/group/field[@name='owner_user_id']" position="replace">
+                <!--Ajuste para adequar ao módulo de RH-->
+                <!--<xpath expr="//form/sheet/group/group/field[@name='owner_user_id']" position="replace">-->
+                <xpath expr="//form/sheet/group/group" position="inside">
                     <field name="product_id"/>
                     <field name="kanban_state" class="ml-auto" modifiers="{'required':true}"/>
                 </xpath>
