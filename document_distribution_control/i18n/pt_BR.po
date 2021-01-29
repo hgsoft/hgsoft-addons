@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 13.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-29 12:44+0000\n"
-"PO-Revision-Date: 2021-01-29 12:44+0000\n"
+"POT-Creation-Date: 2021-01-29 17:11+0000\n"
+"PO-Revision-Date: 2021-01-29 17:11+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -21,6 +21,11 @@ msgid "Activity"
 msgstr "Atividade"
 
 #. module: document_distribution_control
+#: model:ir.model,name:document_distribution_control.model_mail_activity_type
+msgid "Activity Type"
+msgstr "Tipo de Atividade"
+
+#. module: document_distribution_control
 #: model_terms:ir.ui.view,arch_db:document_distribution_control.custom_mail_activity_view_form_popup
 msgid "Add existing users..."
 msgstr "Adicionar usuários existentes..."
@@ -31,9 +36,19 @@ msgid "Basic Employee"
 msgstr "Empregado Básico"
 
 #. module: document_distribution_control
+#: model:ir.model.fields,field_description:document_distribution_control.field_mail_activity_type__display_in_master_list
+msgid "Display in Master List ?"
+msgstr ""
+
+#. module: document_distribution_control
 #: model:ir.model.fields,field_description:document_distribution_control.field_mail_activity__document_display_name
 msgid "Document Display Name"
 msgstr "Nome de exibição do documento"
+
+#. module: document_distribution_control
+#: model:ir.model,name:document_distribution_control.model_document_page
+msgid "Document Page"
+msgstr "Página do Documento"
 
 #. module: document_distribution_control
 #: model:ir.model.fields.selection,name:document_distribution_control.selection__mail_activity__revision_state__done
@@ -50,6 +65,12 @@ msgstr "Em progresso"
 #: model:ir.model.fields.selection,name:document_distribution_control.selection__mail_activity__revision_state__in_progress
 msgid "In progress"
 msgstr "Em progresso"
+
+#. module: document_distribution_control
+#: code:addons/document_distribution_control/models/custom_mail_activity.py:0
+#, python-format
+msgid "Initial review"
+msgstr "Revisão inicial"
 
 #. module: document_distribution_control
 #: model_terms:ir.ui.view,arch_db:document_distribution_control.custom_mail_activity_view_form_popup
@@ -72,6 +93,12 @@ msgstr "Lista Mestra"
 #: model:ir.model.fields,field_description:document_distribution_control.field_mail_activity__user_ids
 msgid "Recipients"
 msgstr "Destinatários"
+
+#. module: document_distribution_control
+#: code:addons/document_distribution_control/models/custom_mail_activity.py:0
+#, python-format
+msgid "Review 00"
+msgstr "Revisão 00"
 
 #. module: document_distribution_control
 #: model:ir.model.fields,field_description:document_distribution_control.field_mail_activity__revision_id
