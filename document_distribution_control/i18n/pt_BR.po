@@ -1,0 +1,119 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* document_distribution_control
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 13.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-01-29 12:44+0000\n"
+"PO-Revision-Date: 2021-01-29 12:44+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: document_distribution_control
+#: model:ir.model,name:document_distribution_control.model_mail_activity
+msgid "Activity"
+msgstr "Atividade"
+
+#. module: document_distribution_control
+#: model_terms:ir.ui.view,arch_db:document_distribution_control.custom_mail_activity_view_form_popup
+msgid "Add existing users..."
+msgstr "Adicionar usuários existentes..."
+
+#. module: document_distribution_control
+#: model:ir.model,name:document_distribution_control.model_hr_employee_base
+msgid "Basic Employee"
+msgstr "Empregado Básico"
+
+#. module: document_distribution_control
+#: model:ir.model.fields,field_description:document_distribution_control.field_mail_activity__document_display_name
+msgid "Document Display Name"
+msgstr "Nome de exibição do documento"
+
+#. module: document_distribution_control
+#: model:ir.model.fields.selection,name:document_distribution_control.selection__mail_activity__revision_state__done
+#: model_terms:ir.ui.view,arch_db:document_distribution_control.view_master_list_filter
+msgid "Done"
+msgstr "Concluído"
+
+#. module: document_distribution_control
+#: model_terms:ir.ui.view,arch_db:document_distribution_control.view_master_list_filter
+msgid "In Progress"
+msgstr "Em progresso"
+
+#. module: document_distribution_control
+#: model:ir.model.fields.selection,name:document_distribution_control.selection__mail_activity__revision_state__in_progress
+msgid "In progress"
+msgstr "Em progresso"
+
+#. module: document_distribution_control
+#: model_terms:ir.ui.view,arch_db:document_distribution_control.custom_mail_activity_view_form_popup
+msgid "Log a note..."
+msgstr "Registrar uma nota..."
+
+#. module: document_distribution_control
+#: model_terms:ir.ui.view,arch_db:document_distribution_control.custom_view_mail_activity_pivot
+msgid "Mail Activities"
+msgstr "Atividades de Email"
+
+#. module: document_distribution_control
+#: model:ir.actions.act_window,name:document_distribution_control.action_master_list
+#: model:ir.ui.menu,name:document_distribution_control.menu_master_list
+#: model_terms:ir.ui.view,arch_db:document_distribution_control.view_master_list_filter
+msgid "Master List"
+msgstr "Lista Mestra"
+
+#. module: document_distribution_control
+#: model:ir.model.fields,field_description:document_distribution_control.field_mail_activity__user_ids
+msgid "Recipients"
+msgstr "Destinatários"
+
+#. module: document_distribution_control
+#: model:ir.model.fields,field_description:document_distribution_control.field_mail_activity__revision_id
+msgid "Revision Id"
+msgstr "ID da revisão"
+
+#. module: document_distribution_control
+#: model:ir.model.fields,field_description:document_distribution_control.field_mail_activity__revision_name
+msgid "Revision Name"
+msgstr "Nome da revisão"
+
+#. module: document_distribution_control
+#: model:ir.model.fields,field_description:document_distribution_control.field_mail_activity__revision_state
+msgid "Revision State"
+msgstr "Situação da revisão"
+
+#. module: document_distribution_control
+#: model:ir.model.fields,field_description:document_distribution_control.field_mail_activity__revision_summary
+msgid "Revision Summary"
+msgstr "Resumo da revisão"
+
+#. module: document_distribution_control
+#: model:ir.model.fields,field_description:document_distribution_control.field_mail_activity__revision_write_user_name
+msgid "Revision User Name"
+msgstr "Usuário da revisão"
+
+#. module: document_distribution_control
+#: model:ir.model.fields,field_description:document_distribution_control.field_mail_activity__revision_write_date
+msgid "Revision Write Date"
+msgstr "Data de alteração da revisão"
+
+#. module: document_distribution_control
+#: model:ir.model.fields,field_description:document_distribution_control.field_mail_activity__show_user_ids
+msgid "Show User"
+msgstr "Exibir usuário"
+
+#. module: document_distribution_control
+#: model:ir.model.fields,field_description:document_distribution_control.field_mail_activity__user_department_id
+msgid "User Department"
+msgstr "Departamento do usuário"
+
+#. module: document_distribution_control
+#: model_terms:ir.ui.view,arch_db:document_distribution_control.custom_mail_activity_view_form_popup
+msgid "e.g. Discuss proposal"
+msgstr "por exemplo. Discutir proposta"

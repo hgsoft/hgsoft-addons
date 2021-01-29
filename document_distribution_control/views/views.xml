@@ -1,0 +1,52 @@
+<odoo>
+    <data>
+
+        <record id="custom_view_mail_activity_pivot" model="ir.ui.view">
+            <field name="name">custom.mail.activity.pivot</field>
+            <field name="model">mail.activity</field>
+            <field name="arch" type="xml">
+                <pivot string="Mail Activities">
+                    <!--
+                        <field name="user_id" type="col"/>
+                    -->
+                    <field name="user_department_id" type="col"/>
+                    <field name="document_display_name" type="row"/>
+                    <!--
+                        <field name="document_display_name" type="row"/>
+                    -->
+                </pivot>
+            </field>
+        </record>
+        
+        <record id="view_master_list_filter" model="ir.ui.view">
+            <field name="name">master.list.search</field>
+            <field name="model">mail.activity</field>
+            <field name="arch" type="xml">
+                <search string="Master List">
+                    <filter name="revision_state_done" string="Done" domain="[('revision_state', '=', 'done')]"/>
+                    <filter name="revision_state_in_progress" string="In Progress" domain="[('revision_state', '=', 'in_progress')]"/>
+                </search>
+            </field>
+        </record>
+            
+        <record id="action_master_list" model="ir.actions.act_window">
+            <field name="name">Master List</field>
+            <field name="res_model">mail.activity</field>
+            <!--
+                <field name="domain">[('type','=','content')]</field>
+            -->
+            <field name="context" eval="{'search_default_revision_state_done': 1}"/>
+            <field name="view_mode">pivot</field>
+            <field name="view_id" ref="custom_view_mail_activity_pivot"/>
+            <field name="search_view_id" ref="view_master_list_filter"/>
+        </record>
+        
+        <menuitem
+            id="menu_master_list"
+            name="Master List"
+            parent="document_page.menu_wiki"
+            action="action_master_list"
+            sequence="99"
+        />
+    </data>
+</odoo>
