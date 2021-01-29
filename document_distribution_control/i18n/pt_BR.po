@@ -38,7 +38,7 @@ msgstr "Empregado Básico"
 #. module: document_distribution_control
 #: model:ir.model.fields,field_description:document_distribution_control.field_mail_activity_type__display_in_master_list
 msgid "Display in Master List ?"
-msgstr ""
+msgstr "Exibir na Lista Mestra ?"
 
 #. module: document_distribution_control
 #: model:ir.model.fields,field_description:document_distribution_control.field_mail_activity__document_display_name
