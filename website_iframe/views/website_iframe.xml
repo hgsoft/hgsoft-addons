@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+
+    <!-- View Form Dashboard -->
+    <record model="ir.ui.view" id="portal_dashboard_form">
+      <field name="name">portal.dashboard.form</field>
+      <field name="model">portal.dashboard</field>
+      <field name="arch" type="xml">
+        <form string="Iframe dashboard">
+          <sheet>
+            <group>
+                <group name="group_1">
+                    <field name="partner_id" options='{"no_create": True}' domain="[('is_company', '=', True)]"/>
+                    <field name="url"/>
+                    <field name="active"/>
+                </group>
+            </group>
+          </sheet>
+          <div class="oe_chatter">
+              <field name="message_follower_ids" widget="mail_followers"/>
+              <field name="message_ids" widget="mail_thread"/>
+          </div>
+        </form>
+      </field>
+    </record>
+
+    <!-- View Tree Dashboard -->
+    <record model="ir.ui.view" id="portal_dashboard_tree">
+      <field name="name">portal.dashboard.tree</field>
+      <field name="model">portal.dashboard</field>
+      <field name="arch" type="xml">
+        <tree string="Iframe dashboard">
+            <field name="partner_id"/>
+            <field name="url"/>
+            <field name="active"/>
+        </tree>
+      </field>
+    </record>
+
+    <!-- View Search Dashboard -->
+    <record id="portal_dashboard_search" model="ir.ui.view">
+      <field name="name">portal.dashboard.search</field>
+      <field name="model">portal.dashboard</field>
+      <field name="arch" type="xml">
+        <search string="Iframe dashboard">
+            <field name="partner_id"/>
+            <separator/>
+            <filter string="Active" domain="[('active', '=', True)]" name="active"/>
+            <separator/>
+            <group  expand='0' string='Group by...'>
+              <filter string='Client' name='partner' domain="[]" context="{'group_by': 'partner_id'}"/>
+              <filter string='Active' name='active' domain="[]" context="{'group_by': 'active'}"/>
+            </group>
+        </search>
+      </field>
+    </record>
+
+    <!--Action Portal Dashboard-->
+    <record id="action_portal_dashboard" model="ir.actions.act_window">
+        <field name="name">Iframe Dashboard</field>
+        <field name="res_model">portal.dashboard</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_ids"
+                   eval="[(5, 0, 0),
+                          (0, 0, {'view_mode': 'tree', 'view_id': ref('portal_dashboard_tree')}),
+                          (0, 0, {'view_mode': 'form', 'view_id': ref('portal_dashboard_form')})]"/>
+    </record>
+
+
+    <template id="portal_iframe_home_menu" name="Portal layout : sales menu entries" inherit_id="website_crm_partner_assign.portal_my_home_lead" priority="25">
+      <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+        <t t-call="portal.portal_docs_entry">
+            <t t-set="title">Dashboard</t>
+            <t t-set="url" t-value="'/my/dashboard'"/>
+            <t t-set="count" t-value="dashboard_count"/>
+        </t>
+      </xpath>
+    </template>
+
+    <template id="portal_iframe_home_my_menu_2" name="Portal layout : sales menu entries" inherit_id="website_crm_partner_assign.portal_my_home_menu_lead" priority="25">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+         <li t-if="page_name == 'dashboard' or dashboard" t-attf-class="breadcrumb-item #{'active ' if not dashbs else ''}">
+            <a t-if="dashbs" t-attf-href="/my/dashboard?{{ keep_query() }}">
+                Your Dashboard
+            </a>
+            <t t-else="">
+                Your Dashboard
+            </t>
+        </li>
+      </xpath>
+    </template>
+
+    <template id="portal_my_dashboard" name="My Dashboard">
+         <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">My Dashboard</t>
+            </t>
+            <div t-if="not dashbs" class="alert alert-warning mt8" role="alert">
+                There are currently no dashboards for your account.
+            </div>
+            <t t-if="dashbs" t-call="portal.portal_table">
+                <t t-foreach="dashbs" t-as="dash">
+                    <div class="iframe-container">
+                        <iframe width="100%" height="600" t-att-src="dash.url" frameborder="0" border="0" cellspacing="0" style="border-style: none;" allow="fullscreen"></iframe>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <!-- menu categories -->
+    <menuitem name="Iframe Dashboard" id="portal_dashboard_menu_iframe" sequence="1" parent="website.menu_website_configuration"  groups="website.group_website_designer"/>
+    <menuitem name="Iframe Dashboard" id="portal_dashboard_menu_iframe_item1" sequence="1" parent="portal_dashboard_menu_iframe" groups="website.group_website_designer" action="action_portal_dashboard"/>
+  </data>
+</odoo>

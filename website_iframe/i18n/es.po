@@ -1,0 +1,123 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* website_iframe
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 10.0-20190207\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-02-24 08:59+0000\n"
+"PO-Revision-Date: 2020-02-24 08:59+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: website_iframe
+#: model:ir.model.fields,field_description:website_iframe.field_portal_dashboard_active
+#: model:ir.ui.view,arch_db:website_iframe.portal_dashboard_search
+msgid "Active"
+msgstr "Activo"
+
+#. module: website_iframe
+#: model:ir.ui.view,arch_db:website_iframe.portal_dashboard_search
+msgid "Client"
+msgstr "Cliente"
+
+#. module: website_iframe
+#: model:ir.model.fields,field_description:website_iframe.field_portal_dashboard_create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: website_iframe
+#: model:ir.model.fields,field_description:website_iframe.field_portal_dashboard_create_date
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: website_iframe
+#: model:ir.ui.view,arch_db:website_iframe.portal_iframe_home_menu
+msgid "Dashboard"
+msgstr "Dashboard"
+
+#. module: website_iframe
+#: model:ir.model.fields,field_description:website_iframe.field_portal_dashboard_display_name
+msgid "Display Name"
+msgstr "Nombre a mostrar"
+
+#. module: website_iframe
+#: model:ir.ui.view,arch_db:website_iframe.portal_dashboard_search
+msgid "Group by..."
+msgstr "Agrupar por..."
+
+#. module: website_iframe
+#: model:ir.model.fields,field_description:website_iframe.field_portal_dashboard_id
+msgid "ID"
+msgstr "ID"
+
+#. module: website_iframe
+#: model:ir.actions.act_window,name:website_iframe.action_portal_dashboard
+#: model:ir.ui.menu,name:website_iframe.portal_dashboard_menu_iframe
+#: model:ir.ui.menu,name:website_iframe.portal_dashboard_menu_iframe_item1
+msgid "Iframe Dashboard"
+msgstr "Iframe Dashboard"
+
+#. module: website_iframe
+#: model:ir.ui.view,arch_db:website_iframe.portal_dashboard_form
+#: model:ir.ui.view,arch_db:website_iframe.portal_dashboard_search
+#: model:ir.ui.view,arch_db:website_iframe.portal_dashboard_tree
+msgid "Iframe dashboard"
+msgstr "Iframe dashboard"
+
+#. module: website_iframe
+#: model:ir.model.fields,field_description:website_iframe.field_portal_dashboard___last_update
+msgid "Last Modified on"
+msgstr "Última modificación en"
+
+#. module: website_iframe
+#: model:ir.model.fields,field_description:website_iframe.field_portal_dashboard_write_uid
+msgid "Last Updated by"
+msgstr "Última actualización por"
+
+#. module: website_iframe
+#: model:ir.model.fields,field_description:website_iframe.field_portal_dashboard_write_date
+msgid "Last Updated on"
+msgstr "Última actualización el"
+
+#. module: website_iframe
+#: code:addons/website_iframe/models/website_iframe.py:32
+#, python-format
+msgid "No ha sido posible asociar un seguidor al documento de firma."
+msgstr "No ha sido posible asociar un seguidor al documento."
+
+#. module: website_iframe
+#: model:ir.model.fields,field_description:website_iframe.field_portal_dashboard_partner_id
+msgid "Partner"
+msgstr "Empresa"
+
+#. module: website_iframe
+#: model:ir.ui.view,arch_db:website_iframe.portal_iframe_home_my_menu_2
+msgid "There are currently no dashboard for your account."
+msgstr "Actualmente no hay un tablero para su cuenta."
+
+#. module: website_iframe
+#: model:ir.ui.view,arch_db:website_iframe.portal_my_dashboard
+msgid "There are currently no dashboards for your account."
+msgstr "Actualmente no hay un tablero para su cuenta."
+
+#. module: website_iframe
+#: model:ir.model.fields,field_description:website_iframe.field_portal_dashboard_url
+msgid "URL"
+msgstr "URL"
+
+#. module: website_iframe
+#: model:ir.ui.view,arch_db:website_iframe.portal_iframe_home_my_menu_2
+msgid "Your Dashboard"
+msgstr "Tu Dashboard"
+
+#. module: website_iframe
+#: model:ir.model,name:website_iframe.model_portal_dashboard
+msgid "portal.dashboard"
+msgstr "portal.dashboard"
+
