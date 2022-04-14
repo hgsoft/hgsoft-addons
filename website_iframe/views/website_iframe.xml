@@ -67,30 +67,6 @@
                           (0, 0, {'view_mode': 'form', 'view_id': ref('portal_dashboard_form')})]"/>
     </record>
 
-
-    <template id="portal_iframe_home_menu" name="Portal layout : sales menu entries" inherit_id="website_crm_partner_assign.portal_my_home_lead" priority="25">
-      <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
-        <t t-call="portal.portal_docs_entry">
-            <t t-set="title">Dashboard</t>
-            <t t-set="url" t-value="'/my/dashboard'"/>
-            <t t-set="count" t-value="dashboard_count"/>
-        </t>
-      </xpath>
-    </template>
-
-    <template id="portal_iframe_home_my_menu_2" name="Portal layout : sales menu entries" inherit_id="website_crm_partner_assign.portal_my_home_menu_lead" priority="25">
-        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
-         <li t-if="page_name == 'dashboard' or dashboard" t-attf-class="breadcrumb-item #{'active ' if not dashbs else ''}">
-            <a t-if="dashbs" t-attf-href="/my/dashboard?{{ keep_query() }}">
-                Your Dashboard
-            </a>
-            <t t-else="">
-                Your Dashboard
-            </t>
-        </li>
-      </xpath>
-    </template>
-
     <template id="portal_my_dashboard" name="My Dashboard">
          <t t-call="portal.portal_layout">
             <t t-set="breadcrumbs_searchbar" t-value="True"/>
