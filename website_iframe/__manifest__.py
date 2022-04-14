@@ -32,14 +32,9 @@
         "Edgar Naranjo <edgarnaranjof@gmail.com>",
         "Tatiana Rosabal <tatianarosabal@gmail.com>",
     ],
-    'support': 'devtodoo@gmail.com',
+    'support': 'alex@hgsoft.com.br',
     'depends': ['base',
-                'sale',
-                'account',
-                'mail',
-                'website',
-                'website_sale',
-                'website_crm_partner_assign'
+                'mail'
                 ],
     'data': [
         'security/ir.model.access.csv',
